@@ -396,16 +396,23 @@ async function renderProjects() {
   const countMap = {}
   ;(counts || []).forEach(r => { countMap[r.project_id] = (countMap[r.project_id] || 0) + 1 })
 
+  // Pobierz project_access dla bieżącego użytkownika
+  const { data: myAccess } = await db.from('project_access')
+    .select('project_id')
+    .eq('user_email', currentUser.email)
+  const myProjectIds = new Set((myAccess||[]).map(a => a.project_id))
+
   grid.innerHTML = projects.map(p => {
-    const count = countMap[p.id] || 0
+    const count   = countMap[p.id] || 0
     const isOwner = p.owner_email === currentUser.email || isAdmin
-    return `<div class="project-card" onclick="enterProject('${p.id}')">
-      <div class="text-2xl mb-3">🎬</div>
+    const hasAccess = isOwner || myProjectIds.has(p.id)
+    return `<div class="project-card ${hasAccess ? '' : 'opacity-50'}" onclick="enterProject('${p.id}')">
+      <div class="text-2xl mb-3">${hasAccess ? '🎬' : '🔒'}</div>
       <h3 class="font-bold text-base mb-1">${esc(p.name)}</h3>
       ${p.description ? `<p class="text-xs text-slate-400 mb-3">${esc(p.description)}</p>` : '<div class="mb-3"></div>'}
       <div class="flex items-center justify-between">
-        <span class="text-xs text-slate-500">${count} ${count === 1 ? 'osoba' : count < 5 ? 'osoby' : 'osób'}</span>
-        ${isOwner ? '<span class="text-xs text-amber-500/70">właściciel</span>' : '<span class="text-xs text-slate-500">dostęp</span>'}
+        <span class="text-xs text-slate-500">${hasAccess ? `${count} ${count===1?'osoba':count<5?'osoby':'osób'}` : 'brak dostępu'}</span>
+        ${isOwner ? '<span class="text-xs text-amber-500/70">właściciel</span>' : hasAccess ? '<span class="text-xs text-slate-500">dostęp</span>' : ''}
       </div>
     </div>`
   }).join('')
@@ -414,16 +421,42 @@ async function renderProjects() {
 async function enterProject(id) {
   currentProject = projects.find(p => p.id === id)
   if (!currentProject) return
-  document.getElementById('nav-project-name').textContent = currentProject.name
-  document.getElementById('dostep-project-label').textContent = currentProject.name
 
   const isOwner = currentProject.owner_email === currentUser.email || isAdmin
+
+  // Sprawdź dostęp
+  if (!isOwner) {
+    const { data: access } = await db.from('project_access')
+      .select('user_email')
+      .eq('project_id', id)
+      .eq('user_email', currentUser.email)
+      .maybeSingle()
+    if (!access) {
+      showNoAccess(currentProject.name)
+      return
+    }
+  }
+
+  document.getElementById('nav-project-name').textContent = currentProject.name
+  document.getElementById('dostep-project-label').textContent = currentProject.name
   document.getElementById('dostep-owner-only').classList.toggle('hidden', !isOwner)
   document.getElementById('dostep-owner-only-del').classList.toggle('hidden', !isOwner)
 
   show('app')
   switchTab('ekipa')
   await loadAll()
+}
+
+function showNoAccess(name) {
+  const overlay = document.createElement('div')
+  overlay.className = 'fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4'
+  overlay.innerHTML = `<div class="bg-slate-800 border border-slate-700 rounded-2xl p-8 text-center max-w-sm w-full">
+    <div class="text-4xl mb-3">🔒</div>
+    <h2 class="font-bold text-lg mb-2">Brak dostępu</h2>
+    <p class="text-slate-400 text-sm mb-6">Nie masz dostępu do projektu <strong>${esc(name)}</strong>.<br>Poproś właściciela o dodanie Cię.</p>
+    <button onclick="this.closest('.fixed').remove()" class="bg-amber-500 hover:bg-amber-400 rounded-lg px-6 py-2 text-sm font-bold text-slate-900">OK</button>
+  </div>`
+  document.body.appendChild(overlay)
 }
 
 function backToProjects() {
