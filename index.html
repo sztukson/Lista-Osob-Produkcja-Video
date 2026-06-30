@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista Ekipy — Produkcja</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    .tab-active  { background: rgba(251,191,36,.15); color: #fbbf24; }
+    .tab-btn:not(.tab-active) { color: #94a3b8; }
+    .tab-btn:not(.tab-active):hover { color: #e2e8f0; background: rgba(255,255,255,.05); }
+    .crew-row:hover td { background: rgba(255,255,255,.03); }
+    .crew-row td { cursor: pointer; }
+    .pill { display:inline-block; padding:1px 8px; border-radius:999px; font-size:11px; font-weight:600; }
+    .pill-green  { background:#052e16; color:#4ade80; }
+    .pill-lime   { background:#1a2e05; color:#a3e635; }
+    .pill-yellow { background:#2d2209; color:#fde047; }
+    .pill-orange { background:#2d1709; color:#fb923c; }
+    .pill-red    { background:#2d0909; color:#f87171; }
+    .pill-gray   { background:#1e293b; color:#64748b; }
+    .note-pill   { background:#1c1f2e; color:#818cf8; font-size:11px; padding:1px 8px; border-radius:999px; }
+    input[type=date]::-webkit-calendar-picker-indicator { filter: invert(0.7); }
+    .field-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    @media(max-width:600px){ .field-row { grid-template-columns:1fr; } }
+    .form-label { display:block; font-size:11px; color:#94a3b8; margin-bottom:4px; text-transform:uppercase; letter-spacing:.05em; }
+    .form-input { width:100%; background:#1e293b; border:1px solid #334155; border-radius:8px; padding:8px 10px; color:#f1f5f9; font-size:14px; outline:none; transition:border-color .15s; }
+    .form-input:focus { border-color:#fbbf24; }
+    select.form-input option { background:#1e293b; }
+    .meals-chip { cursor:pointer; padding:3px 10px; border-radius:999px; font-size:12px; border:1px solid #334155; color:#94a3b8; transition:all .15s; }
+    .meals-chip:hover { border-color:#fbbf24; color:#fbbf24; }
+    .stat-card { background:#1e293b; border:1px solid #334155; border-radius:12px; padding:14px 18px; }
+    .missing-row { background: rgba(248,113,113,.04); }
+    ::-webkit-scrollbar { width:6px; height:6px; }
+    ::-webkit-scrollbar-track { background:#0f172a; }
+    ::-webkit-scrollbar-thumb { background:#334155; border-radius:3px; }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
+
+<!-- ══════════════════ CONFIG ══════════════════ -->
+<script>
+const CONFIG = {
+  supabaseUrl:    'https://xvewgjnxtipvqyqswjia.supabase.co',
+  supabaseKey:    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2ZXdnam54dGlwdnF5cXN3amlhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5NzQ3MDgsImV4cCI6MjA5NjU1MDcwOH0.XnQnxZcevO_JojRy3mb-r6zdo_2LR9x2AneMdNHbGuw',
+  productionName: 'Produkcja 2026',          // zmień na nazwę projektu
+  adminEmails:    ['sztukjakub@gmail.com', 'sztukjakubdop@gmail.com'],
+}
+</script>
+
+<!-- ══════════════════ AUTH SCREEN ══════════════════ -->
+<div id="screen-auth" class="flex items-center justify-center min-h-screen px-4">
+  <div class="bg-slate-800 border border-slate-700 rounded-2xl p-10 text-center w-full max-w-sm shadow-2xl">
+    <div class="text-4xl mb-4">🎬</div>
+    <h1 class="text-xl font-bold mb-1" id="auth-prod-name">Lista Ekipy</h1>
+    <p class="text-slate-400 text-sm mb-8">Zaloguj się aby uzyskać dostęp</p>
+    <button id="btn-login" class="w-full bg-white text-gray-900 rounded-xl px-4 py-3 font-medium flex items-center justify-center gap-3 hover:bg-gray-100 transition text-sm">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      Zaloguj przez Google
+    </button>
+    <div id="auth-error" class="mt-4 text-red-400 text-sm hidden rounded-lg bg-red-950 p-3"></div>
+    <p class="text-slate-600 text-xs mt-6">Dostęp tylko dla zaproszonych osób</p>
+  </div>
+</div>
+
+<!-- ══════════════════ MAIN APP ══════════════════ -->
+<div id="screen-app" class="hidden">
+
+  <!-- Navbar -->
+  <nav class="bg-slate-800 border-b border-slate-700 px-4 py-2.5 flex items-center justify-between sticky top-0 z-30">
+    <div class="flex items-center gap-3">
+      <span class="text-xl">🎬</span>
+      <div>
+        <div class="font-bold text-sm leading-tight" id="nav-prod-name">Produkcja</div>
+        <div class="text-xs text-slate-500">Lista Ekipy</div>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <!-- Tabs -->
+      <div class="flex gap-0.5 bg-slate-900 rounded-lg p-0.5 mr-2">
+        <button onclick="switchTab('ekipa')"      id="tab-ekipa"      class="tab-btn tab-active px-3 py-1.5 rounded-md text-xs font-medium transition">👥 Ekipa</button>
+        <button onclick="switchTab('stats')"      id="tab-stats"      class="tab-btn px-3 py-1.5 rounded-md text-xs font-medium transition">📊 Statystyki</button>
+        <button onclick="switchTab('log')"        id="tab-log"        class="tab-btn px-3 py-1.5 rounded-md text-xs font-medium transition">📋 Log zmian</button>
+        <button onclick="switchTab('dostep')"     id="tab-dostep"     class="tab-btn px-3 py-1.5 rounded-md text-xs font-medium transition hidden">🔑 Dostęp</button>
+      </div>
+      <!-- User -->
+      <img id="nav-avatar" class="w-7 h-7 rounded-full hidden" />
+      <span id="nav-name" class="text-xs text-slate-400 hidden md:block max-w-32 truncate"></span>
+      <button onclick="signOut()" class="text-xs text-slate-500 hover:text-slate-300 ml-1 transition">Wyloguj</button>
+    </div>
+  </nav>
+
+  <!-- ── TAB: EKIPA ── -->
+  <div id="content-ekipa" class="tab-content p-4">
+
+    <!-- Quick stats bar -->
+    <div id="quick-stats" class="flex gap-3 mb-4 flex-wrap"></div>
+
+    <!-- Controls -->
+    <div class="flex gap-2 mb-3 flex-wrap items-center">
+      <input id="search" type="text" placeholder="🔍 Szukaj po nazwisku lub pozycji…"
+        class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 flex-1 min-w-48 focus:outline-none focus:border-amber-400 transition"
+        oninput="renderTable()">
+      <select id="filter-dept" class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-300 focus:outline-none focus:border-amber-400 transition" onchange="renderTable()">
+        <option value="">Wszystkie działy</option>
+        <option value="kamera">📷 Kamera</option>
+        <option value="rezyseria">🎬 Reżyseria</option>
+        <option value="oswietlenie">💡 Oświetlenie</option>
+        <option value="dzwiek">🎤 Dźwięk</option>
+        <option value="produkcja">📋 Produkcja</option>
+        <option value="scenografia">🎨 Scenografia</option>
+        <option value="kostium">👗 Kostium / Makijaż</option>
+        <option value="grips">🪝 Grips</option>
+        <option value="aktorzy">🎭 Aktorzy</option>
+      </select>
+      <select id="filter-comp" class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-300 focus:outline-none focus:border-amber-400 transition" onchange="renderTable()">
+        <option value="">Wszystkie</option>
+        <option value="full">✅ Kompletne (100%)</option>
+        <option value="partial">⚠️ Niekompletne</option>
+        <option value="empty">❌ Do ustalenia</option>
+      </select>
+      <button onclick="exportCSV()" class="bg-slate-700 hover:bg-slate-600 rounded-lg px-3 py-2 text-xs text-slate-300 transition whitespace-nowrap">⬇ CSV</button>
+      <button onclick="openAdd()" class="bg-amber-500 hover:bg-amber-400 rounded-lg px-4 py-2 text-xs font-bold text-slate-900 transition whitespace-nowrap">+ Dodaj osobę</button>
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto rounded-xl border border-slate-700">
+      <table class="w-full text-sm border-collapse">
+        <thead>
+          <tr class="bg-slate-800 text-slate-400 text-xs uppercase tracking-wide border-b border-slate-700">
+            <th class="px-3 py-3 text-left w-8">#</th>
+            <th class="px-3 py-3 text-left min-w-48">Osoba / Pozycja</th>
+            <th class="px-3 py-3 text-left min-w-40">Kontakt</th>
+            <th class="px-3 py-3 text-left min-w-32">Wyżywienie</th>
+            <th class="px-3 py-3 text-left min-w-36">Umowa</th>
+            <th class="px-3 py-3 text-right min-w-24">Stawka/dzień</th>
+            <th class="px-3 py-3 text-left min-w-32">Daty</th>
+            <th class="px-3 py-3 text-center w-16">%</th>
+            <th class="px-3 py-3 w-10"></th>
+          </tr>
+        </thead>
+        <tbody id="crew-tbody">
+          <tr><td colspan="9" class="text-center py-12 text-slate-500">Ładowanie…</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-xs text-slate-600 mt-2 text-right" id="row-count"></p>
+  </div>
+
+  <!-- ── TAB: STATYSTYKI ── -->
+  <div id="content-stats" class="tab-content hidden p-4">
+    <div id="stats-content" class="max-w-3xl"></div>
+  </div>
+
+  <!-- ── TAB: LOG ZMIAN ── -->
+  <div id="content-log" class="tab-content hidden p-4">
+    <div class="overflow-x-auto rounded-xl border border-slate-700">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-slate-800 text-slate-400 text-xs uppercase tracking-wide border-b border-slate-700">
+            <th class="px-3 py-3 text-left">Kiedy</th>
+            <th class="px-3 py-3 text-left">Kto</th>
+            <th class="px-3 py-3 text-left">Osoba</th>
+            <th class="px-3 py-3 text-left">Pole</th>
+            <th class="px-3 py-3 text-left">Było</th>
+            <th class="px-3 py-3 text-left">Jest</th>
+          </tr>
+        </thead>
+        <tbody id="log-tbody">
+          <tr><td colspan="6" class="text-center py-8 text-slate-500">Ładowanie…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── TAB: DOSTĘP ── -->
+  <div id="content-dostep" class="tab-content hidden p-4 max-w-lg">
+    <h2 class="text-base font-bold mb-4">Zarządzanie dostępem</h2>
+    <div class="bg-slate-800 border border-slate-700 rounded-xl p-4 mb-4">
+      <p class="text-xs text-slate-400 mb-3">Dodaj osobę przez Gmail — po zalogowaniu będzie miała dostęp do panelu.</p>
+      <div class="flex gap-2 flex-wrap">
+        <input id="new-email" type="email" placeholder="email@gmail.com" class="flex-1 min-w-40 form-input text-sm">
+        <input id="new-uname" type="text"  placeholder="Imię i Nazwisko"  class="flex-1 min-w-32 form-input text-sm">
+        <button onclick="addUser()" class="bg-amber-500 hover:bg-amber-400 rounded-lg px-4 py-2 text-xs font-bold text-slate-900">Dodaj</button>
+      </div>
+    </div>
+    <div class="bg-slate-800 border border-slate-700 rounded-xl p-4">
+      <h3 class="text-xs font-semibold text-slate-400 uppercase mb-3">Osoby z dostępem</h3>
+      <div id="users-list">Ładowanie…</div>
+    </div>
+  </div>
+
+</div><!-- /screen-app -->
+
+<!-- ══════════════════ MODAL ══════════════════ -->
+<div id="modal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4">
+  <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-2xl max-h-[92vh] flex flex-col shadow-2xl">
+    <!-- Modal header -->
+    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-700 shrink-0">
+      <h2 class="font-bold" id="modal-title">Edytuj osobę</h2>
+      <button onclick="closeModal()" class="text-slate-400 hover:text-white text-lg leading-none transition">✕</button>
+    </div>
+    <!-- Modal form -->
+    <div class="overflow-y-auto flex-1 px-6 py-4">
+      <form id="edit-form" onsubmit="saveForm(event)" novalidate>
+        <input type="hidden" id="f-id">
+
+        <div class="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-3">Podstawowe</div>
+        <div class="field-row mb-3">
+          <div>
+            <label class="form-label">Lp. (numer)</label>
+            <input id="f-lp" type="number" min="1" class="form-input" placeholder="1">
+          </div>
+          <div>
+            <label class="form-label">Imię i Nazwisko *</label>
+            <input id="f-name" type="text" required class="form-input" placeholder="Jan Kowalski">
+          </div>
+        </div>
+        <div class="field-row mb-4">
+          <div>
+            <label class="form-label">Pozycja *</label>
+            <input id="f-position" type="text" required class="form-input" placeholder="DoP, Reżyser, Gaffer…">
+          </div>
+          <div>
+            <label class="form-label">Notatki / Status</label>
+            <input id="f-notes" type="text" class="form-input" placeholder="DO USTALENIA, czekam na odpowiedź…">
+          </div>
+        </div>
+
+        <div class="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-3 mt-5">Kontakt</div>
+        <div class="field-row mb-4">
+          <div>
+            <label class="form-label">Nr. Telefonu</label>
+            <input id="f-phone" type="tel" class="form-input" placeholder="600 000 000">
+          </div>
+          <div>
+            <label class="form-label">E-mail</label>
+            <input id="f-email" type="email" class="form-input" placeholder="email@gmail.com">
+          </div>
+        </div>
+
+        <div class="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-3 mt-5">Logistyka</div>
+        <div class="mb-3">
+          <label class="form-label">Wyżywienie</label>
+          <input id="f-meals" type="text" class="form-input mb-2" placeholder="Mięso, Wege…">
+          <div class="flex gap-1.5 flex-wrap">
+            <button type="button" class="meals-chip" onclick="appendMeal('Mięso')">Mięso</button>
+            <button type="button" class="meals-chip" onclick="appendMeal('Wege')">Wege</button>
+            <button type="button" class="meals-chip" onclick="appendMeal('Bezglutenowe')">Bezglutenowe</button>
+            <button type="button" class="meals-chip" onclick="appendMeal('Bez mleka')">Bez mleka</button>
+            <button type="button" class="meals-chip" onclick="appendMeal('Nie dotyczy')">Nie dotyczy</button>
+            <button type="button" class="meals-chip" onclick="appendMeal('Dopytać')">Dopytać</button>
+          </div>
+        </div>
+        <div class="field-row mb-3">
+          <div>
+            <label class="form-label">Uczulenia</label>
+            <input id="f-allergies" type="text" class="form-input" placeholder="Orzechy, laktoza…">
+          </div>
+          <div>
+            <label class="form-label">Miasto</label>
+            <input id="f-city" type="text" class="form-input" placeholder="Warszawa">
+          </div>
+        </div>
+        <div class="field-row mb-4">
+          <div>
+            <label class="form-label">Transport</label>
+            <select id="f-transport" class="form-input">
+              <option value="">— wybierz —</option>
+              <option>Własny</option>
+              <option>Potrzebny</option>
+              <option>Nie dotyczy</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Język poza ojczystym</label>
+            <input id="f-language" type="text" class="form-input" placeholder="Angielski, Ukraiński…">
+          </div>
+        </div>
+
+        <div class="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-3 mt-5">Umowa i Stawki</div>
+        <div class="mb-3">
+          <label class="form-label">Typ umowy</label>
+          <select id="f-contract" class="form-input">
+            <option value="">— wybierz —</option>
+            <option>UOD</option>
+            <option>Faktura VAT</option>
+            <option>Umowa Zlecenie</option>
+            <option>Umowa Zlecenie do 26 lat</option>
+            <option>Umowa o Pracę</option>
+            <option>Dopytać</option>
+          </select>
+        </div>
+        <div class="field-row mb-3">
+          <div>
+            <label class="form-label">Stawka za dzień (zł)</label>
+            <input id="f-day-rate" type="number" min="0" class="form-input" placeholder="0">
+          </div>
+          <div>
+            <label class="form-label">Stawka za sprzęt (zł)</label>
+            <input id="f-equip-rate" type="number" min="0" class="form-input" placeholder="0">
+          </div>
+        </div>
+        <div class="field-row mb-4">
+          <div>
+            <label class="form-label">Stawka za auto (zł)</label>
+            <input id="f-car-rate" type="number" min="0" class="form-input" placeholder="0">
+          </div>
+          <div>
+            <label class="form-label">Zwrot za dojazd (zł)</label>
+            <input id="f-travel" type="number" min="0" class="form-input" placeholder="0">
+          </div>
+        </div>
+
+        <div class="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-3 mt-5">Plan zdjęciowy</div>
+        <div class="field-row mb-2">
+          <div>
+            <label class="form-label">Data przyjazdu</label>
+            <input id="f-arrival" type="date" class="form-input">
+          </div>
+          <div>
+            <label class="form-label">Data wyjazdu</label>
+            <input id="f-departure" type="date" class="form-input">
+          </div>
+        </div>
+        <p class="text-xs text-slate-500 mb-6" id="nights-info"></p>
+      </form>
+    </div>
+    <!-- Modal footer -->
+    <div class="flex items-center justify-between px-6 py-4 border-t border-slate-700 shrink-0">
+      <button type="button" onclick="deletePerson()" id="btn-delete" class="text-red-500 hover:text-red-400 text-xs transition hidden">🗑 Usuń osobę</button>
+      <div class="flex gap-2 ml-auto">
+        <button type="button" onclick="closeModal()" class="bg-slate-700 hover:bg-slate-600 rounded-lg px-4 py-2 text-sm transition">Anuluj</button>
+        <button type="button" onclick="saveForm()" class="bg-amber-500 hover:bg-amber-400 rounded-lg px-6 py-2 text-sm font-bold text-slate-900 transition">Zapisz</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ JS ══════════════════ -->
+<script>
+// ── STATE ──────────────────────────────────────────
+let db, currentUser, isAdmin = false
+let crew = []   // all crew members
+let editingId = null
+
+const CRITICAL_FIELDS = ['phone','email','meals','contract_type','day_rate','arrival_date']
+// name + position always present = 2 baseline; CRITICAL_FIELDS = 6 more → max 8
+
+// ── INIT ───────────────────────────────────────────
+async function init() {
+  if (CONFIG.supabaseUrl === 'YOUR_SUPABASE_URL') {
+    document.getElementById('auth-error').textContent = '⚠️ Uzupełnij CONFIG w kodzie HTML (supabaseUrl i supabaseKey).'
+    document.getElementById('auth-error').classList.remove('hidden')
+    return
+  }
+  const { createClient } = supabase
+  db = createClient(CONFIG.supabaseUrl, CONFIG.supabaseKey)
+  document.getElementById('auth-prod-name').textContent = CONFIG.productionName
+  document.getElementById('nav-prod-name').textContent  = CONFIG.productionName
+  document.title = `Lista Ekipy — ${CONFIG.productionName}`
+
+  const { data: { session } } = await db.auth.getSession()
+  if (session) await onSignedIn(session.user)
+  else show('auth')
+
+  db.auth.onAuthStateChange(async (ev, session) => {
+    if (ev === 'SIGNED_IN' && session) await onSignedIn(session.user)
+    if (ev === 'SIGNED_OUT') show('auth')
+  })
+
+  document.getElementById('btn-login').onclick = () =>
+    db.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.href } })
+}
+
+async function onSignedIn(user) {
+  // Check whitelist
+  const { data: allowed } = await db.from('allowed_users').select('*').eq('email', user.email).maybeSingle()
+  const isKnownAdmin = CONFIG.adminEmails.includes(user.email)
+
+  if (!allowed && !isKnownAdmin) {
+    setAuthError('Brak dostępu. Poproś Jakuba o dodanie Twojego adresu e-mail do listy.')
+    await db.auth.signOut()
+    return
+  }
+
+  currentUser = user
+  isAdmin = isKnownAdmin
+
+  const avatarEl = document.getElementById('nav-avatar')
+  const avatar = user.user_metadata?.avatar_url
+  if (avatar) { avatarEl.src = avatar; avatarEl.classList.remove('hidden') }
+  document.getElementById('nav-name').textContent = user.user_metadata?.full_name || user.email
+  document.getElementById('nav-name').classList.remove('hidden')
+  if (isAdmin) document.getElementById('tab-dostep').classList.remove('hidden')
+
+  show('app')
+  await loadAll()
+}
+
+async function signOut() { await db.auth.signOut() }
+
+function setAuthError(msg) {
+  const el = document.getElementById('auth-error')
+  el.textContent = msg; el.classList.remove('hidden')
+}
+
+// ── DATA ────────────────────────────────────────────
+async function loadAll() {
+  await Promise.all([loadCrew(), loadLog()])
+  if (isAdmin) loadUsers()
+}
+
+async function loadCrew() {
+  const { data, error } = await db.from('crew_members').select('*').order('sort_order').order('lp')
+  if (error) { console.error(error); return }
+  crew = data || []
+  renderTable()
+  renderStats()
+  renderQuickStats()
+}
+
+async function loadLog() {
+  const { data } = await db.from('audit_log').select('*').order('changed_at', { ascending: false }).limit(200)
+  renderLog(data || [])
+}
+
+async function loadUsers() {
+  const { data } = await db.from('allowed_users').select('*').order('added_at', { ascending: false })
+  renderUsers(data || [])
+}
+
+// ── HELPERS ─────────────────────────────────────────
+function completion(p) {
+  let score = 2 // name + position always there
+  if (p.phone)         score++
+  if (p.email)         score++
+  if (p.meals)         score++
+  if (p.contract_type) score++
+  if (p.day_rate)      score++
+  if (p.arrival_date)  score++
+  return Math.round((score / 8) * 100)
+}
+
+function completionPill(pct) {
+  const cls = pct === 100 ? 'pill-green' : pct >= 75 ? 'pill-lime' : pct >= 50 ? 'pill-yellow' : pct >= 25 ? 'pill-orange' : 'pill-red'
+  return `<span class="pill ${cls}">${pct}%</span>`
+}
+
+function dept(pos) {
+  const p = (pos || '').toLowerCase()
+  if (/dop|operator|focus|asyst.*kam|podgląd|cinetake/.test(p)) return 'kamera'
+  if (/reżys/.test(p)) return 'rezyseria'
+  if (/oświetl|gaffer|best boy/.test(p)) return 'oswietlenie'
+  if (/dźwięk|boom/.test(p)) return 'dzwiek'
+  if (/kierownik prod|asyst.*kier|dyżur|making|producent/.test(p)) return 'produkcja'
+  if (/scenograf/.test(p)) return 'scenografia'
+  if (/kostium|make.up|charakter/.test(p)) return 'kostium'
+  if (/grip/.test(p)) return 'grips'
+  if (/aktor/.test(p)) return 'aktorzy'
+  return 'inne'
+}
+
+function deptEmoji(d) {
+  return { kamera:'📷', rezyseria:'🎬', oswietlenie:'💡', dzwiek:'🎤',
+           produkcja:'📋', scenografia:'🎨', kostium:'👗', grips:'🪝',
+           aktorzy:'🎭', inne:'•' }[d] || '•'
+}
+
+function fmtDate(d) {
+  if (!d) return ''
+  const dt = new Date(d)
+  return dt.toLocaleDateString('pl-PL', { day:'2-digit', month:'2-digit' })
+}
+
+function fmtMoney(n) {
+  if (!n) return ''
+  return Number(n).toLocaleString('pl-PL') + ' zł'
+}
+
+function nightsCount(arr, dep) {
+  if (!arr || !dep) return null
+  const a = new Date(arr), d = new Date(dep)
+  const diff = Math.round((d - a) / 86400000)
+  return diff > 0 ? diff : null
+}
+
+function esc(s) {
+  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+}
+
+// ── RENDER TABLE ────────────────────────────────────
+function renderTable() {
+  const q    = (document.getElementById('search').value || '').toLowerCase()
+  const dpt  = document.getElementById('filter-dept').value
+  const comp = document.getElementById('filter-comp').value
+
+  let rows = crew.filter(p => {
+    if (q && !p.name.toLowerCase().includes(q) && !(p.position||'').toLowerCase().includes(q)) return false
+    if (dpt && dept(p.position) !== dpt) return false
+    const pct = completion(p)
+    if (comp === 'full'    && pct < 100) return false
+    if (comp === 'partial' && (pct === 0 || pct === 100)) return false
+    if (comp === 'empty'   && pct > 25)  return false
+    return true
+  })
+
+  const tbody = document.getElementById('crew-tbody')
+  if (!rows.length) {
+    tbody.innerHTML = `<tr><td colspan="9" class="text-center py-10 text-slate-500">Brak wyników</td></tr>`
+    document.getElementById('row-count').textContent = ''
+    return
+  }
+
+  document.getElementById('row-count').textContent = `Wyświetlono ${rows.length} z ${crew.length} osób`
+
+  tbody.innerHTML = rows.map(p => {
+    const pct = completion(p)
+    const d   = dept(p.position)
+    const nights = nightsCount(p.arrival_date, p.departure_date)
+    const isMissing = pct < 50
+    return `<tr class="crew-row border-b border-slate-800 ${isMissing ? 'missing-row' : ''}" onclick="openEdit('${p.id}')">
+      <td class="px-3 py-2.5 text-slate-500 text-xs">${p.lp || '·'}</td>
+      <td class="px-3 py-2.5">
+        <div class="font-medium text-sm">${esc(p.name)} ${p.notes ? `<span class="note-pill ml-1">${esc(p.notes)}</span>` : ''}</div>
+        <div class="text-xs text-slate-400">${deptEmoji(d)} ${esc(p.position)}</div>
+      </td>
+      <td class="px-3 py-2.5">
+        <div class="text-xs ${p.phone ? 'text-slate-200' : 'text-slate-600'}">${esc(p.phone) || '—'}</div>
+        <div class="text-xs ${p.email ? 'text-slate-400' : 'text-slate-600'} truncate max-w-36">${esc(p.email) || '—'}</div>
+      </td>
+      <td class="px-3 py-2.5 text-xs ${p.meals ? 'text-slate-200' : 'text-slate-600'}">${esc(p.meals) || '—'}</td>
+      <td class="px-3 py-2.5 text-xs ${p.contract_type ? 'text-slate-200' : 'text-slate-600'}">${esc(p.contract_type) || '—'}</td>
+      <td class="px-3 py-2.5 text-xs text-right ${p.day_rate ? 'text-amber-300' : 'text-slate-600'}">${fmtMoney(p.day_rate) || '—'}</td>
+      <td class="px-3 py-2.5 text-xs text-slate-300">
+        ${p.arrival_date ? `${fmtDate(p.arrival_date)} → ${fmtDate(p.departure_date)}${nights ? ` <span class="text-slate-500">(${nights}n)</span>` : ''}` : '<span class="text-slate-600">—</span>'}
+      </td>
+      <td class="px-3 py-2.5 text-center">${completionPill(pct)}</td>
+      <td class="px-3 py-2.5 text-center">
+        <button onclick="event.stopPropagation();openEdit('${p.id}')" class="text-slate-500 hover:text-amber-400 text-base transition">✏️</button>
+      </td>
+    </tr>`
+  }).join('')
+}
+
+// ── RENDER QUICK STATS ──────────────────────────────
+function renderQuickStats() {
+  const total    = crew.length
+  const full     = crew.filter(p => completion(p) === 100).length
+  const noPhone  = crew.filter(p => !p.phone).length
+  const noEmail  = crew.filter(p => !p.email).length
+  const noRate   = crew.filter(p => !p.day_rate).length
+  const noContract = crew.filter(p => !p.contract_type).length
+
+  document.getElementById('quick-stats').innerHTML = [
+    statCard('👥', total, 'Osób'),
+    statCard('✅', full, 'Kompletnych', full === total ? 'text-green-400' : 'text-slate-200'),
+    statCard('📵', noPhone, 'Bez telefonu', noPhone > 0 ? 'text-orange-400' : 'text-slate-200'),
+    statCard('📧', noEmail, 'Bez emaila',   noEmail > 0 ? 'text-orange-400' : 'text-slate-200'),
+    statCard('📄', noContract, 'Bez umowy', noContract > 0 ? 'text-yellow-400' : 'text-slate-200'),
+    statCard('💰', noRate, 'Bez stawki',    noRate > 0 ? 'text-yellow-400' : 'text-slate-200'),
+  ].join('')
+}
+
+function statCard(emoji, val, label, valClass = 'text-slate-200') {
+  return `<div class="stat-card flex items-center gap-2">
+    <span class="text-lg">${emoji}</span>
+    <div><div class="font-bold text-base ${valClass}">${val}</div><div class="text-xs text-slate-500">${label}</div></div>
+  </div>`
+}
+
+// ── RENDER STATS TAB ────────────────────────────────
+function renderStats() {
+  const depts = {}
+  crew.forEach(p => {
+    const d = dept(p.position)
+    if (!depts[d]) depts[d] = []
+    depts[d].push(p)
+  })
+
+  const missingFields = ['phone','email','meals','contract_type','day_rate','arrival_date','departure_date']
+  const fieldLabels   = { phone:'Telefon', email:'Email', meals:'Wyżywienie', contract_type:'Typ umowy',
+                          day_rate:'Stawka/dzień', arrival_date:'Data przyjazdu', departure_date:'Data wyjazdu' }
+
+  let html = `<h2 class="text-base font-bold mb-4">Postęp uzupełnienia danych</h2>`
+
+  // Overall progress
+  const avgPct = crew.length ? Math.round(crew.reduce((s,p) => s + completion(p), 0) / crew.length) : 0
+  html += `<div class="stat-card mb-5">
+    <div class="flex justify-between items-center mb-2">
+      <span class="text-sm font-semibold">Średni % kompletności ekipy</span>
+      <span class="text-2xl font-bold ${avgPct === 100 ? 'text-green-400' : avgPct >= 70 ? 'text-yellow-400' : 'text-red-400'}">${avgPct}%</span>
+    </div>
+    <div class="w-full bg-slate-700 rounded-full h-2">
+      <div class="h-2 rounded-full bg-amber-400 transition-all" style="width:${avgPct}%"></div>
+    </div>
+  </div>`
+
+  // Missing fields breakdown
+  html += `<div class="stat-card mb-5">
+    <div class="text-xs font-semibold text-slate-400 uppercase mb-3">Brakujące dane (liczba osób)</div>
+    <div class="space-y-2">`
+  missingFields.forEach(f => {
+    const missing = crew.filter(p => !p[f]).length
+    const pct = crew.length ? Math.round((1 - missing / crew.length) * 100) : 0
+    html += `<div>
+      <div class="flex justify-between text-xs mb-1">
+        <span class="text-slate-300">${fieldLabels[f]}</span>
+        <span class="${missing > 0 ? 'text-orange-400' : 'text-green-400'}">${missing > 0 ? `${missing} brak` : '✓ Komplet'}</span>
+      </div>
+      <div class="w-full bg-slate-700 rounded-full h-1.5">
+        <div class="h-1.5 rounded-full ${pct === 100 ? 'bg-green-500' : pct >= 70 ? 'bg-yellow-500' : 'bg-red-500'} transition-all" style="width:${pct}%"></div>
+      </div>
+    </div>`
+  })
+  html += `</div></div>`
+
+  // By department
+  html += `<div class="stat-card">
+    <div class="text-xs font-semibold text-slate-400 uppercase mb-3">Działy</div>
+    <div class="space-y-2">`
+  const deptNames = { kamera:'Kamera', rezyseria:'Reżyseria', oswietlenie:'Oświetlenie',
+    dzwiek:'Dźwięk', produkcja:'Produkcja', scenografia:'Scenografia',
+    kostium:'Kostium/Makijaż', grips:'Grips', aktorzy:'Aktorzy', inne:'Inne' }
+  Object.entries(depts).sort((a,b) => b[1].length - a[1].length).forEach(([d, members]) => {
+    const avg = Math.round(members.reduce((s,p) => s + completion(p), 0) / members.length)
+    html += `<div class="flex items-center gap-3">
+      <span class="text-sm">${deptEmoji(d)}</span>
+      <span class="text-sm text-slate-300 w-32">${deptNames[d] || d}</span>
+      <span class="text-xs text-slate-500 w-16">${members.length} os.</span>
+      <div class="flex-1 bg-slate-700 rounded-full h-1.5">
+        <div class="h-1.5 rounded-full bg-amber-400" style="width:${avg}%"></div>
+      </div>
+      <span class="text-xs text-slate-400 w-8 text-right">${avg}%</span>
+    </div>`
+  })
+  html += `</div></div>`
+
+  // Per-person list
+  html += `<div class="mt-5">
+    <div class="text-xs font-semibold text-slate-400 uppercase mb-3">Osoby do uzupełnienia</div>
+    <div class="space-y-1">`
+  crew.filter(p => completion(p) < 100)
+      .sort((a,b) => completion(a) - completion(b))
+      .forEach(p => {
+        const pct = completion(p)
+        const missing = []
+        if (!p.phone) missing.push('tel')
+        if (!p.email) missing.push('email')
+        if (!p.meals) missing.push('wyżywienie')
+        if (!p.contract_type) missing.push('umowa')
+        if (!p.day_rate) missing.push('stawka')
+        if (!p.arrival_date) missing.push('przyjazd')
+        html += `<div class="flex items-center gap-2 text-xs py-1 border-b border-slate-800">
+          ${completionPill(pct)}
+          <span class="text-slate-300 font-medium min-w-40">${esc(p.name)}</span>
+          <span class="text-slate-500">${esc(p.position)}</span>
+          <span class="ml-auto text-orange-400">${missing.join(', ')}</span>
+        </div>`
+      })
+  html += `</div></div>`
+
+  document.getElementById('stats-content').innerHTML = html
+}
+
+// ── RENDER LOG ──────────────────────────────────────
+function renderLog(logs) {
+  const tbody = document.getElementById('log-tbody')
+  if (!logs.length) {
+    tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-500">Brak zmian</td></tr>`
+    return
+  }
+  tbody.innerHTML = logs.map(l => `
+    <tr class="border-b border-slate-800">
+      <td class="px-3 py-2 text-xs text-slate-500">${new Date(l.changed_at).toLocaleString('pl-PL')}</td>
+      <td class="px-3 py-2 text-xs text-slate-300">${esc(l.user_name || l.user_email)}</td>
+      <td class="px-3 py-2 text-xs text-slate-200 font-medium">${esc(l.crew_member_name)}</td>
+      <td class="px-3 py-2 text-xs text-slate-400">${esc(l.field_name)}</td>
+      <td class="px-3 py-2 text-xs text-red-400 line-through max-w-32 truncate">${esc(l.old_value) || '—'}</td>
+      <td class="px-3 py-2 text-xs text-green-400 max-w-32 truncate">${esc(l.new_value) || '—'}</td>
+    </tr>`).join('')
+}
+
+// ── RENDER USERS ────────────────────────────────────
+function renderUsers(users) {
+  if (!users.length) {
+    document.getElementById('users-list').innerHTML = '<p class="text-slate-500 text-sm">Brak użytkowników</p>'
+    return
+  }
+  document.getElementById('users-list').innerHTML = users.map(u => `
+    <div class="flex items-center justify-between py-2 border-b border-slate-700">
+      <div>
+        <div class="text-sm font-medium">${esc(u.name)}</div>
+        <div class="text-xs text-slate-400">${esc(u.email)}</div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="pill ${u.can_edit ? 'pill-green' : 'pill-gray'}">${u.can_edit ? 'edycja' : 'tylko odczyt'}</span>
+        ${isAdmin ? `<button onclick="removeUser('${esc(u.email)}')" class="text-red-500 hover:text-red-400 text-xs ml-2">✕</button>` : ''}
+      </div>
+    </div>`).join('')
+}
+
+// ── MODAL ───────────────────────────────────────────
+function openAdd() {
+  editingId = null
+  document.getElementById('modal-title').textContent = 'Dodaj osobę'
+  document.getElementById('btn-delete').classList.add('hidden')
+  clearForm()
+  showModal()
+}
+
+function openEdit(id) {
+  const p = crew.find(c => c.id === id)
+  if (!p) return
+  editingId = id
+  document.getElementById('modal-title').textContent = p.name
+  document.getElementById('btn-delete').classList.remove('hidden')
+  fillForm(p)
+  showModal()
+}
+
+function fillForm(p) {
+  document.getElementById('f-id').value        = p.id
+  document.getElementById('f-lp').value        = p.lp || ''
+  document.getElementById('f-name').value      = p.name
+  document.getElementById('f-position').value  = p.position
+  document.getElementById('f-notes').value     = p.notes || ''
+  document.getElementById('f-phone').value     = p.phone || ''
+  document.getElementById('f-email').value     = p.email || ''
+  document.getElementById('f-meals').value     = p.meals || ''
+  document.getElementById('f-allergies').value = p.allergies || ''
+  document.getElementById('f-city').value      = p.city || ''
+  document.getElementById('f-transport').value = p.transport || ''
+  document.getElementById('f-language').value  = p.language || ''
+  document.getElementById('f-contract').value  = p.contract_type || ''
+  document.getElementById('f-day-rate').value  = p.day_rate || ''
+  document.getElementById('f-equip-rate').value= p.equipment_rate || ''
+  document.getElementById('f-car-rate').value  = p.car_rate || ''
+  document.getElementById('f-travel').value    = p.travel_reimbursement || ''
+  document.getElementById('f-arrival').value   = p.arrival_date || ''
+  document.getElementById('f-departure').value = p.departure_date || ''
+  updateNightsInfo()
+}
+
+function clearForm() {
+  document.getElementById('edit-form').reset()
+  document.getElementById('f-id').value = ''
+  document.getElementById('nights-info').textContent = ''
+}
+
+function showModal() {
+  document.getElementById('modal').classList.remove('hidden')
+  document.getElementById('modal').classList.add('flex')
+  document.getElementById('f-name').focus()
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.add('hidden')
+  document.getElementById('modal').classList.remove('flex')
+}
+
+function appendMeal(val) {
+  const input = document.getElementById('f-meals')
+  const cur   = input.value.trim()
+  input.value = cur ? (cur.endsWith(',') ? cur + ' ' + val : cur + ', ' + val) : val
+}
+
+function updateNightsInfo() {
+  const arr = document.getElementById('f-arrival').value
+  const dep = document.getElementById('f-departure').value
+  const n   = nightsCount(arr, dep)
+  document.getElementById('nights-info').textContent = n !== null ? `Ilość noclegów: ${n}` : ''
+}
+document.getElementById('f-arrival')  .addEventListener('change', updateNightsInfo)
+document.getElementById('f-departure').addEventListener('change', updateNightsInfo)
+
+// ── SAVE ────────────────────────────────────────────
+async function saveForm() {
+  const nameEl = document.getElementById('f-name')
+  if (!nameEl.value.trim()) { nameEl.focus(); return }
+  const posEl = document.getElementById('f-position')
+  if (!posEl.value.trim()) { posEl.focus(); return }
+
+  const payload = {
+    lp:                   parseInt(document.getElementById('f-lp').value) || null,
+    name:                 document.getElementById('f-name').value.trim(),
+    position:             document.getElementById('f-position').value.trim(),
+    notes:                document.getElementById('f-notes').value.trim() || null,
+    phone:                document.getElementById('f-phone').value.trim() || null,
+    email:                document.getElementById('f-email').value.trim() || null,
+    meals:                document.getElementById('f-meals').value.trim() || null,
+    allergies:            document.getElementById('f-allergies').value.trim() || null,
+    city:                 document.getElementById('f-city').value.trim() || null,
+    transport:            document.getElementById('f-transport').value || null,
+    language:             document.getElementById('f-language').value.trim() || null,
+    contract_type:        document.getElementById('f-contract').value || null,
+    day_rate:             parseFloat(document.getElementById('f-day-rate').value) || null,
+    equipment_rate:       parseFloat(document.getElementById('f-equip-rate').value) || null,
+    car_rate:             parseFloat(document.getElementById('f-car-rate').value) || null,
+    travel_reimbursement: parseFloat(document.getElementById('f-travel').value) || null,
+    arrival_date:         document.getElementById('f-arrival').value || null,
+    departure_date:       document.getElementById('f-departure').value || null,
+  }
+
+  const userMeta = { email: currentUser.email, name: currentUser.user_metadata?.full_name || currentUser.email }
+
+  if (editingId) {
+    // Build diff for audit log
+    const old = crew.find(c => c.id === editingId)
+    const diff = []
+    for (const [k, v] of Object.entries(payload)) {
+      const oldV = old[k]
+      if ((oldV ?? '') !== (v ?? '')) {
+        diff.push({ field_name: k, old_value: oldV?.toString() || '', new_value: v?.toString() || '' })
+      }
+    }
+
+    const { error } = await db.from('crew_members').update(payload).eq('id', editingId)
+    if (error) { alert('Błąd zapisu: ' + error.message); return }
+
+    // Log changes
+    if (diff.length) {
+      await db.from('audit_log').insert(diff.map(d => ({
+        ...d, crew_member_id: editingId, crew_member_name: payload.name, ...userMeta
+      })))
+    }
+  } else {
+    payload.sort_order = (crew.length + 1) * 10
+    const { data, error } = await db.from('crew_members').insert(payload).select().single()
+    if (error) { alert('Błąd zapisu: ' + error.message); return }
+    await db.from('audit_log').insert({
+      crew_member_id: data.id, crew_member_name: payload.name,
+      field_name: 'NOWA OSOBA', old_value: null, new_value: payload.name,
+      ...userMeta
+    })
+  }
+
+  closeModal()
+  await loadAll()
+}
+
+async function deletePerson() {
+  const p = crew.find(c => c.id === editingId)
+  if (!p) return
+  if (!confirm(`Usunąć ${p.name}? Tej operacji nie można cofnąć.`)) return
+  await db.from('crew_members').delete().eq('id', editingId)
+  await db.from('audit_log').insert({
+    crew_member_id: editingId, crew_member_name: p.name,
+    field_name: 'USUNIĘTO', old_value: p.name, new_value: null,
+    user_email: currentUser.email, user_name: currentUser.user_metadata?.full_name || currentUser.email
+  })
+  closeModal()
+  await loadAll()
+}
+
+// ── ADMIN USERS ─────────────────────────────────────
+async function addUser() {
+  const email = document.getElementById('new-email').value.trim()
+  const name  = document.getElementById('new-uname').value.trim()
+  if (!email) return
+  const { error } = await db.from('allowed_users').upsert({ email, name, can_edit: true })
+  if (error) { alert(error.message); return }
+  document.getElementById('new-email').value = ''
+  document.getElementById('new-uname').value = ''
+  loadUsers()
+}
+
+async function removeUser(email) {
+  if (!confirm(`Usunąć dostęp dla ${email}?`)) return
+  await db.from('allowed_users').delete().eq('email', email)
+  loadUsers()
+}
+
+// ── TABS ────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'))
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('tab-active'))
+  document.getElementById('content-' + name).classList.remove('hidden')
+  document.getElementById('tab-' + name).classList.add('tab-active')
+  if (name === 'log') loadLog()
+}
+
+// ── SHOW SCREEN ──────────────────────────────────────
+function show(s) {
+  document.getElementById('screen-auth').classList.toggle('hidden', s !== 'auth')
+  document.getElementById('screen-app').classList.toggle('hidden', s !== 'app')
+}
+
+// ── EXPORT CSV ──────────────────────────────────────
+function exportCSV() {
+  const headers = ['lp','Imię i Nazwisko','Pozycja','Telefon','Email','Wyżywienie','Uczulenia',
+                   'Miasto','Transport','Język','Typ umowy','Stawka/dzień','Stawka/sprzęt',
+                   'Stawka/auto','Zwrot dojazd','Data przyjazdu','Data wyjazdu','Noclegi','Notatki','% Kompletności']
+  const rows = crew.map(p => [
+    p.lp, p.name, p.position, p.phone, p.email, p.meals, p.allergies,
+    p.city, p.transport, p.language, p.contract_type, p.day_rate, p.equipment_rate,
+    p.car_rate, p.travel_reimbursement, p.arrival_date, p.departure_date,
+    nightsCount(p.arrival_date, p.departure_date), p.notes, completion(p)+'%'
+  ].map(v => `"${(v ?? '').toString().replace(/"/g,'""')}"`))
+
+  const csv   = [headers.join(','), ...rows.map(r => r.join(','))].join('\n')
+  const blob  = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' })
+  const url   = URL.createObjectURL(blob)
+  const a     = document.createElement('a'); a.href = url
+  a.download  = `ekipa_${CONFIG.productionName.replace(/\s/g,'_')}_${new Date().toISOString().slice(0,10)}.csv`
+  a.click(); URL.revokeObjectURL(url)
+}
+
+// ── Close modal on overlay click ────────────────────
+document.getElementById('modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal')) closeModal()
+})
+
+// ── START ────────────────────────────────────────────
+init()
+</script>
+</body>
+</html>
