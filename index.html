@@ -141,22 +141,32 @@ const CONFIG = {
       <button onclick="openAdd()" class="bg-amber-500 hover:bg-amber-400 rounded-lg px-4 py-2 text-xs font-bold text-slate-900 transition">+ Dodaj osobę</button>
     </div>
     <div class="overflow-x-auto rounded-xl border border-slate-700">
-      <table class="w-full text-sm border-collapse">
+      <table class="text-sm border-collapse" style="min-width:2000px;width:100%">
         <thead>
           <tr class="bg-slate-800 text-slate-400 text-xs uppercase tracking-wide border-b border-slate-700">
-            <th class="px-3 py-3 text-left w-8">#</th>
-            <th class="px-3 py-3 text-left min-w-48">Osoba / Pozycja</th>
-            <th class="px-3 py-3 text-left min-w-40">Kontakt</th>
-            <th class="px-3 py-3 text-left min-w-28">Wyżywienie</th>
-            <th class="px-3 py-3 text-left min-w-32">Umowa</th>
-            <th class="px-3 py-3 text-right min-w-24">Stawka/dzień</th>
-            <th class="px-3 py-3 text-left min-w-32">Daty</th>
-            <th class="px-3 py-3 text-center w-14">%</th>
-            <th class="px-3 py-3 w-8"></th>
+            <th class="px-2 py-3 text-left w-8 sticky left-0 bg-slate-800 z-10">#</th>
+            <th class="px-2 py-3 text-left w-44 sticky left-8 bg-slate-800 z-10">Imię i Nazwisko</th>
+            <th class="px-2 py-3 text-left w-36">Pozycja</th>
+            <th class="px-2 py-3 text-left w-28">Telefon</th>
+            <th class="px-2 py-3 text-left w-40">E-mail</th>
+            <th class="px-2 py-3 text-left w-28">Wyżywienie</th>
+            <th class="px-2 py-3 text-left w-28">Uczulenia</th>
+            <th class="px-2 py-3 text-left w-24">Transport</th>
+            <th class="px-2 py-3 text-left w-24">Język</th>
+            <th class="px-2 py-3 text-left w-32">Typ umowy</th>
+            <th class="px-2 py-3 text-left w-36">Stawka/dzień netto</th>
+            <th class="px-2 py-3 text-left w-36">Stawka/sprzęt netto</th>
+            <th class="px-2 py-3 text-left w-36">Stawka/auto netto</th>
+            <th class="px-2 py-3 text-left w-36">Zwrot dojazd netto</th>
+            <th class="px-2 py-3 text-left w-24">Przyjazd</th>
+            <th class="px-2 py-3 text-left w-24">Wyjazd</th>
+            <th class="px-2 py-3 text-center w-16">Noclegi</th>
+            <th class="px-2 py-3 text-center w-14">%</th>
+            <th class="px-2 py-3 w-8"></th>
           </tr>
         </thead>
         <tbody id="crew-tbody">
-          <tr><td colspan="9" class="text-center py-12 text-slate-500">Ładowanie…</td></tr>
+          <tr><td colspan="19" class="text-center py-12 text-slate-500">Ładowanie…</td></tr>
         </tbody>
       </table>
     </div>
@@ -268,7 +278,7 @@ const CONFIG = {
         </div>
 
         <div class="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-3 mt-5">Umowa i Stawki</div>
-        <div class="mb-3">
+        <div class="mb-4">
           <label class="form-label">Typ umowy</label>
           <select id="f-contract" class="form-input">
             <option value="">— wybierz —</option>
@@ -277,12 +287,40 @@ const CONFIG = {
           </select>
         </div>
         <div class="field-row mb-3">
-          <div><label class="form-label">Stawka za dzień (zł)</label><input id="f-day-rate" type="number" min="0" class="form-input" placeholder="0"></div>
-          <div><label class="form-label">Stawka za sprzęt (zł)</label><input id="f-equip-rate" type="number" min="0" class="form-input" placeholder="0"></div>
+          <div><label class="form-label">Stawka za dzień netto (zł)</label><input id="f-day-rate" type="number" min="0" class="form-input" placeholder="0"></div>
+          <div>
+            <label class="form-label">Status stawki za dzień</label>
+            <select id="f-day-rate-status" class="form-input">
+              <option>Do ustalenia</option><option>Niepotwierdzona</option><option>Potwierdzona</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row mb-3">
+          <div><label class="form-label">Stawka za sprzęt netto (zł)</label><input id="f-equip-rate" type="number" min="0" class="form-input" placeholder="0"></div>
+          <div>
+            <label class="form-label">Status stawki za sprzęt</label>
+            <select id="f-equip-rate-status" class="form-input">
+              <option>Do ustalenia</option><option>Niepotwierdzona</option><option>Potwierdzona</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row mb-3">
+          <div><label class="form-label">Stawka za auto netto (zł)</label><input id="f-car-rate" type="number" min="0" class="form-input" placeholder="0"></div>
+          <div>
+            <label class="form-label">Status stawki za auto</label>
+            <select id="f-car-rate-status" class="form-input">
+              <option>Do ustalenia</option><option>Niepotwierdzona</option><option>Potwierdzona</option>
+            </select>
+          </div>
         </div>
         <div class="field-row mb-4">
-          <div><label class="form-label">Stawka za auto (zł)</label><input id="f-car-rate" type="number" min="0" class="form-input" placeholder="0"></div>
-          <div><label class="form-label">Zwrot za dojazd (zł)</label><input id="f-travel" type="number" min="0" class="form-input" placeholder="0"></div>
+          <div><label class="form-label">Zwrot za dojazd netto (zł)</label><input id="f-travel" type="number" min="0" class="form-input" placeholder="0"></div>
+          <div>
+            <label class="form-label">Status zwrotu dojazd</label>
+            <select id="f-travel-status" class="form-input">
+              <option>Do ustalenia</option><option>Niepotwierdzona</option><option>Potwierdzona</option>
+            </select>
+          </div>
         </div>
 
         <div class="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-3 mt-5">Plan zdjęciowy</div>
@@ -594,31 +632,42 @@ function renderTable() {
   })
 
   const tbody = document.getElementById('crew-tbody')
-  if (!rows.length) { tbody.innerHTML=`<tr><td colspan="9" class="text-center py-10 text-slate-500">Brak wyników</td></tr>`; return }
+  if (!rows.length) { tbody.innerHTML=`<tr><td colspan="19" class="text-center py-10 text-slate-500">Brak wyników</td></tr>`; return }
   document.getElementById('row-count').textContent = `${rows.length} z ${crew.length} osób`
 
   tbody.innerHTML = rows.map(p => {
     const pct=completion(p), d=dept(p.position), n=nightsCount(p.arrival_date,p.departure_date)
     return `<tr class="crew-row border-b border-slate-800 ${pct<50?'missing-row':''}" onclick="openEdit('${p.id}')">
-      <td class="px-3 py-2.5 text-slate-500 text-xs">${p.lp||'·'}</td>
-      <td class="px-3 py-2.5">
-        <div class="font-medium text-sm">${esc(p.name)}${p.notes?` <span class="note-pill ml-1">${esc(p.notes)}</span>`:''}</div>
-        <div class="text-xs text-slate-400">${deptEmoji(d)} ${esc(p.position)}</div>
+      <td class="px-2 py-2 text-slate-500 text-xs sticky left-0 bg-slate-900 z-10">${p.lp||'·'}</td>
+      <td class="px-2 py-2 sticky left-8 bg-slate-900 z-10">
+        <div class="font-medium text-xs whitespace-nowrap">${esc(p.name)}${p.notes?` <span class="note-pill">${esc(p.notes)}</span>`:''}</div>
       </td>
-      <td class="px-3 py-2.5">
-        <div class="text-xs ${p.phone?'text-slate-200':'text-slate-600'}">${esc(p.phone)||'—'}</div>
-        <div class="text-xs ${p.email?'text-slate-400':'text-slate-600'} truncate max-w-36">${esc(p.email)||'—'}</div>
-      </td>
-      <td class="px-3 py-2.5 text-xs ${p.meals?'text-slate-200':'text-slate-600'}">${esc(p.meals)||'—'}</td>
-      <td class="px-3 py-2.5 text-xs ${p.contract_type?'text-slate-200':'text-slate-600'}">${esc(p.contract_type)||'—'}</td>
-      <td class="px-3 py-2.5 text-xs text-right ${p.day_rate?'text-amber-300':'text-slate-600'}">${fmtMoney(p.day_rate)||'—'}</td>
-      <td class="px-3 py-2.5 text-xs text-slate-300">
-        ${p.arrival_date?`${fmtDate(p.arrival_date)} → ${fmtDate(p.departure_date)}${n?` <span class="text-slate-500">(${n}n)</span>`:''}` : '<span class="text-slate-600">—</span>'}
-      </td>
-      <td class="px-3 py-2.5 text-center">${completionPill(pct)}</td>
-      <td class="px-3 py-2.5 text-center"><button onclick="event.stopPropagation();openEdit('${p.id}')" class="text-slate-500 hover:text-amber-400 transition">✏️</button></td>
+      <td class="px-2 py-2 text-xs text-slate-300 whitespace-nowrap">${deptEmoji(d)} ${esc(p.position)}</td>
+      <td class="px-2 py-2 text-xs ${p.phone?'text-slate-200':'text-slate-600'} whitespace-nowrap">${esc(p.phone)||'—'}</td>
+      <td class="px-2 py-2 text-xs ${p.email?'text-slate-300':'text-slate-600'} max-w-40 truncate">${esc(p.email)||'—'}</td>
+      <td class="px-2 py-2 text-xs ${p.meals?'text-slate-200':'text-slate-600'}">${esc(p.meals)||'—'}</td>
+      <td class="px-2 py-2 text-xs ${p.allergies?'text-orange-300':'text-slate-600'}">${esc(p.allergies)||'—'}</td>
+      <td class="px-2 py-2 text-xs ${p.transport?'text-slate-200':'text-slate-600'}">${esc(p.transport)||'—'}</td>
+      <td class="px-2 py-2 text-xs ${p.language?'text-slate-200':'text-slate-600'}">${esc(p.language)||'—'}</td>
+      <td class="px-2 py-2 text-xs ${p.contract_type?'text-slate-200':'text-slate-600'} whitespace-nowrap">${esc(p.contract_type)||'—'}</td>
+      <td class="px-2 py-2 text-xs">${rateCell(p.day_rate, p.day_rate_status)}</td>
+      <td class="px-2 py-2 text-xs">${rateCell(p.equipment_rate, p.equipment_rate_status)}</td>
+      <td class="px-2 py-2 text-xs">${rateCell(p.car_rate, p.car_rate_status)}</td>
+      <td class="px-2 py-2 text-xs">${rateCell(p.travel_reimbursement, p.travel_status)}</td>
+      <td class="px-2 py-2 text-xs text-slate-300 whitespace-nowrap">${fmtDate(p.arrival_date)||'—'}</td>
+      <td class="px-2 py-2 text-xs text-slate-300 whitespace-nowrap">${fmtDate(p.departure_date)||'—'}</td>
+      <td class="px-2 py-2 text-xs text-center text-slate-300">${n!==null?n:'—'}</td>
+      <td class="px-2 py-2 text-center">${completionPill(pct)}</td>
+      <td class="px-2 py-2 text-center"><button onclick="event.stopPropagation();openEdit('${p.id}')" class="text-slate-500 hover:text-amber-400 transition text-xs">✏️</button></td>
     </tr>`
   }).join('')
+}
+
+function rateCell(amount, status) {
+  const s = status || 'Do ustalenia'
+  const cls = s==='Potwierdzona'?'text-green-400':s==='Niepotwierdzona'?'text-orange-400':'text-slate-600'
+  const amt = amount ? `<div class="text-amber-300 font-medium">${fmtMoney(amount)}</div>` : ''
+  return `${amt}<div class="${cls} text-xs leading-tight">${s}</div>`
 }
 
 function renderQuickStats() {
@@ -745,10 +794,14 @@ function openEdit(id) {
   document.getElementById('f-transport').value = p.transport||''
   document.getElementById('f-language').value  = p.language||''
   document.getElementById('f-contract').value  = p.contract_type||''
-  document.getElementById('f-day-rate').value  = p.day_rate||''
-  document.getElementById('f-equip-rate').value= p.equipment_rate||''
-  document.getElementById('f-car-rate').value  = p.car_rate||''
-  document.getElementById('f-travel').value    = p.travel_reimbursement||''
+  document.getElementById('f-day-rate').value         = p.day_rate||''
+  document.getElementById('f-day-rate-status').value  = p.day_rate_status||'Do ustalenia'
+  document.getElementById('f-equip-rate').value       = p.equipment_rate||''
+  document.getElementById('f-equip-rate-status').value= p.equipment_rate_status||'Do ustalenia'
+  document.getElementById('f-car-rate').value         = p.car_rate||''
+  document.getElementById('f-car-rate-status').value  = p.car_rate_status||'Do ustalenia'
+  document.getElementById('f-travel').value           = p.travel_reimbursement||''
+  document.getElementById('f-travel-status').value    = p.travel_status||'Do ustalenia'
   document.getElementById('f-arrival').value   = p.arrival_date||''
   document.getElementById('f-departure').value = p.departure_date||''
   updateNights()
@@ -794,10 +847,14 @@ async function saveForm() {
     transport:            document.getElementById('f-transport').value||null,
     language:             document.getElementById('f-language').value.trim()||null,
     contract_type:        document.getElementById('f-contract').value||null,
-    day_rate:             parseFloat(document.getElementById('f-day-rate').value)||null,
-    equipment_rate:       parseFloat(document.getElementById('f-equip-rate').value)||null,
-    car_rate:             parseFloat(document.getElementById('f-car-rate').value)||null,
-    travel_reimbursement: parseFloat(document.getElementById('f-travel').value)||null,
+    day_rate:                parseFloat(document.getElementById('f-day-rate').value)||null,
+    day_rate_status:         document.getElementById('f-day-rate-status').value,
+    equipment_rate:          parseFloat(document.getElementById('f-equip-rate').value)||null,
+    equipment_rate_status:   document.getElementById('f-equip-rate-status').value,
+    car_rate:                parseFloat(document.getElementById('f-car-rate').value)||null,
+    car_rate_status:         document.getElementById('f-car-rate-status').value,
+    travel_reimbursement:    parseFloat(document.getElementById('f-travel').value)||null,
+    travel_status:           document.getElementById('f-travel-status').value,
     arrival_date:         document.getElementById('f-arrival').value||null,
     departure_date:       document.getElementById('f-departure').value||null,
   }
