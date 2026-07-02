@@ -1181,12 +1181,15 @@ function rateCell(p, type) {
 }
 
 function renderQuickStats() {
-  const total=crew.length, full=crew.filter(p=>completion(p)===100).length
+  const total=crew.length, active=crew.filter(p=>!p.hidden).length, hiddenCnt=total-active
+  const full=crew.filter(p=>completion(p)===100).length
   const noPhone=crew.filter(p=>!p.phone).length, noEmail=crew.filter(p=>!p.email).length
   const noRate=crew.filter(p=>!p.day_rate).length, noContract=crew.filter(p=>!p.contract_type).length
+  const osobLabel = hiddenCnt>0 ? `Aktywnych (${total} łącznie)` : 'Osób'
+  const osobVal = hiddenCnt>0 ? active : total
   document.getElementById('quick-stats').innerHTML = [
-    sc('👥',total,'Osób'),
-    sc('✅',full,'Kompletnych',full===total?'text-green-400':'text-slate-200'),
+    sc('👥',osobVal,osobLabel,hiddenCnt>0?'text-amber-400':'text-slate-200'),
+    sc('✅',full,'Kompletnych',full===active?'text-green-400':'text-slate-200'),
     sc('📵',noPhone,'Bez telefonu',noPhone>0?'text-orange-400':'text-slate-200'),
     sc('📧',noEmail,'Bez emaila',noEmail>0?'text-orange-400':'text-slate-200'),
     sc('📄',noContract,'Bez umowy',noContract>0?'text-yellow-400':'text-slate-200'),
@@ -2444,6 +2447,7 @@ function _crewToggleHidden(personId) {
   p.hidden = hidden.has(personId)
   // Render natychmiast — nie czekaj na async
   renderTable()
+  renderQuickStats()
   // Sync z noclegi (async, w tle)
   try {
     if (!accommodations.noclegi_greyed) accommodations.noclegi_greyed = []
