@@ -1121,23 +1121,24 @@ function renderTable() {
 
   const tbody = document.getElementById('crew-tbody')
   if (!rows.length) { tbody.innerHTML=`<tr><td colspan="19" class="text-center py-10 text-slate-500">Brak wyników</td></tr>`; return }
+  const totalCount = crew.length
   const activeCount = crew.filter(p => !p.hidden).length
-  const hiddenCount = crew.length - activeCount
+  const hiddenCount = totalCount - activeCount
   const countEl = document.getElementById('row-count')
   if (hiddenCount > 0) {
-    countEl.innerHTML = `${rows.filter(p=>!p.hidden).length} aktywnych z ${rows.length} widocznych &nbsp;·&nbsp; <span style="color:#64748b">${activeCount} aktywnych / ${crew.length} łącznie (${hiddenCount} wyszarzonych)</span>`
+    countEl.innerHTML = `<span style="color:#e2e8f0;font-weight:600">${activeCount} aktywnych</span> <span style="color:#475569">·</span> <span style="color:#64748b">${hiddenCount} nieaktywna${hiddenCount>1?'ch':''}</span> <span style="color:#475569">·</span> <span style="color:#475569">${totalCount} łącznie</span>`
   } else {
-    countEl.textContent = `${rows.length} z ${crew.length} osób`
+    countEl.textContent = `${rows.length} z ${totalCount} osób`
   }
 
   const ordered = getOrderedCols()
-  let autoLp = 0
+  // Numery: sekwencyjne dla WSZYSTKICH wg kolejności w tablicy (nie pomijamy ukrytych)
+  const globalIdx = {}; crew.forEach((p, i) => { globalIdx[p.id] = i + 1 })
   tbody.innerHTML = rows.map(p => {
-    if (!p.hidden) autoLp++
-    const displayLp = p.lp || autoLp
+    const displayLp = p.lp || globalIdx[p.id] || '·'
     const pct = completion(p)
     return `<tr class="crew-row border-b border-slate-800 ${pct===100?'complete-row':pct<50?'missing-row':''}" style="${p.hidden?'opacity:0.35;filter:grayscale(1);':''}" oncontextmenu="event.preventDefault();event.stopPropagation();_crewCtxMenu(event,'${p.id}')">
-      <td class="px-2 py-2 text-slate-500 text-xs sticky-col">${p.hidden ? `<span style="color:#334155">${displayLp}</span>` : displayLp}</td>
+      <td class="px-2 py-2 text-xs sticky-col" style="color:${p.hidden?'#334155':'#64748b'}">${displayLp}</td>
       <td class="px-2 py-2 sticky-col-2">
         <div class="font-medium text-xs whitespace-nowrap">
           <span class="cursor-pointer hover:text-amber-300 transition" title="Kliknij, aby edytować" onclick="event.stopPropagation();startInline(this,'${p.id}','name')">${esc(p.name)}</span>
@@ -2381,12 +2382,20 @@ function _personCtxToggleNoclegiGrey(personId) {
   _pushUndo()
   if (!accommodations.noclegi_greyed) accommodations.noclegi_greyed = []
   const idx = accommodations.noclegi_greyed.indexOf(personId)
+  const nowGreyed = idx < 0
   if (idx >= 0) {
     accommodations.noclegi_greyed.splice(idx, 1)
   } else {
     accommodations.noclegi_greyed.push(personId)
   }
+  // Sync: ta sama flaga trafia do hidden w ekipie (localStorage)
+  const hidden = _crewHiddenSet()
+  if (nowGreyed) hidden.add(personId); else hidden.delete(personId)
+  _crewHiddenSave(hidden)
+  const p = crew.find(c => c.id === personId)
+  if (p) p.hidden = nowGreyed
   saveAccommodations(); renderNocegiPeople()
+  if (document.getElementById('content-ekipa') && !document.getElementById('content-ekipa').classList.contains('hidden')) renderTable()
 }
 
 function _roomGuestCtx(e, hotelId, roomId, gid, greyedStr) {
@@ -2433,6 +2442,14 @@ function _crewToggleHidden(personId) {
   if (hidden.has(personId)) hidden.delete(personId); else hidden.add(personId)
   _crewHiddenSave(hidden)
   p.hidden = hidden.has(personId)
+  // Sync: ta sama flaga trafia do noclegi_greyed
+  if (!accommodations.noclegi_greyed) accommodations.noclegi_greyed = []
+  if (p.hidden) {
+    if (!accommodations.noclegi_greyed.includes(personId)) accommodations.noclegi_greyed.push(personId)
+  } else {
+    accommodations.noclegi_greyed = accommodations.noclegi_greyed.filter(id => id !== personId)
+  }
+  if (typeof saveAccommodations === 'function') saveAccommodations()
   renderTable()
 }
 
