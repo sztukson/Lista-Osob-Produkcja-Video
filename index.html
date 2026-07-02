@@ -2442,15 +2442,18 @@ function _crewToggleHidden(personId) {
   if (hidden.has(personId)) hidden.delete(personId); else hidden.add(personId)
   _crewHiddenSave(hidden)
   p.hidden = hidden.has(personId)
-  // Sync: ta sama flaga trafia do noclegi_greyed
-  if (!accommodations.noclegi_greyed) accommodations.noclegi_greyed = []
-  if (p.hidden) {
-    if (!accommodations.noclegi_greyed.includes(personId)) accommodations.noclegi_greyed.push(personId)
-  } else {
-    accommodations.noclegi_greyed = accommodations.noclegi_greyed.filter(id => id !== personId)
-  }
-  if (typeof saveAccommodations === 'function') saveAccommodations()
+  // Render natychmiast — nie czekaj na async
   renderTable()
+  // Sync z noclegi (async, w tle)
+  try {
+    if (!accommodations.noclegi_greyed) accommodations.noclegi_greyed = []
+    if (p.hidden) {
+      if (!accommodations.noclegi_greyed.includes(personId)) accommodations.noclegi_greyed.push(personId)
+    } else {
+      accommodations.noclegi_greyed = accommodations.noclegi_greyed.filter(id => id !== personId)
+    }
+    saveAccommodations()
+  } catch(e) { console.warn('sync noclegi error', e) }
 }
 
 async function _crewDeletePerson(personId) {
