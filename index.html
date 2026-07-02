@@ -150,7 +150,7 @@ const CONFIG = {
         ← <span class="hidden sm:inline text-xs">Projekty</span>
       </button>
       <span class="text-slate-600">|</span>
-      <span class="text-amber-400 text-sm font-bold ml-1 truncate max-w-40" id="nav-project-name"></span>
+      <span class="text-amber-400 text-sm font-bold ml-1 truncate max-w-40 cursor-pointer hover:text-amber-300 transition" id="nav-project-name" onclick="renameProject()" title="Kliknij aby zmienić nazwę"></span>
     </div>
     <div class="flex items-center gap-2">
       <div class="flex gap-0.5 bg-slate-900 rounded-lg p-0.5 mr-1">
@@ -951,6 +951,17 @@ async function deleteProject() {
   if (!confirm(`Usunąć projekt "${currentProject.name}" wraz z całą ekipą? Tej operacji nie można cofnąć.`)) return
   await db.from('projects').delete().eq('id', currentProject.id)
   backToProjects()
+}
+
+async function renameProject() {
+  const name = prompt('Nowa nazwa projektu:', currentProject.name)
+  if (!name || name.trim() === currentProject.name) return
+  const trimmed = name.trim()
+  const { error } = await db.from('projects').update({ name: trimmed }).eq('id', currentProject.id)
+  if (error) { alert('Błąd zapisu: ' + error.message); return }
+  currentProject.name = trimmed
+  document.getElementById('nav-project-name').textContent = trimmed
+  document.getElementById('dostep-project-label').textContent = trimmed
 }
 
 // ── DATA ─────────────────────────────────────────────
