@@ -30,13 +30,65 @@
     select.form-input option { background:#1e293b; }
     .meals-chip { cursor:pointer; padding:3px 10px; border-radius:999px; font-size:12px; border:1px solid #334155; color:#94a3b8; transition:all .15s; }
     .meals-chip:hover { border-color:#fbbf24; color:#fbbf24; }
+    .lang-chip { cursor:pointer; padding:3px 9px; border-radius:999px; font-size:11px; font-weight:600; border:1px solid #334155; color:#64748b; transition:all .15s; user-select:none; }
+    .lang-chip:hover { border-color:#93c5fd; color:#93c5fd; }
+    .lang-chip.active { border-color:#3b82f6; color:#93c5fd; background:#1e3a5f; }
     .stat-card { background:#1e293b; border:1px solid #334155; border-radius:12px; padding:14px 18px; }
     .project-card { background:#1e293b; border:1px solid #334155; border-radius:16px; padding:20px; cursor:pointer; transition:all .15s; }
     .project-card:hover { border-color:#fbbf24; transform:translateY(-1px); }
-    .missing-row { background: rgba(248,113,113,.04); }
+    .missing-row { background: rgba(248,113,113,.03); }
+    .complete-row td { background: rgba(74,222,128,.04) !important; }
+    .complete-row td.sticky-col, .complete-row td.sticky-col-2, .complete-row td.frozen-td { background: #052e16 !important; }
+    .cell-missing { box-shadow: inset 3px 0 0 #7f1d1d, inset 0 0 0 1px rgba(220,38,38,.35); background: #1a0808 !important; }
+    .filter-chip { padding:2px 10px; border-radius:999px; font-size:11px; font-weight:600; border:1px solid #334155; color:#64748b; cursor:pointer; transition:all .15s; background:transparent; }
+    .filter-chip:hover { border-color:#fbbf24; color:#fbbf24; }
+    .filter-chip.active { background:#2d1709; border-color:#fb923c; color:#fb923c; }
+    .sticky-shadow { box-shadow: 4px 0 10px -2px rgba(0,0,0,.8); }
+    td.sticky-col { position:sticky; left:0; z-index:20; background:#0f172a; }
+    td.sticky-col-2 { position:sticky; left:32px; z-index:20; background:#0f172a; }
+    .crew-row:hover td.sticky-col, .crew-row:hover td.sticky-col-2 { background:#111827; }
+    td.frozen-td { position:sticky; z-index:15; background:#0f172a; }
+    .crew-row:hover td.frozen-td { background:#111827; }
+    th.frozen-th { position:sticky; top:0; z-index:25 !important; background:#1e293b; }
+    th.sticky-th { position:sticky; top:0; z-index:30 !important; background:#1e293b; }
+    .lock-btn { opacity:.25; font-size:10px; margin-left:3px; cursor:pointer; transition:opacity .15s; vertical-align:middle; }
+    .lock-btn:hover, .lock-btn.active { opacity:1; }
+    .inline-input { background:#1e3a5f; border:1px solid #fbbf24; border-radius:6px; padding:5px 8px; font-size:13px; color:#f1f5f9; width:100%; outline:none; min-width:120px; box-shadow:0 0 0 2px rgba(251,191,36,.2); }
+    .td-empty { background: rgba(248,113,113,.08); }
     ::-webkit-scrollbar { width:6px; height:6px; }
     ::-webkit-scrollbar-track { background:#0f172a; }
     ::-webkit-scrollbar-thumb { background:#334155; border-radius:3px; }
+    #crew-table { border-collapse: separate !important; border-spacing: 0 !important; }
+    .person-card { cursor:grab; user-select:none; transition:all .15s; }
+    .person-card:active { cursor:grabbing; }
+    .person-card.selected { border-color:#fbbf24 !important; background:#2d2209 !important; }
+    .person-card.assigned { opacity:.45; }
+    .room-card { transition:all .15s; min-height:80px; }
+    .room-card.drag-over { border-color:#fbbf24 !important; background:rgba(251,191,36,.08) !important; }
+    .room-type-1 { border-color:#3b82f6; }
+    .room-type-2 { border-color:#22c55e; }
+    .room-type-3 { border-color:#f97316; }
+    .room-type-4 { border-color:#a855f7; }
+    .guest-pill { display:flex; width:100%; align-items:center; gap:4px; background:#1e293b; border:1px solid #334155; border-radius:6px; padding:2px 8px; font-size:11px; cursor:pointer; box-sizing:border-box; }
+    .guest-pill:hover { border-color:#f87171; color:#f87171; }
+    .noclegi-layout { display:grid; grid-template-columns:220px 1fr; gap:16px; height:calc(100vh - 140px); }
+    @media(max-width:768px){ .noclegi-layout { grid-template-columns:1fr; height:auto; } }
+    #crew-table td { border-bottom: 1px solid #1e293b; border-right: 1px solid #1e293b; }
+    #crew-table thead th { border-bottom: 1px solid #334155; border-right: 1px solid #1e293b; position: sticky; top: 0; background: #1e293b; z-index: 10; }
+    /* Gantt calendar */
+    .cal-wrap { display:grid; min-width:max-content; }
+    .cal-cell { width:38px; height:38px; border-right:1px solid #1e293b; border-bottom:1px solid #1e293b; position:relative; cursor:pointer; }
+    .cal-cell:hover { background:rgba(251,191,36,.06); }
+    .cal-cell.cal-today { background:rgba(251,191,36,.08); }
+    .cal-cell.cal-weekend { background:rgba(255,255,255,.015); }
+    .cal-cell.cal-sel { background:rgba(251,191,36,.25) !important; }
+    .cal-cell.cal-booked { background:rgba(34,197,94,.15); }
+    .cal-cell.cal-booked:hover { background:rgba(34,197,94,.25); }
+    .cal-label { background:#0f172a; position:sticky; left:0; z-index:5; min-width:160px; max-width:160px; padding:4px 10px; border-right:2px solid #334155; border-bottom:1px solid #1e293b; display:flex; align-items:center; font-size:11px; }
+    .cal-header-label { background:#1e293b; position:sticky; top:0; left:0; z-index:10; min-width:160px; border-right:2px solid #334155; border-bottom:2px solid #334155; }
+    .cal-day-hdr { background:#1e293b; position:sticky; top:0; z-index:4; text-align:center; font-size:10px; border-right:1px solid #1e293b; border-bottom:2px solid #334155; padding:3px 0; }
+    .cal-hotel-hdr { background:#172033; font-size:11px; font-weight:700; color:#fbbf24; padding:6px 10px; border-bottom:1px solid #334155; }
+    .cal-bar { position:absolute; top:4px; bottom:4px; border-radius:4px; pointer-events:none; overflow:hidden; white-space:nowrap; font-size:9px; display:flex; align-items:center; padding:0 4px; font-weight:600; color:#fff; z-index:2; }
   </style>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen">
@@ -106,6 +158,7 @@ const CONFIG = {
         <button onclick="switchTab('stats')"   id="tab-stats"   class="tab-btn px-2.5 py-1.5 rounded-md text-xs font-medium transition">📊 Stat</button>
         <button onclick="switchTab('log')"     id="tab-log"     class="tab-btn px-2.5 py-1.5 rounded-md text-xs font-medium transition">📋 Log</button>
         <button onclick="switchTab('dostep')"  id="tab-dostep"  class="tab-btn px-2.5 py-1.5 rounded-md text-xs font-medium transition">🔑 Dostęp</button>
+        <button onclick="switchTab('noclegi')" id="tab-noclegi" class="tab-btn px-2.5 py-1.5 rounded-md text-xs font-medium transition">🏨 Noclegi</button>
       </div>
       <img id="nav-avatar" class="w-7 h-7 rounded-full hidden"/>
       <button onclick="signOut()" class="text-xs text-slate-500 hover:text-slate-300 transition">Wyloguj</button>
@@ -137,34 +190,32 @@ const CONFIG = {
         <option value="partial">⚠️ Niekompletne</option>
         <option value="empty">❌ Do ustalenia</option>
       </select>
+      <div class="relative">
+        <button onclick="toggleColPanel()" class="bg-slate-700 hover:bg-slate-600 rounded-lg px-3 py-2 text-xs text-slate-300 transition">⚙ Kolumny</button>
+        <div id="col-panel" class="hidden absolute right-0 top-9 z-50 bg-slate-800 border border-slate-600 rounded-xl shadow-2xl p-3 w-56">
+          <p class="text-xs text-slate-400 mb-2 font-semibold uppercase">Widoczność kolumn</p>
+          <div id="col-panel-list" class="space-y-1 max-h-72 overflow-y-auto"></div>
+          <button onclick="resetCols()" class="mt-3 text-xs text-slate-500 hover:text-slate-300">↺ Resetuj wszystko</button>
+        </div>
+      </div>
       <button onclick="exportCSV()" class="bg-slate-700 hover:bg-slate-600 rounded-lg px-3 py-2 text-xs text-slate-300 transition">⬇ CSV</button>
       <button onclick="openAdd()" class="bg-amber-500 hover:bg-amber-400 rounded-lg px-4 py-2 text-xs font-bold text-slate-900 transition">+ Dodaj osobę</button>
     </div>
-    <div class="overflow-x-auto rounded-xl border border-slate-700">
-      <table class="text-sm border-collapse" style="min-width:2000px;width:100%">
-        <thead>
-          <tr class="bg-slate-800 text-slate-400 text-xs uppercase tracking-wide border-b border-slate-700">
-            <th class="px-2 py-3 text-left w-8 sticky left-0 bg-slate-800 z-10">#</th>
-            <th class="px-2 py-3 text-left w-44 sticky left-8 bg-slate-800 z-10">Imię i Nazwisko</th>
-            <th class="px-2 py-3 text-left w-36">Pozycja</th>
-            <th class="px-2 py-3 text-left w-28">Telefon</th>
-            <th class="px-2 py-3 text-left w-40">E-mail</th>
-            <th class="px-2 py-3 text-left w-28">Wyżywienie</th>
-            <th class="px-2 py-3 text-left w-28">Uczulenia</th>
-            <th class="px-2 py-3 text-left w-24">Transport</th>
-            <th class="px-2 py-3 text-left w-24">Język</th>
-            <th class="px-2 py-3 text-left w-32">Typ umowy</th>
-            <th class="px-2 py-3 text-left w-36">Stawka/dzień netto</th>
-            <th class="px-2 py-3 text-left w-36">Stawka/sprzęt netto</th>
-            <th class="px-2 py-3 text-left w-36">Stawka/auto netto</th>
-            <th class="px-2 py-3 text-left w-36">Zwrot dojazd netto</th>
-            <th class="px-2 py-3 text-left w-24">Przyjazd</th>
-            <th class="px-2 py-3 text-left w-24">Wyjazd</th>
-            <th class="px-2 py-3 text-center w-16">Noclegi</th>
-            <th class="px-2 py-3 text-center w-14">%</th>
-            <th class="px-2 py-3 w-8"></th>
-          </tr>
-        </thead>
+    <div class="flex gap-1.5 flex-wrap items-center mb-3">
+      <span class="text-xs text-slate-500">Pokaż bez:</span>
+      <button class="filter-chip" data-field="phone"         onclick="toggleMissing('phone')">📵 Telefonu</button>
+      <button class="filter-chip" data-field="email"         onclick="toggleMissing('email')">📧 Emaila</button>
+      <button class="filter-chip" data-field="meals"         onclick="toggleMissing('meals')">🍽 Wyżywienia</button>
+      <button class="filter-chip" data-field="allergies"     onclick="toggleMissing('allergies')">⚠️ Uczuleń</button>
+      <button class="filter-chip" data-field="contract_type" onclick="toggleMissing('contract_type')">📄 Umowy</button>
+      <button class="filter-chip" data-field="day_rate"      onclick="toggleMissing('day_rate')">💰 Stawki</button>
+      <button class="filter-chip" data-field="arrival_date"  onclick="toggleMissing('arrival_date')">🏨 Noclegów</button>
+      <button class="filter-chip" data-field="transport"     onclick="toggleMissing('transport')">🚗 Transportu</button>
+      <button id="clear-missing" onclick="clearMissing()" class="text-xs text-slate-600 hover:text-slate-400 ml-1 hidden">✕ wyczyść</button>
+    </div>
+    <div id="ekipa-table-wrapper" class="rounded-xl border border-slate-700" style="max-height:calc(100vh - 220px);overflow:auto">
+      <table id="crew-table" class="text-sm" style="min-width:2000px;width:100%">
+        <thead><tr id="crew-thead-row" class="bg-slate-800 text-slate-400 text-xs uppercase tracking-wide border-b border-slate-700"></tr></thead>
         <tbody id="crew-tbody">
           <tr><td colspan="19" class="text-center py-12 text-slate-500">Ładowanie…</td></tr>
         </tbody>
@@ -224,6 +275,66 @@ const CONFIG = {
   </div>
 </div>
 
+  <!-- TAB: NOCLEGI -->
+  <div id="content-noclegi" class="tab-content hidden p-4">
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-3">
+        <h2 class="text-base font-bold">🏨 Noclegi</h2>
+        <span id="noclegi-header-count" class="text-xs text-slate-500"></span>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="suggestRoomAssignment()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-medium px-3 py-2 rounded-lg transition" title="Auto-przypisz nieprzypisanych wg płci i pionu">🤖 Zasugeruj podział</button>
+        <button onclick="openEmailModal()" class="bg-blue-700 hover:bg-blue-600 text-white text-xs font-medium px-3 py-2 rounded-lg transition" title="Wyślij powiadomienia o zakwaterowaniu">📧 Wyślij maile</button>
+        <button id="btn-cal-toggle" onclick="toggleCalView()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-medium px-3 py-2 rounded-lg transition">📅 Kalendarz</button>
+        <button onclick="addHotel()" class="bg-amber-500 hover:bg-amber-400 text-slate-900 text-xs font-bold px-3 py-2 rounded-lg transition">+ Dodaj hotel</button>
+      </div>
+    </div>
+    <div id="noclegi-main-layout" class="noclegi-layout">
+      <!-- LEWA: lista osób -->
+      <div class="flex flex-col gap-2" style="min-height:0;overflow:hidden">
+        <div class="text-xs text-slate-400 uppercase font-semibold">Osoby <span id="noclegi-unassigned-count" class="text-slate-600"></span></div>
+        <input id="noclegi-search" type="text" placeholder="🔍 Szukaj..." oninput="renderNocegiPeople()" class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400">
+        <div id="noclegi-people" class="overflow-y-auto flex-1 space-y-1.5 pr-1" style="min-height:0"></div>
+      </div>
+      <!-- PRAWA: hotele -->
+      <div id="noclegi-hotels" class="overflow-y-auto space-y-6 pr-1"></div>
+    </div>
+    <!-- WIDOK KALENDARZA (Gantt) -->
+    <div id="noclegi-calendar" class="hidden" style="overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 150px)"></div>
+    <!-- Modal: nowy pokój -->
+    <div id="room-modal" class="hidden fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
+      <div class="bg-slate-800 border border-slate-600 rounded-2xl shadow-2xl w-full max-w-xs p-5">
+        <h3 class="font-semibold text-white mb-4">Dodaj pokój</h3>
+        <div class="space-y-3">
+          <div class="flex gap-2">
+            <div class="flex-1">
+              <label class="form-label">Nazwa/Prefix</label>
+              <input id="room-name-input" type="text" placeholder="np. 101, Pokój" class="form-input text-sm">
+            </div>
+            <div style="width:72px">
+              <label class="form-label">Ile pokoi</label>
+              <input id="room-count-input" type="number" min="1" max="50" value="1" class="form-input text-sm text-center">
+            </div>
+          </div>
+          <div>
+            <label class="form-label">Typ pokoju</label>
+            <div class="flex gap-2 flex-wrap mt-1">
+              <button onclick="selectRoomType(1)" id="rt-1" class="rt-btn px-3 py-1.5 rounded-lg text-xs font-semibold border border-blue-500 text-blue-400 hover:bg-blue-900/30">1-os</button>
+              <button onclick="selectRoomType(2)" id="rt-2" class="rt-btn px-3 py-1.5 rounded-lg text-xs font-semibold border border-green-500 text-green-400 hover:bg-green-900/30">2-os</button>
+              <button onclick="selectRoomType(3)" id="rt-3" class="rt-btn px-3 py-1.5 rounded-lg text-xs font-semibold border border-orange-500 text-orange-400 hover:bg-orange-900/30">3-os</button>
+              <button onclick="selectRoomType(4)" id="rt-4" class="rt-btn px-3 py-1.5 rounded-lg text-xs font-semibold border border-purple-500 text-purple-400 hover:bg-purple-900/30">4-os</button>
+            </div>
+          </div>
+        </div>
+        <div class="flex gap-2 mt-5">
+          <button onclick="confirmAddRoom()" class="flex-1 bg-amber-500 hover:bg-amber-400 text-slate-900 text-sm font-bold py-2 rounded-xl">Dodaj</button>
+          <button onclick="closeRoomModal()" class="px-4 bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm py-2 rounded-xl">Anuluj</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ══ MODAL: EDYCJA OSOBY ══ -->
 <div id="modal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4">
   <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-2xl max-h-[92vh] flex flex-col shadow-2xl">
@@ -235,9 +346,10 @@ const CONFIG = {
       <form id="edit-form" novalidate>
         <input type="hidden" id="f-id">
         <div class="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-3">Podstawowe</div>
-        <div class="field-row mb-3">
+        <div style="display:grid;grid-template-columns:72px 1fr 90px;gap:12px" class="mb-3">
           <div><label class="form-label">Lp.</label><input id="f-lp" type="number" min="1" class="form-input" placeholder="1"></div>
           <div><label class="form-label">Imię i Nazwisko *</label><input id="f-name" type="text" required class="form-input" placeholder="Jan Kowalski"></div>
+          <div><label class="form-label">Płeć</label><select id="f-gender" class="form-input"><option value="">—</option><option value="M">M (mężczyzna)</option><option value="K">K (kobieta)</option></select></div>
         </div>
         <div class="field-row mb-4">
           <div><label class="form-label">Pozycja *</label><input id="f-position" type="text" required class="form-input" placeholder="DoP, Reżyser…"></div>
@@ -251,30 +363,57 @@ const CONFIG = {
         </div>
 
         <div class="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-3 mt-5">Logistyka</div>
-        <div class="mb-3">
-          <label class="form-label">Wyżywienie</label>
-          <input id="f-meals" type="text" class="form-input mb-2" placeholder="Mięso, Wege…">
-          <div class="flex gap-1.5 flex-wrap">
-            <button type="button" class="meals-chip" onclick="appendMeal('Mięso')">Mięso</button>
-            <button type="button" class="meals-chip" onclick="appendMeal('Wege')">Wege</button>
-            <button type="button" class="meals-chip" onclick="appendMeal('Bezglutenowe')">Bezglutenowe</button>
-            <button type="button" class="meals-chip" onclick="appendMeal('Bez mleka')">Bez mleka</button>
-            <button type="button" class="meals-chip" onclick="appendMeal('Nie dotyczy')">Nie dotyczy</button>
-            <button type="button" class="meals-chip" onclick="appendMeal('Dopytać')">Dopytać</button>
+        <div class="field-row mb-3">
+          <div>
+            <label class="form-label">Wyżywienie</label>
+            <select id="f-meals" class="form-input mb-1" onchange="toggleMealsOther()">
+              <option value="">— wybierz —</option>
+              <option value="Mięso">🥩 Mięso</option>
+              <option value="Wege">🥗 Wege</option>
+              <option value="Wegan">🌱 Wegan</option>
+              <option value="_inne">Inne…</option>
+            </select>
+            <input id="f-meals-other" type="text" class="form-input hidden" placeholder="Wpisz preferencje…">
+          </div>
+          <div>
+            <label class="form-label">Uczulenia</label>
+            <input id="f-allergies" type="text" class="form-input mb-1" placeholder="Brak / Orzechy…">
+            <div class="flex gap-1 flex-wrap">
+              <button type="button" class="meals-chip" onclick="appendAllergy('Brak')">Brak</button>
+              <button type="button" class="meals-chip" onclick="appendAllergy('Gluten')">Gluten</button>
+              <button type="button" class="meals-chip" onclick="appendAllergy('Orzechy')">Orzechy</button>
+              <button type="button" class="meals-chip" onclick="appendAllergy('Owoce morza')">Owoce morza</button>
+              <button type="button" class="meals-chip" onclick="appendAllergy('Nabiał')">Nabiał</button>
+              <button type="button" class="meals-chip" onclick="appendAllergy('Jaja')">Jaja</button>
+              <button type="button" class="meals-chip" onclick="appendAllergy('Soja')">Soja</button>
+            </div>
           </div>
         </div>
         <div class="field-row mb-3">
-          <div><label class="form-label">Uczulenia</label><input id="f-allergies" type="text" class="form-input" placeholder="Orzechy…"></div>
-          <div><label class="form-label">Miasto</label><input id="f-city" type="text" class="form-input" placeholder="Warszawa"></div>
-        </div>
-        <div class="field-row mb-4">
           <div>
             <label class="form-label">Transport</label>
             <select id="f-transport" class="form-input">
-              <option value="">— wybierz —</option><option>Własny</option><option>Potrzebny</option><option>Nie dotyczy</option>
+              <option value="">— wybierz —</option>
+              <option>Własny</option><option>Potrzebny</option><option>Nie dotyczy</option>
+              <option>Produkcyjny</option><option>Inne</option>
             </select>
           </div>
-          <div><label class="form-label">Język poza ojczystym</label><input id="f-language" type="text" class="form-input" placeholder="Angielski…"></div>
+          <div><label class="form-label">Miasto</label><input id="f-city" type="text" class="form-input" placeholder="Warszawa"></div>
+        </div>
+        <div class="mb-4">
+          <label class="form-label">Języki (poza polskim — opcjonalne)</label>
+          <div id="f-lang-chips" class="flex gap-1.5 flex-wrap mt-1">
+            <span class="lang-chip" data-lang="Angielski" onclick="toggleLang(this)">EN</span>
+            <span class="lang-chip" data-lang="Hiszpański" onclick="toggleLang(this)">ES</span>
+            <span class="lang-chip" data-lang="Niemiecki" onclick="toggleLang(this)">DE</span>
+            <span class="lang-chip" data-lang="Ukraiński" onclick="toggleLang(this)">UA</span>
+            <span class="lang-chip" data-lang="Rosyjski" onclick="toggleLang(this)">RU</span>
+            <span class="lang-chip" data-lang="Białoruski" onclick="toggleLang(this)">BY</span>
+            <span class="lang-chip" data-lang="Czeski" onclick="toggleLang(this)">CZ</span>
+            <span class="lang-chip" data-lang="Słowacki" onclick="toggleLang(this)">SK</span>
+            <span class="lang-chip" data-lang="Włoski" onclick="toggleLang(this)">IT</span>
+            <span class="lang-chip" data-lang="Francuski" onclick="toggleLang(this)">FR</span>
+          </div>
         </div>
 
         <div class="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-3 mt-5">Umowa i Stawki</div>
@@ -287,7 +426,13 @@ const CONFIG = {
           </select>
         </div>
         <div class="field-row mb-3">
-          <div><label class="form-label">Stawka za dzień netto (zł)</label><input id="f-day-rate" type="number" min="0" class="form-input" placeholder="0"></div>
+          <div>
+            <label class="form-label">Stawka za dzień (zł)</label>
+            <div class="flex gap-1">
+              <input id="f-day-rate" type="number" min="0" class="form-input flex-1" placeholder="0">
+              <select id="f-day-rate-type" class="form-input" style="width:78px"><option value="netto">netto</option><option value="brutto">brutto</option></select>
+            </div>
+          </div>
           <div>
             <label class="form-label">Status stawki za dzień</label>
             <select id="f-day-rate-status" class="form-input">
@@ -296,7 +441,13 @@ const CONFIG = {
           </div>
         </div>
         <div class="field-row mb-3">
-          <div><label class="form-label">Stawka za sprzęt netto (zł)</label><input id="f-equip-rate" type="number" min="0" class="form-input" placeholder="0"></div>
+          <div>
+            <label class="form-label">Stawka za sprzęt (zł)</label>
+            <div class="flex gap-1">
+              <input id="f-equip-rate" type="number" min="0" class="form-input flex-1" placeholder="0">
+              <select id="f-equip-rate-type" class="form-input" style="width:78px"><option value="netto">netto</option><option value="brutto">brutto</option></select>
+            </div>
+          </div>
           <div>
             <label class="form-label">Status stawki za sprzęt</label>
             <select id="f-equip-rate-status" class="form-input">
@@ -305,7 +456,13 @@ const CONFIG = {
           </div>
         </div>
         <div class="field-row mb-3">
-          <div><label class="form-label">Stawka za auto netto (zł)</label><input id="f-car-rate" type="number" min="0" class="form-input" placeholder="0"></div>
+          <div>
+            <label class="form-label">Stawka za auto (zł)</label>
+            <div class="flex gap-1">
+              <input id="f-car-rate" type="number" min="0" class="form-input flex-1" placeholder="0">
+              <select id="f-car-rate-type" class="form-input" style="width:78px"><option value="netto">netto</option><option value="brutto">brutto</option></select>
+            </div>
+          </div>
           <div>
             <label class="form-label">Status stawki za auto</label>
             <select id="f-car-rate-status" class="form-input">
@@ -314,7 +471,13 @@ const CONFIG = {
           </div>
         </div>
         <div class="field-row mb-4">
-          <div><label class="form-label">Zwrot za dojazd netto (zł)</label><input id="f-travel" type="number" min="0" class="form-input" placeholder="0"></div>
+          <div>
+            <label class="form-label">Zwrot za dojazd (zł)</label>
+            <div class="flex gap-1">
+              <input id="f-travel" type="number" min="0" class="form-input flex-1" placeholder="0">
+              <select id="f-travel-type" class="form-input" style="width:78px"><option value="netto">netto</option><option value="brutto">brutto</option></select>
+            </div>
+          </div>
           <div>
             <label class="form-label">Status zwrotu dojazd</label>
             <select id="f-travel-status" class="form-input">
@@ -366,6 +529,235 @@ let db, currentUser, isAdmin = false
 let currentProject = null
 let crew = [], projects = []
 let editingId = null
+let filterMissing = new Set()
+
+function toggleMissing(field) {
+  if (filterMissing.has(field)) filterMissing.delete(field)
+  else filterMissing.add(field)
+  document.querySelectorAll('.filter-chip').forEach(b => b.classList.toggle('active', filterMissing.has(b.dataset.field)))
+  document.getElementById('clear-missing').classList.toggle('hidden', filterMissing.size === 0)
+  renderTable()
+}
+function clearMissing() {
+  filterMissing.clear()
+  document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'))
+  document.getElementById('clear-missing').classList.add('hidden')
+  renderTable()
+}
+
+// ── COLUMN CONFIG ────────────────────────────────────
+const COLS = [
+  { key:'position',      label:'Pozycja',       w:144 },
+  { key:'phone',         label:'Telefon',        w:112 },
+  { key:'email',         label:'E-mail',         w:160 },
+  { key:'meals',         label:'Wyżywienie',     w:112 },
+  { key:'allergies',     label:'Uczulenia',      w:112 },
+  { key:'transport',     label:'Transport',      w:96  },
+  { key:'language',      label:'Język',          w:96  },
+  { key:'contract_type', label:'Typ umowy',      w:128 },
+  { key:'day_rate',      label:'Stawka/dzień',   w:144 },
+  { key:'equipment_rate',label:'Stawka/sprzęt', w:144 },
+  { key:'car_rate',      label:'Stawka/auto',    w:144 },
+  { key:'travel',        label:'Zwrot dojazd',   w:144 },
+  { key:'arrival_date',  label:'Przyjazd',       w:96  },
+  { key:'departure_date',label:'Wyjazd',         w:96  },
+  { key:'nights',        label:'Noclegi',        w:64  },
+  { key:'completion',    label:'%',              w:48  },
+]
+let frozenCols = (() => {
+  const stored = localStorage.getItem('frozenCols')
+  if (!stored) return ['completion']
+  const arr = JSON.parse(stored)
+  // migrate: add completion to frozen if not already there (one-time)
+  if (!localStorage.getItem('frozenCols_v2')) {
+    if (!arr.includes('completion')) arr.push('completion')
+    localStorage.setItem('frozenCols_v2','1')
+    localStorage.setItem('frozenCols',JSON.stringify(arr))
+  }
+  return arr
+})()
+let hiddenCols  = JSON.parse(localStorage.getItem('hiddenCols') ||'[]')
+
+function saveCols() {
+  localStorage.setItem('frozenCols', JSON.stringify(frozenCols))
+  localStorage.setItem('hiddenCols',  JSON.stringify(hiddenCols))
+}
+function toggleFreeze(key) {
+  frozenCols = frozenCols.includes(key) ? frozenCols.filter(k=>k!==key) : [...frozenCols, key]
+  saveCols(); renderThead(); renderTable(); initFrozenScroll()
+}
+function toggleHide(key) {
+  hiddenCols = hiddenCols.includes(key) ? hiddenCols.filter(k=>k!==key) : [...hiddenCols, key]
+  saveCols(); renderColPanel(); renderThead(); renderTable()
+}
+function resetCols() {
+  frozenCols = []; hiddenCols = []; saveCols()
+  renderColPanel(); renderThead(); renderTable()
+}
+function toggleColPanel() {
+  const p = document.getElementById('col-panel')
+  p.classList.toggle('hidden')
+  if (!p.classList.contains('hidden')) renderColPanel()
+}
+function renderColPanel() {
+  document.getElementById('col-panel-list').innerHTML = COLS.map(c => {
+    const hidden  = hiddenCols.includes(c.key)
+    const frozen  = frozenCols.includes(c.key)
+    return `<div class="flex items-center justify-between gap-2 py-1">
+      <label class="flex items-center gap-2 text-xs cursor-pointer ${hidden?'text-slate-600 line-through':'text-slate-300'}">
+        <input type="checkbox" ${hidden?'':'checked'} onchange="toggleHide('${c.key}')" class="accent-amber-400">
+        ${c.label}
+      </label>
+      <button onclick="toggleFreeze('${c.key}')" title="Zablokuj kolumnę" class="text-xs ${frozen?'text-amber-400':'text-slate-600'} hover:text-amber-400 transition">${frozen?'🔒':'📌'}</button>
+    </div>`
+  }).join('')
+}
+
+function getOrderedCols() {
+  const visible = COLS.filter(c => !hiddenCols.includes(c.key))
+  const frozen  = frozenCols.filter(k => visible.some(c=>c.key===k)).map(k=>visible.find(c=>c.key===k))
+  const rest    = visible.filter(c => !frozenCols.includes(c.key))
+  let leftPx = 32 + 176  // # col + name col; frozen user cols start here
+  return [
+    ...frozen.map(c => { const col={...c,frozen:true,left:leftPx}; leftPx+=c.w; return col }),
+    ...rest.map(c => ({...c,frozen:false}))
+  ]
+}
+
+function renderThead() {
+  const ordered = getOrderedCols()
+  let html = `
+    <th style="width:32px;left:0" class="sticky-th px-2 py-3 text-left">#</th>
+    <th style="width:176px;left:32px" class="sticky-th px-2 py-3 text-left">Imię i Nazwisko</th>`
+  ordered.forEach(col => {
+    const align = col.key === 'completion' ? 'text-center' : 'text-left'
+    if (col.frozen) {
+      html += `<th style="width:${col.w}px;left:${col.left}px" class="frozen-th sticky-shadow px-2 py-3 ${align}">
+        ${col.label}
+        <button class="lock-btn active" onclick="toggleFreeze('${col.key}')" title="Odblokuj">🔒</button>
+      </th>`
+    } else {
+      html += `<th style="width:${col.w}px;position:sticky;top:0;z-index:10;background:#1e293b;" class="px-2 py-3 ${align}">
+        ${col.label}
+        <button class="lock-btn" onclick="toggleFreeze('${col.key}')" title="Zablokuj">⊡</button>
+      </th>`
+    }
+  })
+  html += `<th style="width:32px" class="px-2 py-3"></th>`
+  document.getElementById('crew-thead-row').innerHTML = html
+}
+
+function renderCell(p, col) {
+  const ie = f => `onclick="event.stopPropagation();startInline(this,'${p.id}','${f}')"`
+  const sh  = col.frozen ? 'sticky-shadow' : ''
+  const frozenClass = col.frozen ? 'frozen-td' : ''
+  const frozenStyle = col.frozen ? `left:${col.left}px;` : ''
+  function td(cls, content, field, empty) {
+    const missClass = empty ? 'cell-missing' : ''
+    return `<td class="${frozenClass} ${sh} ${missClass} px-2 py-2 ${cls}" style="${frozenStyle}" ${field?ie(field):''}>${content}</td>`
+  }
+  const miss = v => v === null || v === undefined || v === ''
+  switch(col.key) {
+    case 'position':      return td('text-xs text-slate-300 whitespace-nowrap', esc(p.position), 'position', miss(p.position))
+    case 'phone':         return td('text-xs text-slate-200 whitespace-nowrap', esc(p.phone)||'', 'phone', miss(p.phone))
+    case 'email':         return td('text-xs text-slate-300', esc(p.email)||'', 'email', miss(p.email))
+    case 'meals':         return td('text-xs text-slate-200', esc(p.meals)||'', 'meals', miss(p.meals))
+    case 'allergies':     return td(`text-xs ${p.allergies?'text-orange-300':''}`, esc(p.allergies)||'', 'allergies', miss(p.allergies))
+    case 'transport':     return td('text-xs text-slate-200', esc(p.transport)||'', 'transport', miss(p.transport))
+    case 'language':      return td('text-xs text-slate-200', esc(p.language)||'', 'language', false)
+    case 'contract_type': return td('text-xs text-slate-200 whitespace-nowrap', esc(p.contract_type)||'', 'contract_type', miss(p.contract_type))
+    case 'day_rate':      return td('text-xs', rateCell(p,'day'), null, miss(p.day_rate))
+    case 'equipment_rate':return td('text-xs', rateCell(p,'equipment'), null, miss(p.equipment_rate))
+    case 'car_rate':      return td('text-xs', rateCell(p,'car'), null, miss(p.car_rate))
+    case 'travel':        return td('text-xs', rateCell(p,'travel'), null, miss(p.travel_reimbursement))
+    case 'arrival_date':  return td('text-xs text-slate-300 whitespace-nowrap', fmtDate(p.arrival_date)||'', 'arrival_date', miss(p.arrival_date))
+    case 'departure_date':return td('text-xs text-slate-300 whitespace-nowrap', fmtDate(p.departure_date)||'', 'departure_date', p.arrival_date && miss(p.departure_date))
+    case 'nights':        { const n=nightsCount(p.arrival_date,p.departure_date); return td('text-xs text-center text-slate-300', n!==null?n:'') }
+    case 'completion':    return td('text-center', completionPill(completion(p)))
+    default: return '<td></td>'
+  }
+}
+
+// ── INLINE EDIT ──────────────────────────────────────
+const INLINE_CFG = {
+  name:          { type:'text', placeholder:'Imię Nazwisko' },
+  notes:         { type:'text', placeholder:'Uwagi, np. TBD...' },
+  position:      { type:'text' },
+  phone:         { type:'text', placeholder:'+48 600 000 000' },
+  email:         { type:'email' },
+  meals:         { type:'select', opts:['','Mięso','Wege','Wegan','Inne'] },
+  allergies:     { type:'text' },
+  language:      { type:'text' },
+  transport:     { type:'select', opts:['','Własny','Potrzebny','Nie dotyczy','Produkcyjny','Inne'] },
+  contract_type: { type:'select', opts:['','UOD','Faktura VAT','Umowa Zlecenie','Umowa Zlecenie do 26 lat','Umowa o Pracę','Dopytać'] },
+  day_rate:      { type:'number' },
+  equipment_rate:{ type:'number' },
+  car_rate:      { type:'number' },
+  travel_reimbursement:{ type:'number' },
+  day_rate_status:      { type:'select', opts:['Do ustalenia','Niepotwierdzona','Potwierdzona'] },
+  equipment_rate_status:{ type:'select', opts:['Do ustalenia','Niepotwierdzona','Potwierdzona'] },
+  car_rate_status:      { type:'select', opts:['Do ustalenia','Niepotwierdzona','Potwierdzona'] },
+  travel_status:        { type:'select', opts:['Do ustalenia','Niepotwierdzona','Potwierdzona'] },
+  arrival_date:  { type:'date' },
+  departure_date:{ type:'date' },
+}
+
+function startInline(el, personId, field) {
+  if (el.querySelector('.inline-input')) return
+  const p = crew.find(c => c.id === personId)
+  if (!p) return
+  const cfg = INLINE_CFG[field]
+  if (!cfg) return
+
+  const oldVal = p[field] != null ? String(p[field]) : ''
+  const origHTML = el.innerHTML
+  let input
+
+  if (cfg.type === 'select') {
+    input = document.createElement('select')
+    input.className = 'inline-input'
+    cfg.opts.forEach(o => {
+      const opt = document.createElement('option')
+      opt.value = o; opt.textContent = o || '— wybierz —'
+      if (o === oldVal) opt.selected = true
+      input.appendChild(opt)
+    })
+  } else {
+    input = document.createElement('input')
+    input.type = cfg.type || 'text'
+    input.value = oldVal
+    input.placeholder = cfg.placeholder || ''
+    input.className = 'inline-input'
+  }
+
+  const cancel = () => { el.innerHTML = origHTML }
+  const commit = async () => {
+    const newVal = input.value.trim()
+    if (newVal === oldVal) { cancel(); return }
+    const parsed = cfg.type === 'number' ? parseRate(newVal) : (newVal||null)
+    const { error } = await db.from('crew_members').update({ [field]: parsed }).eq('id', personId)
+    if (error) { alert(error.message); cancel(); return }
+    const um = { user_email:currentUser.email, user_name:currentUser.user_metadata?.full_name||currentUser.email }
+    await db.from('audit_log').insert({ crew_member_id:personId, crew_member_name:p.name, field_name:field, old_value:oldVal, new_value:newVal, ...um })
+    await loadCrew()
+  }
+
+  input.addEventListener('blur', commit)
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); input.blur() }
+    if (e.key === 'Escape') { input.removeEventListener('blur', commit); cancel() }
+  })
+  if (cfg.type === 'select') {
+    input.removeEventListener('blur', commit)
+    input.addEventListener('blur', cancel)
+    input.addEventListener('change', async () => { await commit(); })
+  }
+
+  el.innerHTML = ''
+  el.appendChild(input)
+  input.focus()
+  if (input.select && cfg.type !== 'date') input.select()
+}
 
 // ── INIT ────────────────────────────────────────────
 async function init() {
@@ -381,8 +773,15 @@ async function init() {
     if (ev === 'SIGNED_OUT')    show('auth')
   })
 
-  document.getElementById('btn-login').onclick = () =>
-    db.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.href } })
+  document.getElementById('btn-login').onclick = async () => {
+    const errEl = document.getElementById('auth-error')
+    errEl.classList.add('hidden')
+    errEl.textContent = 'Łączenie z Google...'
+    errEl.classList.remove('hidden')
+    const { error } = await db.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.href } })
+    if (error) { errEl.textContent = 'Błąd: ' + error.message; }
+    else { errEl.textContent = 'Przekierowanie do Google...'; }
+  }
 }
 
 async function onSignedIn(user) {
@@ -557,9 +956,15 @@ async function loadCrew() {
     .eq('project_id', currentProject.id)
     .order('sort_order').order('lp')
   crew = data || []
+  const hidden = _crewHiddenSet()
+  crew.forEach(p => { p.hidden = hidden.has(p.id) })
+  renderThead()
   renderTable()
   renderStats()
   renderQuickStats()
+  initFrozenScroll()
+  // Re-run after paint to get accurate offsetWidth (fonts/images may shift layout)
+  requestAnimationFrame(() => requestAnimationFrame(recalcFrozenLeft))
 }
 
 async function loadLog() {
@@ -584,10 +989,10 @@ async function loadAccess() {
 
 // ── HELPERS ──────────────────────────────────────────
 function completion(p) {
-  let s = 2
-  if (p.phone) s++; if (p.email) s++; if (p.meals) s++
-  if (p.contract_type) s++; if (p.day_rate) s++; if (p.arrival_date) s++
-  return Math.round((s / 8) * 100)
+  let s = 2  // name + position
+  if (p.phone) s++; if (p.email) s++; if (p.meals) s++; if (p.allergies !== null && p.allergies !== undefined && p.allergies !== '') s++
+  if (p.contract_type) s++; if (p.day_rate) s++; if (p.arrival_date) s++; if (p.departure_date) s++
+  return Math.round((s / 10) * 100)
 }
 function completionPill(pct) {
   const c = pct===100?'pill-green':pct>=75?'pill-lime':pct>=50?'pill-yellow':pct>=25?'pill-orange':'pill-red'
@@ -612,6 +1017,7 @@ function deptEmoji(d) {
 }
 function fmtDate(d) { if (!d) return ''; return new Date(d).toLocaleDateString('pl-PL',{day:'2-digit',month:'2-digit'}) }
 function fmtMoney(n) { return n ? Number(n).toLocaleString('pl-PL')+' zł' : '' }
+function parseRate(v) { const s=String(v||'').trim(); if(s==='')return null; const n=parseFloat(s); return isNaN(n)?null:Math.max(0,n) }
 function nightsCount(a,d) { if (!a||!d) return null; const n=Math.round((new Date(d)-new Date(a))/86400000); return n>0?n:null }
 function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
 
@@ -628,6 +1034,7 @@ function renderTable() {
     if (cmp==='full' && pct<100) return false
     if (cmp==='partial' && (pct===0||pct===100)) return false
     if (cmp==='empty' && pct>25) return false
+    if (filterMissing.size > 0 && ![...filterMissing].every(f => !p[f])) return false
     return true
   })
 
@@ -635,39 +1042,50 @@ function renderTable() {
   if (!rows.length) { tbody.innerHTML=`<tr><td colspan="19" class="text-center py-10 text-slate-500">Brak wyników</td></tr>`; return }
   document.getElementById('row-count').textContent = `${rows.length} z ${crew.length} osób`
 
+  const ordered = getOrderedCols()
   tbody.innerHTML = rows.map(p => {
-    const pct=completion(p), d=dept(p.position), n=nightsCount(p.arrival_date,p.departure_date)
-    return `<tr class="crew-row border-b border-slate-800 ${pct<50?'missing-row':''}" onclick="openEdit('${p.id}')">
-      <td class="px-2 py-2 text-slate-500 text-xs sticky left-0 bg-slate-900 z-10">${p.lp||'·'}</td>
-      <td class="px-2 py-2 sticky left-8 bg-slate-900 z-10">
-        <div class="font-medium text-xs whitespace-nowrap">${esc(p.name)}${p.notes?` <span class="note-pill">${esc(p.notes)}</span>`:''}</div>
+    const pct = completion(p)
+    return `<tr class="crew-row border-b border-slate-800 ${pct===100?'complete-row':pct<50?'missing-row':''}" style="${p.hidden?'opacity:0.35;':''}${p.hidden?'filter:grayscale(1);':''}" oncontextmenu="event.preventDefault();event.stopPropagation();_crewCtxMenu(event,'${p.id}')">
+      <td class="px-2 py-2 text-slate-500 text-xs sticky-col">${p.lp||'·'}</td>
+      <td class="px-2 py-2 sticky-col-2">
+        <div class="font-medium text-xs whitespace-nowrap">
+          <span class="cursor-pointer hover:text-amber-300 transition" title="Kliknij, aby edytować" onclick="event.stopPropagation();startInline(this,'${p.id}','name')">${esc(p.name)}</span>
+          ${p.notes
+            ? ` <span class="note-pill cursor-pointer hover:opacity-75" title="Kliknij, aby edytować uwagi" onclick="event.stopPropagation();startInline(this,'${p.id}','notes')">${esc(p.notes)}</span>`
+            : ` <span class="text-slate-700 text-xs cursor-pointer hover:text-slate-500" title="Dodaj uwagi" onclick="event.stopPropagation();startInline(this,'${p.id}','notes')">+ uwagi</span>`
+          }
+        </div>
       </td>
-      <td class="px-2 py-2 text-xs text-slate-300 whitespace-nowrap">${deptEmoji(d)} ${esc(p.position)}</td>
-      <td class="px-2 py-2 text-xs ${p.phone?'text-slate-200':'text-slate-600'} whitespace-nowrap">${esc(p.phone)||'—'}</td>
-      <td class="px-2 py-2 text-xs ${p.email?'text-slate-300':'text-slate-600'} max-w-40 truncate">${esc(p.email)||'—'}</td>
-      <td class="px-2 py-2 text-xs ${p.meals?'text-slate-200':'text-slate-600'}">${esc(p.meals)||'—'}</td>
-      <td class="px-2 py-2 text-xs ${p.allergies?'text-orange-300':'text-slate-600'}">${esc(p.allergies)||'—'}</td>
-      <td class="px-2 py-2 text-xs ${p.transport?'text-slate-200':'text-slate-600'}">${esc(p.transport)||'—'}</td>
-      <td class="px-2 py-2 text-xs ${p.language?'text-slate-200':'text-slate-600'}">${esc(p.language)||'—'}</td>
-      <td class="px-2 py-2 text-xs ${p.contract_type?'text-slate-200':'text-slate-600'} whitespace-nowrap">${esc(p.contract_type)||'—'}</td>
-      <td class="px-2 py-2 text-xs">${rateCell(p.day_rate, p.day_rate_status)}</td>
-      <td class="px-2 py-2 text-xs">${rateCell(p.equipment_rate, p.equipment_rate_status)}</td>
-      <td class="px-2 py-2 text-xs">${rateCell(p.car_rate, p.car_rate_status)}</td>
-      <td class="px-2 py-2 text-xs">${rateCell(p.travel_reimbursement, p.travel_status)}</td>
-      <td class="px-2 py-2 text-xs text-slate-300 whitespace-nowrap">${fmtDate(p.arrival_date)||'—'}</td>
-      <td class="px-2 py-2 text-xs text-slate-300 whitespace-nowrap">${fmtDate(p.departure_date)||'—'}</td>
-      <td class="px-2 py-2 text-xs text-center text-slate-300">${n!==null?n:'—'}</td>
-      <td class="px-2 py-2 text-center">${completionPill(pct)}</td>
-      <td class="px-2 py-2 text-center"><button onclick="event.stopPropagation();openEdit('${p.id}')" class="text-slate-500 hover:text-amber-400 transition text-xs">✏️</button></td>
+      ${ordered.map(col => renderCell(p, col)).join('')}
+      <td class="px-2 py-2 text-center whitespace-nowrap">
+        <button onclick="event.stopPropagation();openEdit('${p.id}')" class="text-slate-500 hover:text-amber-400 transition text-xs mr-1">✏️</button>
+        <button onclick="event.stopPropagation();openEmailModal('${p.id}')" class="transition text-xs ${p.email?'text-slate-400 hover:text-blue-400':'text-slate-700 cursor-not-allowed'}" title="${p.email?'Wyślij wiadomość':'Brak emaila'}">✉️</button>
+      </td>
     </tr>`
   }).join('')
+  requestAnimationFrame(recalcFrozenLeft)
 }
 
-function rateCell(amount, status) {
-  const s = status || 'Do ustalenia'
-  const cls = s==='Potwierdzona'?'text-green-400':s==='Niepotwierdzona'?'text-orange-400':'text-slate-600'
-  const amt = amount ? `<div class="text-amber-300 font-medium">${fmtMoney(amount)}</div>` : ''
-  return `${amt}<div class="${cls} text-xs leading-tight">${s}</div>`
+function rateCell(p, type) {
+  const amtField = type==='travel' ? 'travel_reimbursement' : type+'_rate'
+  const stField  = type==='travel' ? 'travel_status' : type+'_rate_status'
+  const typeField= type==='travel' ? 'travel_type' : type+'_rate_type'
+  const amount = p[amtField], status = p[stField] || 'Do ustalenia'
+  const rateType = p[typeField] || 'netto'
+  const hasAmt = amount !== null && amount !== undefined && amount !== ''
+  const amtNum = hasAmt ? Number(amount) : null
+  const confirmedNoAmt = status === 'Potwierdzona' && !hasAmt
+  const cls = confirmedNoAmt ? 'text-orange-400' : status==='Potwierdzona'?'text-green-400':status==='Niepotwierdzona'?'text-orange-400':'text-slate-500'
+  let amtHtml
+  if (!hasAmt) {
+    amtHtml = `<div class="text-slate-600 text-xs cursor-pointer hover:text-slate-400" onclick="event.stopPropagation();startInline(this.closest('td'),'${p.id}','${amtField}')">+ kwota</div>`
+  } else if (amtNum === 0) {
+    amtHtml = `<div class="text-slate-500 text-xs cursor-pointer hover:text-slate-400" onclick="event.stopPropagation();startInline(this.closest('td'),'${p.id}','${amtField}')">0 zł</div>`
+  } else {
+    amtHtml = `<div class="text-amber-300 font-medium cursor-pointer hover:underline" onclick="event.stopPropagation();startInline(this.closest('td'),'${p.id}','${amtField}')">${Number(amtNum).toLocaleString('pl-PL')} zł <span class="text-slate-500 font-normal text-xs">${rateType}</span></div>`
+  }
+  const stHtml = `<div class="${cls} text-xs leading-tight cursor-pointer hover:underline" onclick="event.stopPropagation();startInline(this,'${p.id}','${stField}')">${status}</div>`
+  return amtHtml + stHtml
 }
 
 function renderQuickStats() {
@@ -688,8 +1106,8 @@ function sc(e,v,l,c='text-slate-200') {
 }
 
 function renderStats() {
-  const fields = ['phone','email','meals','contract_type','day_rate','arrival_date','departure_date']
-  const labels = {phone:'Telefon',email:'Email',meals:'Wyżywienie',contract_type:'Typ umowy',day_rate:'Stawka/dzień',arrival_date:'Data przyjazdu',departure_date:'Data wyjazdu'}
+  const fields = ['phone','email','meals','allergies','contract_type','day_rate','arrival_date','departure_date']
+  const labels = {phone:'Telefon',email:'Email',meals:'Wyżywienie',allergies:'Uczulenia',contract_type:'Typ umowy',day_rate:'Stawka/dzień',arrival_date:'Data przyjazdu',departure_date:'Data wyjazdu'}
   const avg = crew.length ? Math.round(crew.reduce((s,p)=>s+completion(p),0)/crew.length) : 0
   const depts = {}
   crew.forEach(p => { const d=dept(p.position); if(!depts[d])depts[d]=[]; depts[d].push(p) })
@@ -712,8 +1130,8 @@ function renderStats() {
   h += `<div><div class="text-xs font-semibold text-slate-400 uppercase mb-3">Do uzupełnienia</div><div class="space-y-1">`
   crew.filter(p=>completion(p)<100).sort((a,b)=>completion(a)-completion(b)).forEach(p => {
     const pct=completion(p), miss=[]
-    if(!p.phone)miss.push('tel'); if(!p.email)miss.push('email'); if(!p.meals)miss.push('wyżywienie')
-    if(!p.contract_type)miss.push('umowa'); if(!p.day_rate)miss.push('stawka'); if(!p.arrival_date)miss.push('przyjazd')
+    if(!p.phone)miss.push('tel'); if(!p.email)miss.push('email'); if(!p.meals)miss.push('wyżywienie'); if(p.allergies===null||p.allergies===undefined||p.allergies==='')miss.push('uczulenia')
+    if(!p.contract_type)miss.push('umowa'); if(!p.day_rate)miss.push('stawka'); if(!p.arrival_date)miss.push('przyjazd'); if(!p.departure_date)miss.push('wyjazd')
     h += `<div class="flex items-center gap-2 text-xs py-1 border-b border-slate-800">${completionPill(pct)}<span class="text-slate-300 font-medium min-w-40">${esc(p.name)}</span><span class="text-slate-500">${esc(p.position)}</span><span class="ml-auto text-orange-400">${miss.join(', ')}</span></div>`
   })
   h += `</div></div>`
@@ -784,23 +1202,41 @@ function openEdit(id) {
   document.getElementById('f-id').value        = p.id
   document.getElementById('f-lp').value        = p.lp||''
   document.getElementById('f-name').value      = p.name
+  document.getElementById('f-gender').value    = p.gender||''
   document.getElementById('f-position').value  = p.position
   document.getElementById('f-notes').value     = p.notes||''
   document.getElementById('f-phone').value     = p.phone||''
   document.getElementById('f-email').value     = p.email||''
-  document.getElementById('f-meals').value     = p.meals||''
+  // meals: select or custom
+  const mealsOpts = ['Mięso','Wege','Wegan']
+  const mv = p.meals||''
+  if (mealsOpts.includes(mv)) {
+    document.getElementById('f-meals').value = mv
+    document.getElementById('f-meals-other').classList.add('hidden')
+  } else if (mv) {
+    document.getElementById('f-meals').value = '_inne'
+    document.getElementById('f-meals-other').value = mv
+    document.getElementById('f-meals-other').classList.remove('hidden')
+  } else {
+    document.getElementById('f-meals').value = ''
+    document.getElementById('f-meals-other').classList.add('hidden')
+  }
   document.getElementById('f-allergies').value = p.allergies||''
   document.getElementById('f-city').value      = p.city||''
   document.getElementById('f-transport').value = p.transport||''
-  document.getElementById('f-language').value  = p.language||''
+  setLangValue(p.language||'')
   document.getElementById('f-contract').value  = p.contract_type||''
-  document.getElementById('f-day-rate').value         = p.day_rate||''
+  document.getElementById('f-day-rate').value         = p.day_rate!=null?p.day_rate:''
+  document.getElementById('f-day-rate-type').value    = p.day_rate_type||'netto'
   document.getElementById('f-day-rate-status').value  = p.day_rate_status||'Do ustalenia'
-  document.getElementById('f-equip-rate').value       = p.equipment_rate||''
+  document.getElementById('f-equip-rate').value       = p.equipment_rate!=null?p.equipment_rate:''
+  document.getElementById('f-equip-rate-type').value  = p.equipment_rate_type||'netto'
   document.getElementById('f-equip-rate-status').value= p.equipment_rate_status||'Do ustalenia'
-  document.getElementById('f-car-rate').value         = p.car_rate||''
+  document.getElementById('f-car-rate').value         = p.car_rate!=null?p.car_rate:''
+  document.getElementById('f-car-rate-type').value    = p.car_rate_type||'netto'
   document.getElementById('f-car-rate-status').value  = p.car_rate_status||'Do ustalenia'
-  document.getElementById('f-travel').value           = p.travel_reimbursement||''
+  document.getElementById('f-travel').value           = p.travel_reimbursement!=null?p.travel_reimbursement:''
+  document.getElementById('f-travel-type').value      = p.travel_type||'netto'
   document.getElementById('f-travel-status').value    = p.travel_status||'Do ustalenia'
   document.getElementById('f-arrival').value   = p.arrival_date||''
   document.getElementById('f-departure').value = p.departure_date||''
@@ -817,9 +1253,35 @@ function closeModal() {
   document.getElementById('modal').classList.add('hidden')
   document.getElementById('modal').classList.remove('flex')
 }
-function appendMeal(v) {
-  const el=document.getElementById('f-meals'), c=el.value.trim()
-  el.value = c ? (c.endsWith(',')?c+' '+v:c+', '+v) : v
+function toggleMealsOther() {
+  const v = document.getElementById('f-meals').value
+  document.getElementById('f-meals-other').classList.toggle('hidden', v !== '_inne')
+  if (v !== '_inne') document.getElementById('f-meals-other').value = ''
+}
+function getMealsValue() {
+  const v = document.getElementById('f-meals').value
+  if (v === '_inne') return document.getElementById('f-meals-other').value.trim() || null
+  return v || null
+}
+function appendAllergy(v) {
+  const el = document.getElementById('f-allergies')
+  if (v === 'Brak') { el.value = 'Brak'; return }
+  const c = el.value.trim()
+  if (c === 'Brak') { el.value = v; return }
+  el.value = c ? (c.endsWith(',') ? c+' '+v : c+', '+v) : v
+}
+function toggleLang(el) { el.classList.toggle('active') }
+function getLangValue() {
+  const active = [...document.querySelectorAll('#f-lang-chips .lang-chip.active')].map(e => e.dataset.lang)
+  return active.length ? active.join(', ') : null
+}
+function setLangValue(val) {
+  document.querySelectorAll('#f-lang-chips .lang-chip').forEach(e => e.classList.remove('active'))
+  if (!val) return
+  val.split(',').map(s => s.trim()).forEach(lang => {
+    const el = document.querySelector(`#f-lang-chips .lang-chip[data-lang="${lang}"]`)
+    if (el) el.classList.add('active')
+  })
 }
 function updateNights() {
   const n = nightsCount(document.getElementById('f-arrival').value, document.getElementById('f-departure').value)
@@ -837,23 +1299,28 @@ async function saveForm() {
     project_id:           currentProject.id,
     lp:                   parseInt(document.getElementById('f-lp').value)||null,
     name:                 nameEl.value.trim(),
+    gender:               document.getElementById('f-gender').value||null,
     position:             posEl.value.trim(),
     notes:                document.getElementById('f-notes').value.trim()||null,
     phone:                document.getElementById('f-phone').value.trim()||null,
     email:                document.getElementById('f-email').value.trim()||null,
-    meals:                document.getElementById('f-meals').value.trim()||null,
+    meals:                getMealsValue(),
     allergies:            document.getElementById('f-allergies').value.trim()||null,
     city:                 document.getElementById('f-city').value.trim()||null,
     transport:            document.getElementById('f-transport').value||null,
-    language:             document.getElementById('f-language').value.trim()||null,
+    language:             getLangValue(),
     contract_type:        document.getElementById('f-contract').value||null,
-    day_rate:                parseFloat(document.getElementById('f-day-rate').value)||null,
+    day_rate:                parseRate(document.getElementById('f-day-rate').value),
+    day_rate_type:           document.getElementById('f-day-rate-type').value,
     day_rate_status:         document.getElementById('f-day-rate-status').value,
-    equipment_rate:          parseFloat(document.getElementById('f-equip-rate').value)||null,
+    equipment_rate:          parseRate(document.getElementById('f-equip-rate').value),
+    equipment_rate_type:     document.getElementById('f-equip-rate-type').value,
     equipment_rate_status:   document.getElementById('f-equip-rate-status').value,
-    car_rate:                parseFloat(document.getElementById('f-car-rate').value)||null,
+    car_rate:                parseRate(document.getElementById('f-car-rate').value),
+    car_rate_type:           document.getElementById('f-car-rate-type').value,
     car_rate_status:         document.getElementById('f-car-rate-status').value,
-    travel_reimbursement:    parseFloat(document.getElementById('f-travel').value)||null,
+    travel_reimbursement:    parseRate(document.getElementById('f-travel').value),
+    travel_type:             document.getElementById('f-travel-type').value,
     travel_status:           document.getElementById('f-travel-status').value,
     arrival_date:         document.getElementById('f-arrival').value||null,
     departure_date:       document.getElementById('f-departure').value||null,
@@ -896,6 +1363,7 @@ function switchTab(name) {
   document.getElementById('tab-'+name).classList.add('tab-active')
   if (name==='log') loadLog()
   if (name==='dostep') loadAccess()
+  if (name==='noclegi') loadNoclegi()
 }
 
 function show(s) {
@@ -913,11 +1381,1511 @@ function exportCSV() {
   a.click()
 }
 
+// ── EMAIL MODAL ──────────────────────────────────────
+const MISSING_LABELS = {
+  phone: 'Numer telefonu', email: 'Adres e-mail', meals: 'Preferencje żywieniowe',
+  contract_type: 'Typ umowy', day_rate: 'Stawka dzienna', arrival_date: 'Data przyjazdu',
+  departure_date: 'Data wyjazdu', transport: 'Transport', allergies: 'Alergie', language: 'Język'
+}
+
+function openEmailModal(id) {
+  const p = crew.find(c => c.id === id)
+  if (!p || !p.email) return
+  const missing = Object.keys(MISSING_LABELS).filter(k => !p[k])
+  const modal = document.getElementById('email-modal')
+  document.getElementById('email-modal-name').textContent = p.name
+  document.getElementById('email-modal-to').textContent = p.email
+  const list = document.getElementById('email-missing-list')
+  list.innerHTML = missing.map(k => `
+    <label class="flex items-center gap-2 cursor-pointer text-sm text-slate-300">
+      <input type="checkbox" class="email-missing-cb accent-amber-400" value="${MISSING_LABELS[k]}" checked>
+      ${MISSING_LABELS[k]}
+    </label>`).join('')
+  if (!missing.length) list.innerHTML = '<p class="text-sm text-green-400">Wszystkie pola uzupełnione ✓</p>'
+  document.getElementById('email-custom-msg').value = ''
+  modal.classList.remove('hidden')
+  modal.classList.add('flex')
+  window._emailPerson = p
+}
+
+function closeEmailModal() {
+  const modal = document.getElementById('email-modal')
+  modal.classList.add('hidden')
+  modal.classList.remove('flex')
+}
+
+function buildEmailContent() {
+  const p = window._emailPerson
+  const checked = [...document.querySelectorAll('.email-missing-cb:checked')].map(cb => `• ${cb.value}`)
+  const custom = document.getElementById('email-custom-msg').value.trim()
+  let body = `Cześć ${p.name.split(' ')[0]},\n\nprodukcja zbliża się wielkimi krokami i potrzebuję jeszcze kilku informacji od Ciebie`
+  if (checked.length) body += `:\n\n${checked.join('\n')}`
+  else body += '.'
+  if (custom) body += `\n\n${custom}`
+  body += `\n\nDziękuję i do zobaczenia na planie!\nJakub`
+  return body
+}
+
+function sendEmailMail() {
+  const p = window._emailPerson
+  const body = buildEmailContent()
+  const subject = encodeURIComponent(`Brakujące informacje — produkcja`)
+  const bodyEnc = encodeURIComponent(body)
+  window.open(`mailto:${p.email}?subject=${subject}&body=${bodyEnc}`)
+}
+
+function copyEmailMsg() {
+  const body = buildEmailContent()
+  navigator.clipboard.writeText(body).then(() => {
+    const btn = document.getElementById('email-copy-btn')
+    btn.textContent = '✓ Skopiowano'
+    btn.classList.add('text-green-400')
+    setTimeout(() => { btn.textContent = '📋 Kopiuj wiadomość'; btn.classList.remove('text-green-400') }, 2000)
+  })
+}
+
+// ── NOCLEGI ──────────────────────────────────────────
+let accommodations = { hotels: [] }
+let selectedPersonId = null
+let draggedPersonId = null
+let draggedGuestSource = null
+let draggedRoomId = null
+let draggedRoomHotelId = null
+let roomModalHotelId = null
+let roomModalType = 2
+
+// ── CALENDAR / GANTT VIEW ────────────────────────────
+let _calVisible = false
+let _calDragStart = null  // {hotelId, roomId, dayIndex}
+
+function toggleCalView() {
+  _calVisible = !_calVisible
+  document.getElementById('noclegi-main-layout').classList.toggle('hidden', _calVisible)
+  document.getElementById('noclegi-calendar').classList.toggle('hidden', !_calVisible)
+  const btn = document.getElementById('btn-cal-toggle')
+  if (btn) { btn.style.background = _calVisible ? '#1d4ed8' : ''; btn.style.color = _calVisible ? '#fff' : '' }
+  if (_calVisible) renderCalendar()
+}
+
+function calDayStr(d) {
+  // Use local date parts (not toISOString which returns UTC — causes -1 day offset in CEST/CET)
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0')
+}
+
+function migrateRoomPeriods(room) {
+  if (!room.periods) {
+    if (room.check_in || room.check_out) {
+      room.periods = [{ id: crypto.randomUUID(), check_in: room.check_in||null, check_out: room.check_out||null }]
+    } else {
+      room.periods = []
+    }
+    delete room.check_in; delete room.check_out
+  }
+  return room
+}
+
+function calRoomPeriods(room) {
+  // Returns { periods: [{id,check_in,check_out}], fromGuests }
+  const explicit = (room.periods||[]).filter(p => p.check_in && p.check_out)
+  if (explicit.length > 0) return { periods: explicit, fromGuests: false }
+  // Fallback: single range from guest arrival/departure dates
+  const gArrivals   = room.guests.map(gid => { const p = crew.find(c=>c.id===gid); return p?.arrival_date||null }).filter(Boolean).sort()
+  const gDepartures = room.guests.map(gid => { const p = crew.find(c=>c.id===gid); return p?.departure_date||null }).filter(Boolean).sort()
+  if (gArrivals.length && gDepartures.length) {
+    return { periods: [{ id:'__guests', check_in: gArrivals[0], check_out: gDepartures[gDepartures.length-1] }], fromGuests: true }
+  }
+  return { periods: [], fromGuests: false }
+}
+
+function _calCtxMenu(x, y, hotelId, roomId, periodId) {
+  document.getElementById('_cal_ctx')?.remove()
+  const hotel = accommodations.hotels.find(h => h.id === hotelId)
+  const room  = hotel?.rooms.find(r => r.id === roomId)
+  const period = (room?.periods||[]).find(p => p.id === periodId)
+  if (!room) return
+
+  const el = document.createElement('div')
+  el.id = '_cal_ctx'
+  el.style.cssText = `position:fixed;left:${x}px;top:${y}px;z-index:500;background:#1e293b;border:1px solid #334155;border-radius:10px;padding:6px;min-width:160px;box-shadow:0 8px 32px rgba(0,0,0,.7);font-size:12px`
+  el.innerHTML = `
+    <div style="color:#64748b;font-size:10px;padding:2px 8px 6px;border-bottom:1px solid #334155;margin-bottom:4px">
+      ${esc(room.name)}${period ? ` · ${period.check_in||'?'} – ${period.check_out||'?'}` : ''}
+    </div>
+    <button onclick="_calCtxEdit('${hotelId}','${roomId}','${periodId}')" style="display:block;width:100%;text-align:left;background:none;border:none;color:#f1f5f9;padding:6px 8px;border-radius:6px;cursor:pointer" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='none'">✏️ Zmień datę</button>
+    <button onclick="_calCtxDelete('${hotelId}','${roomId}','${periodId}')" style="display:block;width:100%;text-align:left;background:none;border:none;color:#f87171;padding:6px 8px;border-radius:6px;cursor:pointer" onmouseover="this.style.background='#2d0909'" onmouseout="this.style.background='none'">🗑 Usuń termin</button>
+  `
+  document.body.appendChild(el)
+  // close on outside click
+  setTimeout(() => document.addEventListener('click', () => el.remove(), { once: true }), 10)
+}
+
+function _calCtxDelete(hotelId, roomId, periodId) {
+  document.getElementById('_cal_ctx')?.remove()
+  const hotel = accommodations.hotels.find(h => h.id === hotelId)
+  const room  = hotel?.rooms.find(r => r.id === roomId)
+  if (!room) return
+  _pushUndo()
+  if (periodId && periodId !== '__guests') {
+    room.periods = (room.periods||[]).filter(p => p.id !== periodId)
+  } else {
+    room.periods = []
+  }
+  saveAccommodations(); renderCalendar(); renderNocegiHotels()
+}
+
+function _calCtxEdit(hotelId, roomId, periodId) {
+  document.getElementById('_cal_ctx')?.remove()
+  const hotel = accommodations.hotels.find(h => h.id === hotelId)
+  const room  = hotel?.rooms.find(r => r.id === roomId)
+  const period = (room?.periods||[]).find(p => p.id === periodId)
+  if (!room) return
+  document.getElementById('_cal_edit_overlay')?.remove()
+  const el = document.createElement('div')
+  el.id = '_cal_edit_overlay'
+  el.style.cssText = 'position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:16px'
+  el.innerHTML = `<div style="background:#1e293b;border:1px solid #334155;border-radius:14px;padding:18px;min-width:280px;box-shadow:0 20px 60px rgba(0,0,0,.8)">
+    <p style="font-size:13px;font-weight:700;margin-bottom:12px;color:#f1f5f9">✏️ Zmień daty — ${esc(room.name)}</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+      <div>
+        <p style="font-size:10px;color:#64748b;margin-bottom:3px">Od</p>
+        <input id="_cale_in" type="date" value="${period?.check_in||''}" style="width:100%;background:#0f172a;border:1px solid #334155;border-radius:7px;padding:6px 8px;color:#f1f5f9;font-size:12px;outline:none;box-sizing:border-box">
+      </div>
+      <div>
+        <p style="font-size:10px;color:#64748b;margin-bottom:3px">Do</p>
+        <input id="_cale_out" type="date" value="${period?.check_out||''}" style="width:100%;background:#0f172a;border:1px solid #334155;border-radius:7px;padding:6px 8px;color:#f1f5f9;font-size:12px;outline:none;box-sizing:border-box">
+      </div>
+    </div>
+    <div style="display:flex;gap:6px">
+      <button onclick="_calCtxEditSave('${hotelId}','${roomId}','${periodId}')" style="flex:1;background:#f59e0b;color:#0f172a;font-weight:700;padding:8px;border-radius:8px;border:none;cursor:pointer;font-size:12px">Zapisz</button>
+      <button onclick="document.getElementById('_cal_edit_overlay').remove()" style="padding:8px 12px;background:#334155;color:#f1f5f9;border-radius:8px;border:none;cursor:pointer;font-size:12px">Anuluj</button>
+    </div>
+  </div>`
+  document.body.appendChild(el)
+  el.addEventListener('click', e => { if (e.target === el) el.remove() })
+  setTimeout(() => document.getElementById('_cale_in')?.focus(), 50)
+}
+
+function _calCtxEditSave(hotelId, roomId, periodId) {
+  const hotel = accommodations.hotels.find(h => h.id === hotelId)
+  const room  = hotel?.rooms.find(r => r.id === roomId)
+  const period = (room?.periods||[]).find(p => p.id === periodId)
+  if (!period) return
+  _pushUndo()
+  period.check_in  = document.getElementById('_cale_in')?.value  || null
+  period.check_out = document.getElementById('_cale_out')?.value || null
+  document.getElementById('_cal_edit_overlay')?.remove()
+  saveAccommodations(); renderCalendar(); renderNocegiHotels()
+}
+
+function renderCalendar() {
+  const MS = 86400000
+  const months = ['sty','lut','mar','kwi','maj','cze','lip','sie','wrz','paź','lis','gru']
+  const dayN   = ['nd','pn','wt','śr','cz','pt','sb']
+
+  let stamps = []
+  accommodations.hotels.forEach(h => h.rooms.forEach(r => {
+    const { periods } = calRoomPeriods(r)
+    periods.forEach(p => {
+      if (p.check_in)  stamps.push(new Date(p.check_in  + 'T00:00:00').getTime())
+      if (p.check_out) stamps.push(new Date(p.check_out + 'T00:00:00').getTime())
+    })
+  }))
+  crew.forEach(p => {
+    if (p.arrival_date)   stamps.push(new Date(p.arrival_date   + 'T00:00:00').getTime())
+    if (p.departure_date) stamps.push(new Date(p.departure_date + 'T00:00:00').getTime())
+  })
+  const now = new Date(); now.setHours(0,0,0,0)
+  let minD = stamps.length ? new Date(Math.min(...stamps)) : new Date(now)
+  let maxD = stamps.length ? new Date(Math.max(...stamps)) : new Date(now.getTime() + 13 * MS)
+  minD = new Date(minD.getTime() - 2 * MS)
+  maxD = new Date(maxD.getTime() + 2 * MS)
+  if ((maxD - minD) < 13 * MS) maxD = new Date(minD.getTime() + 13 * MS)
+
+  const days = []
+  for (let d = new Date(minD); d <= maxD; d = new Date(d.getTime() + MS)) days.push(new Date(d))
+  const nDays = days.length
+  const todayStr = calDayStr(now)
+
+  const allRooms = []
+  accommodations.hotels.forEach(h => h.rooms.forEach(r => allRooms.push({ hotel: h, room: r })))
+
+  if (!allRooms.length) {
+    document.getElementById('noclegi-calendar').innerHTML = '<div style="color:#64748b;font-size:13px;text-align:center;padding:48px 0">Brak pokoi — wróć do widoku grid i dodaj hotel i pokoje.</div>'
+    return
+  }
+
+  const LABEL_W = 200
+  const DAY_W   = 38
+  const ROW_H   = 52
+  const HDR_H   = 48
+  const typeColors = {1:'#3b82f6',2:'#22c55e',3:'#f97316',4:'#a855f7'}
+
+  // Header
+  let hdrCells = `<div class="cal-header-label" style="width:${LABEL_W}px;height:${HDR_H}px;font-size:10px;color:#475569;display:flex;align-items:flex-end;padding:4px 10px">Pokój / Goście</div>`
+  days.forEach((d, i) => {
+    const ds = calDayStr(d)
+    const isToday = ds === todayStr
+    const isWeekend = d.getDay() === 0 || d.getDay() === 6
+    const newMonth = i === 0 || d.getDate() === 1
+    hdrCells += `<div class="cal-day-hdr ${isToday?'cal-today':''} ${isWeekend?'cal-weekend':''}" style="width:${DAY_W}px;height:${HDR_H}px">
+      ${newMonth ? `<div style="font-size:9px;color:#fbbf24;font-weight:700;margin-bottom:1px">${months[d.getMonth()]}</div>` : '<div style="height:13px"></div>'}
+      <div style="font-size:12px;font-weight:${isToday?'800':'500'};color:${isToday?'#fbbf24':'#94a3b8'}">${d.getDate()}</div>
+      <div style="font-size:9px;color:${isWeekend?'#ef4444':'#475569'}">${dayN[d.getDay()]}</div>
+    </div>`
+  })
+
+  let prevHotelId = null
+  let bodyRows = ''
+
+  allRooms.forEach(({ hotel, room }) => {
+    if (hotel.id !== prevHotelId) {
+      prevHotelId = hotel.id
+      const hInfo = [hotel.phone, hotel.address].filter(Boolean).join(' · ')
+      bodyRows += `<div style="display:flex;min-width:${LABEL_W + nDays * DAY_W}px">
+        <div class="cal-hotel-hdr" style="width:${LABEL_W}px;min-width:${LABEL_W}px">🏨 ${esc(hotel.name)}${hInfo?`<span style="font-weight:400;font-size:10px;color:#64748b;margin-left:6px">${esc(hInfo)}</span>`:''}
+          ${hotel.maps_url ? `<a href="${esc(hotel.maps_url)}" target="_blank" style="margin-left:6px;font-size:10px;color:#3b82f6;text-decoration:none">📍 Maps</a>` : ''}
+        </div>
+        <div style="flex:1;background:#172033;border-bottom:1px solid #334155"></div>
+      </div>`
+    }
+
+    const guests = room.guests.map(gid => crew.find(c => c.id === gid)).filter(Boolean)
+    const { periods: roomPeriods, fromGuests } = calRoomPeriods(room)
+    const col = typeColors[room.type] || '#64748b'
+
+    // Left label: room name + guest list
+    const guestLines = guests.map(p => {
+      const gBadge = p.gender === 'M' ? '<span style="color:#60a5fa">♂</span>' : p.gender === 'K' ? '<span style="color:#e879f9">♀</span>' : ''
+      return `<div style="font-size:10px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${gBadge} ${esc(p.name)}</div>`
+    }).join('')
+
+    // Dynamic row height: grow to fit all guests
+    const rowH = Math.max(ROW_H, 26 + guests.length * 15)
+
+    const noGuests = guests.length === 0
+    const label = `<div class="cal-label" style="width:${LABEL_W}px;min-width:${LABEL_W}px;height:${rowH}px;flex-direction:column;align-items:flex-start;gap:1px;padding:5px 8px;border-right:2px solid ${col}40">
+      <div style="font-size:11px;font-weight:700;color:#e2e8f0;white-space:nowrap">${esc(room.name)} <span style="color:${col};font-size:10px">${room.guests.length}/${room.type}</span></div>
+      ${noGuests ? '<div style="font-size:10px;color:#334155;font-style:italic">— brak gości —</div>' : guestLines}
+    </div>`
+
+    // Day cells — mark cell booked if it falls in ANY period
+    let dayCells = ''
+    days.forEach((d, di) => {
+      const ds = calDayStr(d)
+      const isToday = ds === todayStr
+      const isWeekend = d.getDay() === 0 || d.getDay() === 6
+      const booked = roomPeriods.some(p => ds >= p.check_in && ds < p.check_out)
+      const isSel = _calDragStart?.hotelId === hotel.id && _calDragStart?.roomId === room.id && _calDragStart?.cells?.includes(di)
+      dayCells += `<div class="cal-cell${isToday?' cal-today':''}${isWeekend?' cal-weekend':''}${booked?' cal-booked':''}${isSel?' cal-sel':''}"
+        style="width:${DAY_W}px;height:${rowH}px"
+        data-hotel="${hotel.id}" data-room="${room.id}" data-day="${ds}" data-di="${di}"></div>`
+    })
+
+    // Bar overlays — one bar per period
+    let barHtml = ''
+    const gNames = guests.map(p => p.name).join(', ')
+    const dashes = fromGuests ? 'dashed' : 'solid'
+    roomPeriods.forEach(period => {
+      let barStartX = -1, barEndX = -1
+      days.forEach((d, di) => {
+        const ds = calDayStr(d)
+        if (ds >= period.check_in && ds < period.check_out) {
+          if (barStartX < 0) barStartX = di
+          barEndX = di
+        }
+      })
+      if (barStartX >= 0) {
+        const barW = barEndX - barStartX + 1
+        const nights = Math.round((new Date(period.check_out)-new Date(period.check_in))/86400000)
+        const barLabel = gNames ? `${gNames} (${nights}n)` : `${period.check_in} – ${period.check_out}`
+        const tooltip = `${room.name} · ${esc(gNames||'bez gości')}\\n${period.check_in||'?'} → ${period.check_out||'?'} · ${nights}n\\nPrawy klik → opcje`
+        barHtml += `<div class="cal-bar" title="${tooltip}"
+          data-hotel="${hotel.id}" data-room="${room.id}" data-period="${period.id||''}"
+          style="left:${barStartX*DAY_W+3}px;width:${barW*DAY_W-6}px;height:${rowH-10}px;top:5px;background:${col}55;border:2px ${dashes} ${col};border-radius:6px;font-size:10px;font-weight:700;letter-spacing:.01em;color:#fff;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;padding:0 6px">${esc(barLabel)}</div>`
+      }
+    })
+    if (roomPeriods.length === 0 && guests.length > 0) {
+      barHtml = `<div style="position:absolute;top:50%;left:8px;transform:translateY(-50%);font-size:10px;color:#334155;pointer-events:none;font-style:italic">← przeciągnij, żeby ustawić daty</div>`
+    }
+
+    bodyRows += `<div style="display:flex;position:relative;min-width:${LABEL_W + nDays * DAY_W}px"
+      onmousedown="calMouseDown(event,'${hotel.id}','${room.id}')">
+      ${label}
+      <div style="display:flex;position:relative">${dayCells}${barHtml}</div>
+    </div>`
+  })
+
+  // Legend
+  const legend = `<div style="display:flex;gap:16px;align-items:center;padding:8px 12px;margin-bottom:8px;background:#1e293b;border-radius:8px;border:1px solid #334155;font-size:10px;color:#64748b">
+    <span style="font-weight:600;color:#94a3b8">Jak używać:</span>
+    <span>🖱️ <b>Kliknij i przeciągnij</b> w rzędzie pokoju → ustawi zakres dat</span>
+    <span>✕ Prawy klik na pasek → usuń daty</span>
+    <span>⌘/Ctrl+Z → cofnij</span>
+    <span style="display:flex;gap:8px;margin-left:auto">
+      ${Object.entries({1:'1os',2:'2os',3:'3os',4:'4os'}).map(([k,v])=>`<span style="background:${typeColors[k]}55;border:1px solid ${typeColors[k]};border-radius:4px;padding:1px 6px">${v}</span>`).join('')}
+      <span style="border:2px dashed #64748b;border-radius:4px;padding:1px 6px">daty z profilu osoby</span>
+    </span>
+  </div>`
+
+  document.getElementById('noclegi-calendar').innerHTML = `<div style="min-width:${LABEL_W + nDays * DAY_W}px;padding-bottom:20px">
+    ${legend}
+    <div style="position:sticky;top:0;z-index:6;display:flex;background:#1e293b;border-bottom:2px solid #334155">${hdrCells}</div>
+    ${bodyRows}
+  </div>`
+
+  // Right-click → context menu (usuń / zmień datę)
+  document.getElementById('noclegi-calendar').addEventListener('contextmenu', e => {
+    e.preventDefault()
+    const bar  = e.target.closest('.cal-bar')
+    const cell = e.target.closest('.cal-cell')
+    let hotelId, roomId, periodId, targetPeriod
+
+    if (bar) {
+      hotelId = bar.dataset.hotel; roomId = bar.dataset.room; periodId = bar.dataset.period
+    } else if (cell) {
+      hotelId = cell.dataset.hotel; roomId = cell.dataset.room
+      const ds = cell.dataset.day
+      const hotel = accommodations.hotels.find(h => h.id === hotelId)
+      const room  = hotel?.rooms.find(r => r.id === roomId)
+      targetPeriod = (room?.periods||[]).find(p => ds >= p.check_in && ds < p.check_out)
+      if (!targetPeriod) return
+      periodId = targetPeriod.id
+    } else return
+
+    _calCtxMenu(e.clientX, e.clientY, hotelId, roomId, periodId)
+  }, { once: false })
+}
+
+// ── Calendar drag — document-level handlers for cross-scroll selection ──
+let _calDragActive = false
+function calMouseDown(e, hotelId, roomId) {
+  if (e.button !== 0) return
+  e.preventDefault()
+  const cell = e.target.closest('.cal-cell')
+  if (!cell) return
+  const di = parseInt(cell.dataset.di), ds = cell.dataset.day
+  _calDragActive = true
+  _calDragStart = { hotelId, roomId, startDi: di, endDi: di, startDs: ds, endDs: ds, cells: [di] }
+  _calUpdateSel()
+  document.addEventListener('mousemove', _calGlobalMove)
+  document.addEventListener('mouseup', _calGlobalUp)
+}
+function _calGlobalMove(e) {
+  if (!_calDragActive || !_calDragStart) return
+  const { hotelId, roomId } = _calDragStart
+
+  // Auto-scroll when near horizontal edges of calendar container
+  const container = document.getElementById('noclegi-calendar')
+  if (container) {
+    const rect = container.getBoundingClientRect()
+    if (e.clientX < rect.left + 55) container.scrollLeft -= 12
+    else if (e.clientX > rect.right - 55) container.scrollLeft += 12
+  }
+
+  // Find cell under cursor (works even after scroll)
+  const el = document.elementFromPoint(e.clientX, e.clientY)
+  const cell = el?.closest?.('.cal-cell')
+  if (!cell || cell.dataset.hotel !== hotelId || cell.dataset.room !== roomId) return
+
+  const di = parseInt(cell.dataset.di), ds = cell.dataset.day
+  if (di === _calDragStart.endDi) return
+  _calDragStart.endDi = di; _calDragStart.endDs = ds
+  const a = Math.min(_calDragStart.startDi, di), b = Math.max(_calDragStart.startDi, di)
+  _calDragStart.cells = Array.from({length: b - a + 1}, (_, i) => a + i)
+  _calUpdateSel()
+}
+function _calGlobalUp(e) {
+  document.removeEventListener('mousemove', _calGlobalMove)
+  document.removeEventListener('mouseup', _calGlobalUp)
+  if (!_calDragActive || !_calDragStart) { _calDragActive = false; _calDragStart = null; return }
+  _calDragActive = false
+  // Single click (no drag) — don't reset existing dates
+  if (_calDragStart.startDi === _calDragStart.endDi) { _calDragStart = null; _calUpdateSel(); return }
+  const { hotelId, roomId } = _calDragStart
+  const hotel = accommodations.hotels.find(h => h.id === hotelId)
+  const room  = hotel?.rooms.find(r => r.id === roomId)
+  if (!room) { _calDragStart = null; return }
+  const a = _calDragStart.startDs <= _calDragStart.endDs ? _calDragStart.startDs : _calDragStart.endDs
+  const b = _calDragStart.startDs >  _calDragStart.endDs ? _calDragStart.startDs : _calDragStart.endDs
+  const bDate = new Date(b + 'T00:00:00'); bDate.setDate(bDate.getDate() + 1)
+  _pushUndo()
+  if (!room.periods) room.periods = []
+  room.periods.push({ id: crypto.randomUUID(), check_in: a, check_out: calDayStr(bDate) })
+  _calDragStart = null
+  saveAccommodations(); renderCalendar(); renderNocegiHotels()
+}
+function _calUpdateSel() {
+  document.querySelectorAll('#noclegi-calendar .cal-cell.cal-sel').forEach(el => el.classList.remove('cal-sel'))
+  if (!_calDragStart?.cells) return
+  const { hotelId, roomId, cells } = _calDragStart
+  cells.forEach(di => {
+    const el = document.querySelector(`#noclegi-calendar .cal-cell[data-hotel="${hotelId}"][data-room="${roomId}"][data-di="${di}"]`)
+    el?.classList.add('cal-sel')
+  })
+}
+
+function formatShortDate(ds) {
+  if (!ds) return ''
+  const d = new Date(ds + 'T00:00:00')
+  return d.getDate() + ' ' + ['sty','lut','mar','kwi','maj','cze','lip','sie','wrz','paź','lis','gru'][d.getMonth()]
+}
+
+let _undoStack = []
+function _pushUndo() {
+  _undoStack.push(JSON.stringify(accommodations))
+  if (_undoStack.length > 30) _undoStack.shift()
+}
+function undoAccommodations() {
+  if (!_undoStack.length) { showNoclegiToast('Brak działań do cofnięcia'); return }
+  accommodations = JSON.parse(_undoStack.pop())
+  saveAccommodations()
+  renderNoclegi()
+  showNoclegiToast('↩ Cofnięto', 'success')
+}
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+    if (!document.getElementById('content-noclegi')?.classList.contains('hidden')) {
+      e.preventDefault(); undoAccommodations()
+    }
+  }
+})
+
+function showNoclegiToast(msg, type='error') {
+  const old = document.getElementById('noclegi-toast')
+  if (old) old.remove()
+  const el = document.createElement('div')
+  el.id = 'noclegi-toast'
+  const col = type === 'success' ? '#4ade80' : '#f87171'
+  const textCol = type === 'success' ? '#4ade80' : '#fca5a5'
+  el.style.cssText = `position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:999;background:#1e293b;border:1px solid ${col};border-radius:12px;padding:10px 20px;font-size:13px;color:${textCol};box-shadow:0 8px 32px rgba(0,0,0,.6);transition:opacity .3s;pointer-events:none`
+  el.textContent = msg
+  document.body.appendChild(el)
+  setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300) }, 3000)
+}
+
+async function loadNoclegi() {
+  const { data } = await db.from('projects').select('accommodations').eq('id', currentProject.id).single()
+  accommodations = data?.accommodations || { hotels: [] }
+  // migrate old check_in/check_out fields to periods array
+  accommodations.hotels.forEach(h => h.rooms.forEach(r => migrateRoomPeriods(r)))
+  renderNoclegi()
+}
+
+async function saveAccommodations() {
+  await db.from('projects').update({ accommodations }).eq('id', currentProject.id)
+}
+
+function renderNoclegi() {
+  renderNocegiPeople()
+  renderNocegiHotels()
+}
+
+function getAssignedIds() {
+  const ids = new Set()
+  accommodations.hotels.forEach(h => h.rooms.forEach(r => r.guests.forEach(g => ids.add(g))))
+  return ids
+}
+
+function renderNocegiPeople() {
+  const q = (document.getElementById('noclegi-search')?.value || '').toLowerCase()
+  const assigned = getAssignedIds()
+  const list = crew
+    .filter(p => !q || p.name.toLowerCase().includes(q) || (p.position||'').toLowerCase().includes(q))
+    .sort((a, b) => {
+      const aA = assigned.has(a.id) ? 1 : 0
+      const bA = assigned.has(b.id) ? 1 : 0
+      if (aA !== bA) return aA - bA
+      return (a.lp || 999) - (b.lp || 999)
+    })
+  const total = crew.length
+  const assignedCount = crew.filter(p => assigned.has(p.id)).length
+  const unassignedCount = total - assignedCount
+  const countEl = document.getElementById('noclegi-unassigned-count')
+  if (countEl) countEl.textContent = unassignedCount > 0 ? `(${unassignedCount} bez pokoju)` : `(wszyscy przypisani ✓)`
+  const headerCount = document.getElementById('noclegi-header-count')
+  if (headerCount) {
+    headerCount.textContent = unassignedCount > 0
+      ? `${assignedCount}/${total} przypisanych · ${unassignedCount} bez pokoju`
+      : `${total}/${total} przypisanych ✓`
+    headerCount.style.color = unassignedCount > 0 ? '#94a3b8' : '#4ade80'
+  }
+  document.getElementById('noclegi-people').innerHTML = list.map(p => {
+    const isAssigned = assigned.has(p.id)
+    const isNoclegiGreyed = (accommodations.noclegi_greyed||[]).includes(p.id)
+    const isSel = selectedPersonId === p.id
+    const lpPrefix = p.lp ? `<span class="text-slate-500 mr-1">${p.lp}.</span>` : ''
+    const genderBadge = p.gender === 'M'
+      ? `<span style="font-size:9px;font-weight:800;padding:1px 5px;border-radius:999px;background:#1e3a5f;color:#60a5fa">♂ M</span>`
+      : p.gender === 'K'
+        ? `<span style="font-size:9px;font-weight:800;padding:1px 5px;border-radius:999px;background:#3b0764;color:#e879f9">♀ K</span>`
+        : ''
+    return `<div class="person-card border rounded-lg px-2.5 py-2 text-xs ${isSel?'selected':'border-slate-700 bg-slate-800'} ${isAssigned?'assigned':''}" style="${isNoclegiGreyed?'opacity:0.35;filter:grayscale(1);':''}"
+      draggable="true"
+      ondragstart="onPersonDragStart(event,'${p.id}')"
+      ondragend="onPersonDragEnd(event)"
+      onclick="onPersonClick('${p.id}')"
+      oncontextmenu="event.preventDefault();event.stopPropagation();_noclegiPersonCtx(event,'${p.id}')">
+      <div class="flex items-center justify-between gap-1">
+        <div class="font-medium text-slate-100 truncate">${lpPrefix}${esc(p.name)}</div>
+        ${genderBadge}
+      </div>
+      <div class="text-amber-400/80 truncate">${esc(p.position||'')}</div>
+      ${p.phone ? `<div class="text-slate-500 truncate">📞 ${esc(p.phone)}</div>` : ''}
+      ${(p.arrival_date || p.departure_date) ? `<div class="text-slate-600 truncate text-xs">📅 ${formatShortDate(p.arrival_date)||'?'}${p.departure_date ? ' → ' + formatShortDate(p.departure_date) : ''}</div>` : ''}
+      ${isAssigned ? '<div class="mt-1"><span style="display:inline-block;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:700;background:#052e16;color:#4ade80">✓ potwierdzone</span></div>' : ''}
+    </div>`
+  }).join('')
+}
+
+function renderNocegiHotels() {
+  const assigned = getAssignedIds()
+  const typeColors = {1:'blue',2:'green',3:'orange',4:'purple'}
+  const typeLabels = {1:'jedynka',2:'dwójka',3:'trójka',4:'czwórka'}
+  document.getElementById('noclegi-hotels').innerHTML = accommodations.hotels.map(hotel => `
+    <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4">
+      <div class="flex items-center justify-between mb-1">
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="text-base">🏨</span>
+          <span class="font-bold text-sm" id="hname-${hotel.id}">${esc(hotel.name)}</span>
+          <button onclick="editHotelName('${hotel.id}')" class="text-slate-600 hover:text-slate-300 text-xs" title="Zmień nazwę">✏️</button>
+          <button onclick="editHotelInfo('${hotel.id}')" class="text-blue-600 hover:text-blue-400 text-xs font-medium" title="Informacje hotelu">ℹ️ info</button>
+          <span class="text-xs text-slate-500">${hotel.rooms.length} pokoi</span>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="addRoomToHotel('${hotel.id}')" class="text-xs text-amber-400 hover:text-amber-300">+ pokój</button>
+          <button onclick="copyHotel('${hotel.id}')" class="text-xs text-slate-500 hover:text-slate-300" title="Kopiuj strukturę (bez gości)">⎘ kopiuj</button>
+          <button onclick="duplicateHotel('${hotel.id}')" class="text-xs text-slate-500 hover:text-slate-300" title="Duplikuj z gośćmi">⧉ duplikuj</button>
+          <button onclick="deleteHotel('${hotel.id}')" class="text-xs text-slate-600 hover:text-red-400">✕</button>
+        </div>
+      </div>
+      ${(hotel.phone || hotel.address || hotel.maps_url) ? `<div class="flex flex-wrap gap-3 mb-3 text-xs text-slate-400">
+        ${hotel.phone ? `<span>📞 <a href="tel:${esc(hotel.phone)}" class="hover:text-slate-200">${esc(hotel.phone)}</a></span>` : ''}
+        ${hotel.address ? `<span>📍 ${esc(hotel.address)}</span>` : ''}
+        ${hotel.maps_url ? `<span><a href="${esc(hotel.maps_url)}" target="_blank" class="text-blue-400 hover:text-blue-300">🗺️ Google Maps</a></span>` : ''}
+      </div>` : '<div class="mb-3"></div>'}
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3"
+        ondragover="if(draggedRoomId){event.preventDefault()}"
+        ondrop="if(draggedRoomId){event.preventDefault();onRoomCardDrop(event,'${hotel.id}',null)}">
+        ${hotel.rooms.map(room => {
+          const col = typeColors[room.type] || 'slate'
+          const isFull = room.guests.length >= room.type
+          const periods = room.periods || []
+          const otherHotels = accommodations.hotels.filter(h=>h.id!==hotel.id)
+          return `<div class="room-card room-type-${room.type} border-2 rounded-xl p-3 bg-slate-900/50"
+            draggable="true"
+            ondragstart="onRoomCardDragStart(event,'${hotel.id}','${room.id}')"
+            ondragend="onRoomCardDragEnd(event)"
+            ondragover="onRoomCardDragOver(event,'${hotel.id}','${room.id}')"
+            ondragleave="onRoomCardDragLeave(event)"
+            ondrop="onRoomCardDrop(event,'${hotel.id}','${room.id}')"
+            onclick="onRoomClick('${hotel.id}','${room.id}')">
+            <!-- ROW 1: handle + nazwa + licznik + usuń -->
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+              <span style="color:#334155;cursor:grab;font-size:14px;flex-shrink:0;line-height:1;user-select:none" title="Przeciągnij żeby zmienić kolejność">⠿</span>
+              <span style="font-size:12px;font-weight:700;color:#e2e8f0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(room.name)}</span>
+              <span style="font-size:11px;padding:1px 6px;border-radius:6px;background:#1e293b;flex-shrink:0" class="text-${col}-400">${room.guests.length}/${room.type}</span>
+              ${isFull ? `<span style="font-size:9px;font-weight:800;padding:1px 5px;border-radius:999px;background:#052e16;color:#4ade80;letter-spacing:.05em;white-space:nowrap;flex-shrink:0">PEŁNY</span>` : ''}
+              <button onclick="event.stopPropagation();deleteRoom('${hotel.id}','${room.id}')" title="Usuń pokój" style="font-size:11px;color:#475569;background:none;border:none;cursor:pointer;line-height:1;padding:0;flex-shrink:0" onmouseover="this.style.color='#f87171'" onmouseout="this.style.color='#475569'">✕</button>
+            </div>
+            <!-- ROW 2: daty (wielokrotne okresy) -->
+            <div onclick="event.stopPropagation()" style="margin-bottom:${otherHotels.length?'6':'0'}px">
+              ${periods.map(p => {
+                const n = (p.check_in && p.check_out) ? Math.round((new Date(p.check_out+'T00:00:00')-new Date(p.check_in+'T00:00:00'))/86400000) : null
+                return `<div style="display:flex;align-items:center;gap:4px;margin-bottom:3px">
+                  <input type="date" value="${p.check_in||''}" title="Zameldowanie"
+                    onchange="setRoomPeriodDate('${hotel.id}','${room.id}','${p.id}','check_in',this.value)"
+                    style="flex:1;min-width:0;font-size:11px;background:#0f172a;border:1px solid #1e293b;border-radius:6px;padding:4px 6px;color:#94a3b8;outline:none;cursor:pointer;box-sizing:border-box">
+                  <span style="color:#475569;font-size:10px;flex-shrink:0">→</span>
+                  <input type="date" value="${p.check_out||''}" title="Wymeldowanie"
+                    onchange="setRoomPeriodDate('${hotel.id}','${room.id}','${p.id}','check_out',this.value)"
+                    style="flex:1;min-width:0;font-size:11px;background:#0f172a;border:1px solid #1e293b;border-radius:6px;padding:4px 6px;color:#94a3b8;outline:none;cursor:pointer;box-sizing:border-box">
+                  ${n && n > 0 ? `<span style="color:#64748b;font-size:10px;white-space:nowrap;flex-shrink:0">${n}n</span>` : ''}
+                  <button onclick="removePeriod('${hotel.id}','${room.id}','${p.id}')" title="Usuń termin"
+                    style="font-size:10px;color:#475569;background:none;border:none;cursor:pointer;padding:0;line-height:1;flex-shrink:0" onmouseover="this.style.color='#f87171'" onmouseout="this.style.color='#475569'">✕</button>
+                </div>`
+              }).join('')}
+              <button onclick="addPeriod('${hotel.id}','${room.id}')"
+                style="font-size:10px;color:#475569;background:none;border:none;cursor:pointer;padding:0;margin-top:${periods.length?'1':'0'}px" onmouseover="this.style.color='#f59e0b'" onmouseout="this.style.color='#475569'">+ termin</button>
+            </div>
+            <!-- ROW 3: przenieś do hotelu (tylko gdy >1 hotel) -->
+            ${otherHotels.length ? `<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px" onclick="event.stopPropagation()">
+              <span style="font-size:10px;color:#475569;white-space:nowrap;flex-shrink:0">Przenieś do →</span>
+              <select onchange="moveRoom('${hotel.id}','${room.id}',this.value);this.value=''"
+                style="flex:1;min-width:0;font-size:11px;background:#0f172a;border:1px solid #334155;border-radius:6px;padding:3px 6px;color:#94a3b8;cursor:pointer;box-sizing:border-box">
+                <option value="">— wybierz hotel —</option>
+                ${otherHotels.map(h=>`<option value="${h.id}">${esc(h.name)}</option>`).join('')}
+              </select>
+            </div>` : ''}
+            <div class="space-y-1">
+              ${room.guests.map(gid => {
+                const p = crew.find(c => c.id === gid)
+                if (!p) return ''
+                const greyed = (room.guests_greyed||[]).includes(gid)
+                const guestNote = (room.guests_notes||{})[gid] || ''
+                return `<div class="guest-pill flex-col items-start gap-0" style="padding:4px 8px;cursor:grab;${greyed?'opacity:0.38;filter:grayscale(1)':''}"
+                  draggable="true"
+                  ondragstart="onGuestDragStart(event,'${gid}','${hotel.id}','${room.id}')"
+                  ondragend="onGuestDragEnd(event)"
+                  oncontextmenu="event.preventDefault();event.stopPropagation();_roomGuestCtx(event,'${hotel.id}','${room.id}','${gid}','${greyed}')">
+                  <div class="flex items-center justify-between w-full gap-2">
+                    <span class="font-medium truncate ${greyed?'text-slate-500 line-through':'text-slate-200'}">${p.lp?p.lp+'. ':''}${esc(p.name)}</span>
+                    <div class="flex items-center gap-1 shrink-0">
+                      <span onclick="event.stopPropagation();editGuestNote('${hotel.id}','${room.id}','${gid}')"
+                        title="${guestNote?'Edytuj notatkę: '+guestNote:'Dodaj notatkę'}"
+                        style="cursor:pointer;font-size:11px;color:${guestNote?'#f59e0b':'#334155'}">✎</span>
+                      <span onclick="event.stopPropagation();toggleGuestGreyed('${hotel.id}','${room.id}','${gid}')"
+                        title="${greyed?'Przywróć':'Wyszarz (nie dotyczy)'}"
+                        style="cursor:pointer;font-size:11px;color:${greyed?'#64748b':'#334155'}">◑</span>
+                      <span class="text-slate-500 hover:text-red-400 cursor-pointer" onclick="event.stopPropagation();removeGuest('${hotel.id}','${room.id}','${gid}')" title="Usuń z pokoju">✕</span>
+                    </div>
+                  </div>
+                  <div class="truncate w-full ${greyed?'text-slate-600':'text-amber-400/80'}">${esc(p.position||'')}</div>
+                  ${guestNote ? `<div style="font-size:9px;color:#f59e0b;opacity:0.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%">${esc(guestNote)}</div>` : ''}
+                  ${p.phone ? `<div class="text-slate-500 truncate w-full">${esc(p.phone)}</div>` : ''}
+                </div>`
+              }).join('')}
+              ${!isFull ? `<div class="text-xs text-slate-600 border border-dashed border-slate-700 rounded-lg px-2 py-1 text-center">
+                ${selectedPersonId ? '👆 kliknij tu' : 'upuść tu'}
+              </div>` : ''}
+            </div>
+          </div>`
+        }).join('')}
+        ${hotel.rooms.length === 0 ? '<div class="col-span-4 text-xs text-slate-600 text-center py-4">Brak pokoi — kliknij "+ pokój"</div>' : ''}
+      </div>
+    </div>
+  `).join('') || '<div class="text-slate-600 text-sm text-center py-12">Brak hoteli — kliknij "+ Dodaj hotel"</div>'
+}
+
+function onPersonClick(id) {
+  selectedPersonId = selectedPersonId === id ? null : id
+  renderNocegiPeople()
+  renderNocegiHotels()
+}
+
+function onPersonDragStart(e, id) {
+  draggedPersonId = id
+  draggedGuestSource = null
+  e.dataTransfer.effectAllowed = 'move'
+  setTimeout(() => e.target.classList.add('opacity-50'), 0)
+}
+
+function onPersonDragEnd(e) {
+  e.target.classList.remove('opacity-50')
+  document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'))
+}
+
+function onRoomCardDragStart(e, hotelId, roomId) {
+  draggedRoomId = roomId
+  draggedRoomHotelId = hotelId
+  draggedPersonId = null  // nie drag gościa
+  e.dataTransfer.effectAllowed = 'move'
+  e.dataTransfer.setData('text/room', roomId)
+  setTimeout(() => { const el = e.currentTarget; if (el) el.style.opacity = '.4' }, 0)
+}
+function onRoomCardDragEnd(e) {
+  e.currentTarget.style.opacity = ''
+  draggedRoomId = null
+  draggedRoomHotelId = null
+  document.querySelectorAll('.room-card').forEach(c => c.classList.remove('drag-over'))
+}
+function onRoomCardDragOver(e, hotelId, roomId) {
+  if (!draggedRoomId || draggedRoomId === roomId) return
+  e.preventDefault()
+  e.stopPropagation()
+  e.currentTarget.classList.add('drag-over')
+}
+function onRoomCardDragLeave(e) {
+  if (!draggedRoomId) return
+  e.currentTarget.classList.remove('drag-over')
+}
+function onRoomCardDrop(e, hotelId, roomId) {
+  e.currentTarget.classList.remove('drag-over')
+  if (!draggedRoomId || draggedRoomId === roomId) {
+    // brak draggowanego pokoju — obsłuż drop gościa normalnie
+    onRoomDrop(e, hotelId, roomId)
+    return
+  }
+  e.preventDefault()
+  e.stopPropagation()
+  const fromHotel = accommodations.hotels.find(h => h.id === draggedRoomHotelId)
+  const toHotel   = accommodations.hotels.find(h => h.id === hotelId)
+  if (!fromHotel || !toHotel) return
+  const fromIdx = fromHotel.rooms.findIndex(r => r.id === draggedRoomId)
+  if (fromIdx < 0) return
+  _pushUndo()
+  const [room] = fromHotel.rooms.splice(fromIdx, 1)
+  if (!roomId) {
+    // drop na pusty obszar gridu → na końcu
+    toHotel.rooms.push(room)
+  } else {
+    const toIdx = toHotel.rooms.findIndex(r => r.id === roomId)
+    // czy upuszczono na prawą połowę karty → wstaw PO; lewą → wstaw PRZED
+    const rect = e.currentTarget ? e.currentTarget.getBoundingClientRect() : null
+    const insertAfter = rect ? e.clientX > rect.left + rect.width / 2 : false
+    const insertIdx = toIdx < 0 ? toHotel.rooms.length : (insertAfter ? toIdx + 1 : toIdx)
+    toHotel.rooms.splice(insertIdx, 0, room)
+  }
+  saveAccommodations()
+  renderNoclegi()
+}
+
+function onGuestDragStart(e, personId, fromHotelId, fromRoomId) {
+  draggedPersonId = personId
+  draggedGuestSource = { personId, fromHotelId, fromRoomId }
+  e.dataTransfer.effectAllowed = 'move'
+  e.stopPropagation()
+  setTimeout(() => e.target.classList.add('opacity-40'), 0)
+}
+
+function onGuestDragEnd(e) {
+  e.target.classList.remove('opacity-40')
+  document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'))
+  draggedGuestSource = null
+}
+
+function onRoomDrop(e, hotelId, roomId) {
+  e.preventDefault()
+  e.currentTarget.classList.remove('drag-over')
+  assignToRoom(draggedPersonId, hotelId, roomId)
+  draggedPersonId = null
+}
+
+function onRoomClick(hotelId, roomId) {
+  if (!selectedPersonId) return
+  assignToRoom(selectedPersonId, hotelId, roomId)
+  selectedPersonId = null
+}
+
+function assignToRoom(personId, hotelId, roomId) {
+  if (!personId) return
+  const hotel = accommodations.hotels.find(h => h.id === hotelId)
+  const room = hotel?.rooms.find(r => r.id === roomId)
+  if (!room) return
+  if (room.guests.includes(personId)) return
+  if (room.guests.length >= room.type) { showNoclegiToast(`Pokój pełny — max ${room.type} os.`); return }
+  _pushUndo()
+  accommodations.hotels.forEach(h => h.rooms.forEach(r => { r.guests = r.guests.filter(g => g !== personId) }))
+  room.guests.push(personId)
+  saveAccommodations()
+  renderNoclegi()
+}
+
+function _noclegiPersonCtx(e, personId) {
+  document.getElementById('_np_ctx')?.remove()
+  const person = crew.find(c => c.id === personId)
+  if (!person) return
+  const isGreyedAnywhere = accommodations.hotels.some(h => h.rooms.some(r => (r.guests_greyed||[]).includes(personId)))
+  const isAssigned = accommodations.hotels.some(h => h.rooms.some(r => r.guests.includes(personId)))
+  const isNoclegiGreyed = (accommodations.noclegi_greyed||[]).includes(personId)
+  const el = document.createElement('div')
+  el.id = '_np_ctx'
+  el.style.cssText = `position:fixed;left:${e.clientX}px;top:${e.clientY}px;z-index:500;background:#1e293b;border:1px solid #334155;border-radius:10px;padding:6px;min-width:185px;box-shadow:0 8px 32px rgba(0,0,0,.7);font-size:12px`
+  el.innerHTML = `
+    <div style="color:#64748b;font-size:10px;padding:2px 8px 6px;border-bottom:1px solid #334155;margin-bottom:4px">${esc(person.name)}</div>
+    ${isAssigned ? `<button onclick="_personCtxRemoveAll('${personId}')" style="display:block;width:100%;text-align:left;background:none;border:none;color:#f87171;padding:6px 8px;border-radius:6px;cursor:pointer" onmouseover="this.style.background='#2d0909'" onmouseout="this.style.background='none'">✕ Usuń ze spania</button>` : ''}
+    ${isAssigned ? `<button onclick="_personCtxToggleGrey('${personId}')" style="display:block;width:100%;text-align:left;background:none;border:none;color:${isGreyedAnywhere?'#4ade80':'#94a3b8'};padding:6px 8px;border-radius:6px;cursor:pointer" onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='none'">${isGreyedAnywhere ? '◑ Przywróć (z powrotem)' : '◑ Wyłącz z liczenia'}</button>` : ''}
+    ${!isAssigned ? `<button onclick="_personCtxToggleNoclegiGrey('${personId}')" style="display:block;width:100%;text-align:left;background:none;border:none;color:${isNoclegiGreyed?'#4ade80':'#94a3b8'};padding:6px 8px;border-radius:6px;cursor:pointer" onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='none'">${isNoclegiGreyed ? '◑ Przywróć (nie wyszarz)' : '◑ Wyszarz (nie potrzebuje noclegu)'}</button>` : ''}
+  `
+  document.body.appendChild(el)
+  setTimeout(() => document.addEventListener('click', () => el.remove(), { once: true }), 10)
+}
+
+function _personCtxRemoveAll(personId) {
+  document.getElementById('_np_ctx')?.remove()
+  _pushUndo()
+  accommodations.hotels.forEach(h => h.rooms.forEach(r => {
+    r.guests = r.guests.filter(g => g !== personId)
+    r.guests_greyed = (r.guests_greyed||[]).filter(g => g !== personId)
+    if (r.guests_notes) delete r.guests_notes[personId]
+  }))
+  saveAccommodations(); renderNoclegi()
+}
+
+function _personCtxToggleGrey(personId) {
+  document.getElementById('_np_ctx')?.remove()
+  _pushUndo()
+  const isGreyedAnywhere = accommodations.hotels.some(h => h.rooms.some(r => (r.guests_greyed||[]).includes(personId)))
+  accommodations.hotels.forEach(h => h.rooms.forEach(r => {
+    if (!r.guests.includes(personId)) return
+    if (!r.guests_greyed) r.guests_greyed = []
+    if (isGreyedAnywhere) {
+      r.guests_greyed = r.guests_greyed.filter(g => g !== personId)
+    } else {
+      if (!r.guests_greyed.includes(personId)) r.guests_greyed.push(personId)
+    }
+  }))
+  saveAccommodations(); renderNocegiHotels()
+}
+
+function _personCtxToggleNoclegiGrey(personId) {
+  document.getElementById('_np_ctx')?.remove()
+  _pushUndo()
+  if (!accommodations.noclegi_greyed) accommodations.noclegi_greyed = []
+  const idx = accommodations.noclegi_greyed.indexOf(personId)
+  if (idx >= 0) {
+    accommodations.noclegi_greyed.splice(idx, 1)
+  } else {
+    accommodations.noclegi_greyed.push(personId)
+  }
+  saveAccommodations(); renderNocegiPeople()
+}
+
+function _roomGuestCtx(e, hotelId, roomId, gid, greyedStr) {
+  document.getElementById('_rg_ctx')?.remove()
+  const person = crew.find(c => c.id === gid)
+  const isGreyed = greyedStr === 'true'
+  const el = document.createElement('div')
+  el.id = '_rg_ctx'
+  el.style.cssText = `position:fixed;left:${e.clientX}px;top:${e.clientY}px;z-index:500;background:#1e293b;border:1px solid #334155;border-radius:10px;padding:6px;min-width:185px;box-shadow:0 8px 32px rgba(0,0,0,.7);font-size:12px`
+  el.innerHTML = `
+    <div style="color:#64748b;font-size:10px;padding:2px 8px 6px;border-bottom:1px solid #334155;margin-bottom:4px">${esc(person?.name||gid)}</div>
+    <button onclick="toggleGuestGreyed('${hotelId}','${roomId}','${gid}');document.getElementById('_rg_ctx')?.remove()" style="display:block;width:100%;text-align:left;background:none;border:none;color:${isGreyed?'#4ade80':'#94a3b8'};padding:6px 8px;border-radius:6px;cursor:pointer" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='none'">${isGreyed ? '◑ Przywróć (z powrotem)' : '◑ Wyłącz z liczenia'}</button>
+    <button onclick="removeGuest('${hotelId}','${roomId}','${gid}');document.getElementById('_rg_ctx')?.remove()" style="display:block;width:100%;text-align:left;background:none;border:none;color:#f87171;padding:6px 8px;border-radius:6px;cursor:pointer" onmouseover="this.style.background='#2d0909'" onmouseout="this.style.background='none'">✕ Usuń z pokoju</button>
+  `
+  document.body.appendChild(el)
+  setTimeout(() => document.addEventListener('click', () => el.remove(), { once: true }), 10)
+}
+
+function _crewCtxMenu(e, personId) {
+  document.getElementById('_crew_ctx')?.remove()
+  const p = crew.find(c => c.id === personId)
+  if (!p) return
+  const el = document.createElement('div')
+  el.id = '_crew_ctx'
+  el.style.cssText = `position:fixed;left:${e.clientX}px;top:${e.clientY}px;z-index:500;background:#1e293b;border:1px solid #334155;border-radius:10px;padding:6px;min-width:185px;box-shadow:0 8px 32px rgba(0,0,0,.7);font-size:12px`
+  el.innerHTML = `
+    <div style="color:#64748b;font-size:10px;padding:2px 8px 6px;border-bottom:1px solid #334155;margin-bottom:4px">${esc(p.name)}</div>
+    <button onclick="_crewToggleHidden('${personId}')" style="display:block;width:100%;text-align:left;background:none;border:none;color:${p.hidden?'#4ade80':'#94a3b8'};padding:6px 8px;border-radius:6px;cursor:pointer" onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='none'">${p.hidden ? '◑ Pokaż osobę' : '◑ Wyszarz / ukryj'}</button>
+    <button onclick="_crewDeletePerson('${personId}')" style="display:block;width:100%;text-align:left;background:none;border:none;color:#f87171;padding:6px 8px;border-radius:6px;cursor:pointer" onmouseover="this.style.background='#2d0909'" onmouseout="this.style.background='none'">✕ Usuń z ekipy</button>
+  `
+  document.body.appendChild(el)
+  setTimeout(() => document.addEventListener('click', () => el.remove(), { once: true }), 10)
+}
+
+function _crewHiddenKey() { return `crew_hidden_${currentProject?.id||'x'}` }
+function _crewHiddenSet() { return new Set(JSON.parse(localStorage.getItem(_crewHiddenKey())||'[]')) }
+function _crewHiddenSave(set) { localStorage.setItem(_crewHiddenKey(), JSON.stringify([...set])) }
+
+function _crewToggleHidden(personId) {
+  document.getElementById('_crew_ctx')?.remove()
+  const p = crew.find(c => c.id === personId)
+  if (!p) return
+  const hidden = _crewHiddenSet()
+  if (hidden.has(personId)) hidden.delete(personId); else hidden.add(personId)
+  _crewHiddenSave(hidden)
+  p.hidden = hidden.has(personId)
+  renderTable()
+}
+
+async function _crewDeletePerson(personId) {
+  document.getElementById('_crew_ctx')?.remove()
+  const p = crew.find(c => c.id === personId)
+  if (!p || !confirm(`Usunąć ${p.name} z ekipy?`)) return
+  await db.from('crew_members').delete().eq('id', personId)
+  await loadCrew()
+}
+
+function removeGuest(hotelId, roomId, personId) {
+  const hotel = accommodations.hotels.find(h => h.id === hotelId)
+  const room = hotel?.rooms.find(r => r.id === roomId)
+  if (!room) return
+  _pushUndo()
+  room.guests = room.guests.filter(g => g !== personId)
+  room.guests_greyed = (room.guests_greyed||[]).filter(g => g !== personId)
+  delete (room.guests_notes||{})[personId]
+  saveAccommodations()
+  renderNoclegi()
+}
+
+function toggleGuestGreyed(hotelId, roomId, personId) {
+  const hotel = accommodations.hotels.find(h => h.id === hotelId)
+  const room = hotel?.rooms.find(r => r.id === roomId)
+  if (!room) return
+  _pushUndo()
+  if (!room.guests_greyed) room.guests_greyed = []
+  if (room.guests_greyed.includes(personId)) {
+    room.guests_greyed = room.guests_greyed.filter(g => g !== personId)
+  } else {
+    room.guests_greyed.push(personId)
+  }
+  saveAccommodations(); renderNocegiHotels()
+}
+
+function editGuestNote(hotelId, roomId, personId) {
+  const hotel = accommodations.hotels.find(h => h.id === hotelId)
+  const room = hotel?.rooms.find(r => r.id === roomId)
+  if (!room) return
+  const current = (room.guests_notes||{})[personId] || ''
+  const note = prompt('Notatka dla tej osoby w pokoju:', current)
+  if (note === null) return
+  _pushUndo()
+  if (!room.guests_notes) room.guests_notes = {}
+  if (note.trim()) room.guests_notes[personId] = note.trim()
+  else delete room.guests_notes[personId]
+  saveAccommodations(); renderNocegiHotels()
+}
+
+function addHotel() {
+  const name = document.getElementById('noclegi-hotel-input')?.value?.trim()
+  if (!name) {
+    const el = document.createElement('div')
+    el.innerHTML = `<div style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:200;background:#1e293b;border:1px solid #334155;border-radius:16px;padding:20px;min-width:280px;box-shadow:0 20px 60px rgba(0,0,0,.8)">
+      <p style="font-size:14px;font-weight:600;margin-bottom:12px;color:#f1f5f9">Nazwa hotelu</p>
+      <input id="_hotel_inp" type="text" placeholder="np. Hotel Marriott" style="width:100%;background:#0f172a;border:1px solid #fbbf24;border-radius:8px;padding:8px 10px;color:#f1f5f9;font-size:14px;outline:none;box-sizing:border-box">
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button onclick="confirmAddHotel()" style="flex:1;background:#f59e0b;color:#0f172a;font-weight:700;padding:8px;border-radius:10px;border:none;cursor:pointer;font-size:13px">Dodaj</button>
+        <button onclick="this.closest('[style*=position]').remove()" style="padding:8px 16px;background:#334155;color:#f1f5f9;border-radius:10px;border:none;cursor:pointer;font-size:13px">Anuluj</button>
+      </div>
+    </div>`
+    document.body.appendChild(el)
+    setTimeout(() => document.getElementById('_hotel_inp')?.focus(), 50)
+    document.getElementById('_hotel_inp').onkeydown = e => { if (e.key==='Enter') confirmAddHotel() }
+    return
+  }
+  confirmAddHotelName(name)
+}
+
+function confirmAddHotel() {
+  const name = document.getElementById('_hotel_inp')?.value?.trim()
+  if (!name) return
+  document.querySelector('[style*="position:fixed"][style*="z-index:200"]')?.remove()
+  confirmAddHotelName(name)
+}
+
+function confirmAddHotelName(name) {
+  _pushUndo()
+  accommodations.hotels.push({ id: crypto.randomUUID(), name, phone: null, address: null, maps_url: null, rooms: [] })
+  saveAccommodations()
+  renderNoclegi()
+}
+
+function suggestRoomAssignment() {
+  const assigned = getAssignedIds()
+  const unassigned = crew.filter(p => !assigned.has(p.id))
+  if (!unassigned.length) { showNoclegiToast('Wszyscy mają przypisane pokoje!', 'success'); return }
+
+  _pushUndo()
+
+  // Collect rooms with free slots
+  const roomSlots = []
+  accommodations.hotels.forEach(h => h.rooms.forEach(r => {
+    const free = r.type - r.guests.length
+    if (free > 0) roomSlots.push({ hotelId: h.id, roomId: r.id, type: r.type })
+  }))
+  if (!roomSlots.length) { showNoclegiToast('Brak wolnych miejsc w pokojach!'); return }
+
+  // Sort within gender group by pion (first word of position) then by LP
+  const byPion = arr => [...arr].sort((a, b) => {
+    const pa = (a.position||'').split(/[\s\/]/)[0].toLowerCase()
+    const pb = (b.position||'').split(/[\s\/]/)[0].toLowerCase()
+    return pa.localeCompare(pb, 'pl') || (a.lp||999) - (b.lp||999)
+  })
+
+  const females  = byPion(unassigned.filter(p => p.gender === 'K'))
+  const males    = byPion(unassigned.filter(p => p.gender === 'M'))
+  const unknowns = byPion(unassigned.filter(p => !p.gender))
+
+  // Helper: fill a queue of people into available room slots, respecting gender
+  function fillQueue(queue, genderKey) {
+    for (const slot of roomSlots) {
+      if (!queue.length) break
+      const room = accommodations.hotels.find(h => h.id === slot.hotelId)?.rooms.find(r => r.id === slot.roomId)
+      if (!room) continue
+      // Check existing gender in room — don't mix if room already has the other gender
+      if (genderKey && room.guests.length > 0) {
+        const firstPerson = crew.find(c => c.id === room.guests[0])
+        const roomGender = firstPerson?.gender
+        if (roomGender && roomGender !== genderKey) continue
+      }
+      while (room.guests.length < room.type && queue.length) {
+        const person = queue.shift()
+        // Remove from any existing room first
+        accommodations.hotels.forEach(h => h.rooms.forEach(r => { r.guests = r.guests.filter(g => g !== person.id) }))
+        room.guests.push(person.id)
+      }
+    }
+    return queue
+  }
+
+  const leftK = fillQueue(females, 'K')
+  const leftM = fillQueue(males, 'M')
+  const leftU = fillQueue([...unknowns, ...leftK, ...leftM], '')
+
+  saveAccommodations()
+  renderNoclegi()
+
+  const placed = unassigned.length - leftU.length
+  if (leftU.length > 0) {
+    showNoclegiToast(`Przypisano ${placed}/${unassigned.length} — brak miejsc dla ${leftU.length} os.`)
+  } else {
+    showNoclegiToast(`✓ Przypisano ${placed} osób wg płci i pionu`, 'success')
+  }
+}
+
+function editHotelName(id) {
+  const hotel = accommodations.hotels.find(h => h.id === id)
+  if (!hotel) return
+  const span = document.getElementById('hname-' + id)
+  const old = hotel.name
+  span.innerHTML = `<input id="hedit-${id}" value="${esc(old)}" style="background:#0f172a;border:1px solid #fbbf24;border-radius:6px;padding:2px 8px;color:#f1f5f9;font-size:13px;outline:none;width:160px">`
+  const inp = document.getElementById('hedit-' + id)
+  inp.focus(); inp.select()
+  const save = () => {
+    const val = inp.value.trim()
+    if (val) { hotel.name = val; saveAccommodations() }
+    renderNoclegi()
+  }
+  inp.onblur = save
+  inp.onkeydown = e => { if (e.key==='Enter') inp.blur(); if (e.key==='Escape') { hotel.name=old; renderNoclegi() } }
+}
+
+function deleteHotel(id) {
+  _pushUndo()
+  accommodations.hotels = accommodations.hotels.filter(h => h.id !== id)
+  saveAccommodations()
+  renderNoclegi()
+}
+
+function deleteRoom(hotelId, roomId) {
+  const hotel = accommodations.hotels.find(h => h.id === hotelId)
+  if (!hotel) return
+  _pushUndo()
+  hotel.rooms = hotel.rooms.filter(r => r.id !== roomId)
+  saveAccommodations()
+  renderNoclegi()
+}
+
+function moveRoomOrder(hotelId, roomId, dir) {
+  const hotel = accommodations.hotels.find(h => h.id === hotelId)
+  if (!hotel) return
+  const idx = hotel.rooms.findIndex(r => r.id === roomId)
+  const newIdx = idx + dir
+  if (newIdx < 0 || newIdx >= hotel.rooms.length) return
+  _pushUndo()
+  const [room] = hotel.rooms.splice(idx, 1)
+  hotel.rooms.splice(newIdx, 0, room)
+  saveAccommodations()
+  renderNoclegi()
+}
+
+function moveRoom(fromHotelId, roomId, toHotelId) {
+  const from = accommodations.hotels.find(h => h.id === fromHotelId)
+  const to   = accommodations.hotels.find(h => h.id === toHotelId)
+  if (!from || !to) return
+  const room = from.rooms.find(r => r.id === roomId)
+  if (!room) return
+  _pushUndo()
+  from.rooms = from.rooms.filter(r => r.id !== roomId)
+  to.rooms.push(room)
+  saveAccommodations()
+  renderNoclegi()
+}
+
+function duplicateHotel(id) {
+  const hotel = accommodations.hotels.find(h => h.id === id)
+  if (!hotel) return
+  _pushUndo()
+  const copy = {
+    id: crypto.randomUUID(),
+    name: hotel.name + ' (duplikat)',
+    phone: hotel.phone || null,
+    address: hotel.address || null,
+    maps_url: hotel.maps_url || null,
+    rooms: hotel.rooms.map(r => ({
+      id: crypto.randomUUID(),
+      name: r.name,
+      type: r.type,
+      guests: [...(r.guests || [])],
+      guests_greyed: [...(r.guests_greyed || [])],
+      guests_notes: {...(r.guests_notes || {})},
+      periods: (r.periods||[]).map(p => ({ ...p, id: crypto.randomUUID() }))
+    }))
+  }
+  accommodations.hotels.push(copy)
+  saveAccommodations()
+  renderNoclegi()
+  const total = copy.rooms.reduce((s,r) => s + r.guests.length, 0)
+  showNoclegiToast(`⧉ Zduplikowano "${hotel.name}" (${copy.rooms.length} pokoi, ${total} gości)`, 'success')
+}
+
+function copyHotel(id) {
+  const hotel = accommodations.hotels.find(h => h.id === id)
+  if (!hotel) return
+  _pushUndo()
+  const copy = {
+    id: crypto.randomUUID(),
+    name: hotel.name + ' (kopia)',
+    rooms: hotel.rooms.map(r => ({
+      id: crypto.randomUUID(),
+      name: r.name,
+      type: r.type,
+      guests: [],
+      periods: (r.periods||[]).map(p => ({ ...p, id: crypto.randomUUID() }))
+    }))
+  }
+  accommodations.hotels.push(copy)
+  saveAccommodations()
+  renderNoclegi()
+  showNoclegiToast(`⎘ Skopiowano "${hotel.name}" (${hotel.rooms.length} pokoi, bez gości)`, 'success')
+}
+
+function setRoomPeriodDate(hotelId, roomId, periodId, field, value) {
+  const hotel = accommodations.hotels.find(h => h.id === hotelId)
+  const room = hotel?.rooms.find(r => r.id === roomId)
+  if (!room) return
+  const period = (room.periods||[]).find(p => p.id === periodId)
+  if (!period) return
+  _pushUndo()
+  period[field] = value || null
+  saveAccommodations()
+  renderNocegiHotels()
+  if (_calVisible) renderCalendar()
+}
+
+function addPeriod(hotelId, roomId) {
+  const hotel = accommodations.hotels.find(h => h.id === hotelId)
+  const room = hotel?.rooms.find(r => r.id === roomId)
+  if (!room) return
+  _pushUndo()
+  if (!room.periods) room.periods = []
+  room.periods.push({ id: crypto.randomUUID(), check_in: null, check_out: null })
+  saveAccommodations()
+  renderNocegiHotels()
+  if (_calVisible) renderCalendar()
+}
+
+function removePeriod(hotelId, roomId, periodId) {
+  const hotel = accommodations.hotels.find(h => h.id === hotelId)
+  const room = hotel?.rooms.find(r => r.id === roomId)
+  if (!room) return
+  _pushUndo()
+  room.periods = (room.periods||[]).filter(p => p.id !== periodId)
+  saveAccommodations()
+  renderNocegiHotels()
+  if (_calVisible) renderCalendar()
+}
+
+function editRoomDates(hotelId, roomId) {
+  const hotel = accommodations.hotels.find(h => h.id === hotelId)
+  const room = hotel?.rooms.find(r => r.id === roomId)
+  if (!room) return
+  document.getElementById('_rdates_overlay')?.remove()
+  const el = document.createElement('div')
+  el.id = '_rdates_overlay'
+  el.style.cssText = 'position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:16px'
+  el.innerHTML = `<div style="background:#1e293b;border:1px solid #334155;border-radius:16px;padding:20px;min-width:290px;box-shadow:0 20px 60px rgba(0,0,0,.8)">
+    <p style="font-size:14px;font-weight:700;margin-bottom:14px;color:#f1f5f9">📅 Daty pobytu — ${esc(room.name)}</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+      <div>
+        <p style="font-size:11px;color:#94a3b8;margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">Zameldowanie</p>
+        <input id="_rd_in" type="date" style="width:100%;background:#0f172a;border:1px solid #334155;border-radius:8px;padding:7px 10px;color:#f1f5f9;font-size:13px;outline:none;box-sizing:border-box">
+      </div>
+      <div>
+        <p style="font-size:11px;color:#94a3b8;margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">Wymeldowanie</p>
+        <input id="_rd_out" type="date" style="width:100%;background:#0f172a;border:1px solid #334155;border-radius:8px;padding:7px 10px;color:#f1f5f9;font-size:13px;outline:none;box-sizing:border-box">
+      </div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button onclick="saveRoomDates('${hotelId}','${roomId}')" style="flex:1;background:#f59e0b;color:#0f172a;font-weight:700;padding:9px;border-radius:10px;border:none;cursor:pointer;font-size:13px">Zapisz</button>
+      <button onclick="document.getElementById('_rdates_overlay').remove()" style="padding:9px 14px;background:#334155;color:#f1f5f9;border-radius:10px;border:none;cursor:pointer;font-size:13px">Anuluj</button>
+      <button onclick="clearRoomDates('${hotelId}','${roomId}')" style="padding:9px 10px;background:#2d0909;color:#f87171;border-radius:10px;border:none;cursor:pointer;font-size:13px" title="Wyczyść daty">✕</button>
+    </div>
+  </div>`
+  document.body.appendChild(el)
+  el.addEventListener('click', e => { if (e.target === el) el.remove() })
+  setTimeout(() => document.getElementById('_rd_in')?.focus(), 50)
+}
+
+function saveRoomDates(hotelId, roomId) {
+  const hotel = accommodations.hotels.find(h => h.id === hotelId)
+  const room = hotel?.rooms.find(r => r.id === roomId)
+  if (!room) return
+  _pushUndo()
+  const inVal = document.getElementById('_rd_in')?.value || null
+  const outVal = document.getElementById('_rd_out')?.value || null
+  if (!room.periods) room.periods = []
+  room.periods.push({ id: crypto.randomUUID(), check_in: inVal, check_out: outVal })
+  document.getElementById('_rdates_overlay')?.remove()
+  saveAccommodations()
+  renderNoclegi()
+}
+
+function clearRoomDates(hotelId, roomId) {
+  const hotel = accommodations.hotels.find(h => h.id === hotelId)
+  const room = hotel?.rooms.find(r => r.id === roomId)
+  if (!room) return
+  _pushUndo()
+  room.periods = []
+  document.getElementById('_rdates_overlay')?.remove()
+  saveAccommodations()
+  renderNoclegi()
+}
+
+function editHotelInfo(hotelId) {
+  const hotel = accommodations.hotels.find(h => h.id === hotelId)
+  if (!hotel) return
+  document.getElementById('_hinfo_overlay')?.remove()
+  const el = document.createElement('div')
+  el.id = '_hinfo_overlay'
+  el.style.cssText = 'position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:16px'
+  el.innerHTML = `<div style="background:#1e293b;border:1px solid #334155;border-radius:16px;padding:20px;min-width:320px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.8)">
+    <p style="font-size:14px;font-weight:700;margin-bottom:14px;color:#f1f5f9">🏨 Informacje hotelu</p>
+    <div style="margin-bottom:10px">
+      <p style="font-size:11px;color:#94a3b8;margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">Telefon recepcji</p>
+      <input id="_hi_phone" type="tel" placeholder="+48 22 123 45 67" value="${esc(hotel.phone||'')}" style="width:100%;background:#0f172a;border:1px solid #334155;border-radius:8px;padding:7px 10px;color:#f1f5f9;font-size:13px;outline:none;box-sizing:border-box">
+    </div>
+    <div style="margin-bottom:10px">
+      <p style="font-size:11px;color:#94a3b8;margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">Adres</p>
+      <input id="_hi_address" type="text" placeholder="ul. Przykładowa 1, Warszawa" value="${esc(hotel.address||'')}" style="width:100%;background:#0f172a;border:1px solid #334155;border-radius:8px;padding:7px 10px;color:#f1f5f9;font-size:13px;outline:none;box-sizing:border-box">
+    </div>
+    <div style="margin-bottom:16px">
+      <p style="font-size:11px;color:#94a3b8;margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">Link Google Maps (PIN)</p>
+      <input id="_hi_maps" type="url" placeholder="https://maps.app.goo.gl/..." value="${esc(hotel.maps_url||'')}" style="width:100%;background:#0f172a;border:1px solid #334155;border-radius:8px;padding:7px 10px;color:#f1f5f9;font-size:13px;outline:none;box-sizing:border-box">
+    </div>
+    <div style="display:flex;gap:8px">
+      <button onclick="saveHotelInfo('${hotelId}')" style="flex:1;background:#f59e0b;color:#0f172a;font-weight:700;padding:9px;border-radius:10px;border:none;cursor:pointer;font-size:13px">Zapisz</button>
+      <button onclick="document.getElementById('_hinfo_overlay').remove()" style="padding:9px 14px;background:#334155;color:#f1f5f9;border-radius:10px;border:none;cursor:pointer;font-size:13px">Anuluj</button>
+    </div>
+  </div>`
+  document.body.appendChild(el)
+  el.addEventListener('click', e => { if (e.target === el) el.remove() })
+  setTimeout(() => document.getElementById('_hi_phone')?.focus(), 50)
+}
+
+function saveHotelInfo(hotelId) {
+  const hotel = accommodations.hotels.find(h => h.id === hotelId)
+  if (!hotel) return
+  _pushUndo()
+  hotel.phone    = document.getElementById('_hi_phone')?.value.trim()   || null
+  hotel.address  = document.getElementById('_hi_address')?.value.trim() || null
+  hotel.maps_url = document.getElementById('_hi_maps')?.value.trim()    || null
+  document.getElementById('_hinfo_overlay')?.remove()
+  saveAccommodations()
+  renderNoclegi()
+}
+
+function buildEmailBody(person, hotel, room) {
+  const typeNames = {1:'jednosobowy',2:'dwuosobowy',3:'trzyosobowy',4:'czteroosobowy'}
+  const roommates = room.guests
+    .filter(gid => gid !== person.id)
+    .map(gid => { const p2 = crew.find(c => c.id === gid); return p2 ? `${p2.name}${p2.position?' ('+p2.position+')':''}` : '' })
+    .filter(Boolean)
+  const firstName = person.name.split(' ')[0]
+  const validPeriods = (room.periods||[]).filter(p => p.check_in || p.check_out)
+  const datesLine = validPeriods.length
+    ? '\n' + validPeriods.map((p, i) =>
+        `📅 ${validPeriods.length > 1 ? `Termin ${i+1}: ` : ''}Zameldowanie: ${formatShortDate(p.check_in)||'do ustalenia'} · Wymeldowanie: ${formatShortDate(p.check_out)||'do ustalenia'}`
+      ).join('\n')
+    : ''
+  const mapsLine = hotel.maps_url ? `\n🗺️ Google Maps: ${hotel.maps_url}` : ''
+  const roommatesLine = roommates.length ? `\n👥 Współlokatorzy: ${roommates.join(', ')}` : ''
+  const addressLine = hotel.address ? `\n📍 Adres: ${hotel.address}` : ''
+  const phoneLine = hotel.phone ? `\n📞 Recepcja: ${hotel.phone}` : ''
+  return `Cześć ${firstName}!\n\nPoniżej informacje o Twoim zakwaterowaniu:\n\n🏨 Hotel: ${hotel.name}${addressLine}${phoneLine}${mapsLine}\n\n🛏️ Pokój: ${room.name} (${typeNames[room.type]||room.type+'-os.'})${datesLine}${roommatesLine}\n\nJeśli masz pytania, odezwij się.\n\nPozdrawiamy,\nProdukcja`
+}
+
+function openEmailModal() {
+  document.getElementById('_email_overlay')?.remove()
+  // Build list of persons with room assignments
+  const entries = []
+  accommodations.hotels.forEach(hotel => {
+    hotel.rooms.forEach(room => {
+      room.guests.forEach(gid => {
+        const person = crew.find(c => c.id === gid)
+        if (person) entries.push({ person, hotel, room })
+      })
+    })
+  })
+  if (!entries.length) { showNoclegiToast('Brak przypisanych osób'); return }
+  const noEmail = entries.filter(e => !e.person.email)
+  const withEmail = entries.filter(e => e.person.email)
+
+  const rows = entries.map((e, i) => {
+    const hasEmail = !!e.person.email
+    const body = buildEmailBody(e.person, e.hotel, e.room)
+    const subj = `Zakwaterowanie — ${e.hotel.name}, ${e.room.name}`
+    return `<div id="_erow_${i}" style="border:1px solid #334155;border-radius:10px;padding:10px 12px;margin-bottom:8px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+        <div>
+          <span style="font-weight:700;font-size:13px;color:#f1f5f9">${esc(e.person.name)}</span>
+          <span style="font-size:11px;color:#94a3b8;margin-left:6px">${hasEmail ? esc(e.person.email) : '⚠️ brak e-maila'}</span>
+        </div>
+        <div style="display:flex;gap:6px;shrink:0">
+          <button onclick="toggleEmailPreview(${i})" style="font-size:11px;padding:3px 8px;background:#1e293b;border:1px solid #334155;border-radius:6px;color:#94a3b8;cursor:pointer">podgląd</button>
+          ${hasEmail ? `<button id="_esend_${i}" onclick="sendSingleEmail(${i})" style="font-size:11px;padding:3px 10px;background:#1d4ed8;border:none;border-radius:6px;color:#fff;cursor:pointer;font-weight:600">Wyślij</button>` : ''}
+        </div>
+      </div>
+      <div id="_eprev_${i}" style="display:none;margin-top:8px;padding:8px;background:#0f172a;border-radius:8px;font-size:11px;color:#94a3b8;white-space:pre-wrap;max-height:120px;overflow-y:auto">${esc(body)}</div>
+    </div>`
+  }).join('')
+
+  const el = document.createElement('div')
+  el.id = '_email_overlay'
+  el.style.cssText = 'position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:16px'
+  el.innerHTML = `<div style="background:#1e293b;border:1px solid #334155;border-radius:16px;padding:20px;width:100%;max-width:560px;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.8)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <p style="font-size:14px;font-weight:700;color:#f1f5f9">📧 Powiadomienia o zakwaterowaniu</p>
+      <button onclick="document.getElementById('_email_overlay').remove()" style="color:#64748b;font-size:18px;background:none;border:none;cursor:pointer;line-height:1">✕</button>
+    </div>
+    ${noEmail.length ? `<div style="font-size:11px;color:#fb923c;margin-bottom:8px">⚠️ ${noEmail.length} os. bez e-maila: ${noEmail.map(e=>esc(e.person.name)).join(', ')}</div>` : ''}
+    <div style="overflow-y:auto;flex:1">${rows}</div>
+    <div style="display:flex;gap:8px;margin-top:12px;border-top:1px solid #334155;padding-top:12px">
+      ${withEmail.length ? `<button onclick="sendAllEmails()" style="flex:1;background:#1d4ed8;color:#fff;font-weight:700;padding:9px;border-radius:10px;border:none;cursor:pointer;font-size:13px">📤 Wyślij wszystkie (${withEmail.length})</button>` : ''}
+      <button onclick="document.getElementById('_email_overlay').remove()" style="padding:9px 16px;background:#334155;color:#f1f5f9;border-radius:10px;border:none;cursor:pointer;font-size:13px">Zamknij</button>
+    </div>
+  </div>`
+  // Store entries for later reference
+  el._entries = entries
+  document.body.appendChild(el)
+  el.addEventListener('click', e => { if (e.target === el) el.remove() })
+}
+
+function toggleEmailPreview(i) {
+  const p = document.getElementById('_eprev_' + i)
+  if (p) p.style.display = p.style.display === 'none' ? 'block' : 'none'
+}
+
+async function sendSingleEmail(i) {
+  const overlay = document.getElementById('_email_overlay')
+  const entries = overlay?._entries
+  if (!entries?.[i]) return
+  const { person, hotel, room } = entries[i]
+  const body = buildEmailBody(person, hotel, room)
+  const subj = `Zakwaterowanie — ${hotel.name}, pokój ${room.name}`
+  const btn = document.getElementById('_esend_' + i)
+  if (btn) { btn.textContent = '...'; btn.disabled = true }
+  try {
+    const res = await fetch('http://localhost:5050/api/send_direct', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ to: person.email, subject: subj, body, account: 'master' })
+    })
+    const json = await res.json()
+    if (json.ok) {
+      document.getElementById('_erow_' + i).style.borderColor = '#4ade80'
+      if (btn) { btn.textContent = '✓ Wysłano'; btn.style.background = '#14532d' }
+    } else {
+      if (btn) { btn.textContent = '✗ Błąd'; btn.style.background = '#7f1d1d'; btn.disabled = false }
+    }
+  } catch(e) {
+    if (btn) { btn.textContent = '✗ Offline'; btn.style.background = '#7f1d1d'; btn.disabled = false }
+    showNoclegiToast('Serwer maili offline (port 5050)')
+  }
+}
+
+async function sendAllEmails() {
+  const overlay = document.getElementById('_email_overlay')
+  const entries = overlay?._entries
+  if (!entries) return
+  const withEmail = entries.map((e, i) => ({...e, i})).filter(e => e.person.email)
+  for (const e of withEmail) {
+    await sendSingleEmail(e.i)
+    await new Promise(r => setTimeout(r, 400))
+  }
+}
+
+let _roomHotelId = null
+let _roomType = 2
+
+function addRoomToHotel(hotelId) {
+  _roomHotelId = hotelId
+  _roomType = 2
+  document.getElementById('room-name-input').value = ''
+  document.querySelectorAll('.rt-btn').forEach(b => b.classList.remove('ring-2','ring-amber-400'))
+  document.getElementById('rt-2')?.classList.add('ring-2','ring-amber-400')
+  document.getElementById('room-modal').classList.remove('hidden')
+  setTimeout(() => document.getElementById('room-name-input')?.focus(), 50)
+}
+
+function selectRoomType(t) {
+  _roomType = t
+  document.querySelectorAll('.rt-btn').forEach(b => b.classList.remove('ring-2','ring-amber-400'))
+  document.getElementById('rt-'+t)?.classList.add('ring-2','ring-amber-400')
+}
+
+function confirmAddRoom() {
+  const prefix = document.getElementById('room-name-input').value.trim()
+  const count  = parseInt(document.getElementById('room-count-input').value) || 1
+  const hotel  = accommodations.hotels.find(h => h.id === _roomHotelId)
+  if (!hotel) return
+  _pushUndo()
+  const startNum = hotel.rooms.filter(r => r.type === _roomType).length + 1
+  for (let i = 0; i < count; i++) {
+    const name = count === 1 && prefix ? prefix : (prefix ? `${prefix} ${startNum + i}` : `Pokój ${startNum + i}`)
+    hotel.rooms.push({ id: crypto.randomUUID(), name, type: _roomType, guests: [], periods: [] })
+  }
+  closeRoomModal()
+  saveAccommodations()
+  renderNoclegi()
+}
+
+function closeRoomModal() {
+  document.getElementById('room-modal').classList.add('hidden')
+}
+
+// ── FROZEN COLUMNS — CSS sticky + dynamic left recalc after auto-layout ──────
+function initFrozenScroll() { /* no-op */ }
+
+function recalcFrozenLeft() {
+  const headRow = document.getElementById('crew-thead-row')
+  if (!headRow) return
+  const ths = headRow.querySelectorAll('th')
+  if (ths.length < 2) return
+
+  const w0 = ths[0].offsetWidth  // # column (actual rendered width)
+  const w1 = ths[1].offsetWidth  // name column (actual rendered width)
+
+  // Update name th + all name tds
+  ths[1].style.left = w0 + 'px'
+  document.querySelectorAll('#crew-tbody td.sticky-col-2').forEach(td => { td.style.left = w0 + 'px' })
+
+  // Update frozen user columns
+  const frozenOnly = getOrderedCols().filter(c => c.frozen)
+  let left = w0 + w1
+  frozenOnly.forEach((col, idx) => {
+    const th = ths[2 + idx]
+    if (th) th.style.left = left + 'px'
+    document.querySelectorAll(`#crew-tbody tr td:nth-child(${idx + 3})`).forEach(td => { td.style.left = left + 'px' })
+    left += th ? th.offsetWidth : col.w
+  })
+}
+
 // ── CLOSE ON OVERLAY ─────────────────────────────────
 document.getElementById('modal').addEventListener('click', e => { if (e.target===document.getElementById('modal')) closeModal() })
 document.getElementById('modal-project').addEventListener('click', e => { if (e.target===document.getElementById('modal-project')) closeProjectModal() })
 
 init()
+
+document.addEventListener('DOMContentLoaded', () => {
+  const em = document.getElementById('email-modal')
+  if (em) em.addEventListener('click', e => { if (e.target===em) closeEmailModal() })
+})
 </script>
+<!-- EMAIL MODAL -->
+<div id="email-modal" class="hidden fixed inset-0 z-50 bg-black/70 items-center justify-center p-4">
+  <div class="bg-slate-800 border border-slate-600 rounded-2xl shadow-2xl w-full max-w-md">
+    <div class="flex items-center justify-between p-5 border-b border-slate-700">
+      <div>
+        <h3 class="font-semibold text-white text-base" id="email-modal-name"></h3>
+        <p class="text-xs text-slate-400 mt-0.5" id="email-modal-to"></p>
+      </div>
+      <button onclick="closeEmailModal()" class="text-slate-400 hover:text-white text-xl leading-none">×</button>
+    </div>
+    <div class="p-5 space-y-4">
+      <div>
+        <p class="text-xs text-slate-400 uppercase tracking-wide font-semibold mb-2">Brakujące informacje</p>
+        <div id="email-missing-list" class="space-y-1.5 max-h-40 overflow-y-auto"></div>
+      </div>
+      <div>
+        <p class="text-xs text-slate-400 uppercase tracking-wide font-semibold mb-2">Dodatkowa wiadomość (opcjonalnie)</p>
+        <textarea id="email-custom-msg" class="w-full bg-slate-900 border border-slate-600 rounded-lg p-3 text-sm text-slate-200 outline-none focus:border-amber-400 resize-none" rows="3" placeholder="np. Proszę o odpowiedź do piątku..."></textarea>
+      </div>
+    </div>
+    <div class="flex gap-2 p-5 pt-0">
+      <button onclick="sendEmailMail()" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium py-2.5 rounded-xl transition">✉️ Otwórz klienta poczty</button>
+      <button id="email-copy-btn" onclick="copyEmailMsg()" class="px-4 bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm font-medium py-2.5 rounded-xl transition">📋 Kopiuj wiadomość</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
