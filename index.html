@@ -330,17 +330,6 @@ const CONFIG = {
     </div>
     <!-- WIDOK KALENDARZA (Gantt) -->
     <div id="noclegi-calendar" class="hidden" style="overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 150px)"></div>
-    <!-- Modal: zmiana nazwy projektu -->
-    <div id="rename-modal" class="hidden fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4" onclick="if(event.target===this)closeRenameModal()">
-      <div class="bg-slate-800 border border-slate-600 rounded-2xl shadow-2xl w-full max-w-sm p-5">
-        <h3 class="font-bold text-base mb-4">Zmień nazwę projektu</h3>
-        <input id="rename-input" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400" placeholder="Nazwa projektu" onkeydown="if(event.key==='Enter')confirmRename();if(event.key==='Escape')closeRenameModal()">
-        <div class="flex gap-2 mt-4 justify-end">
-          <button onclick="closeRenameModal()" class="px-4 py-2 text-sm text-slate-400 hover:text-white rounded-lg transition">Anuluj</button>
-          <button onclick="confirmRename()" class="px-4 py-2 text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-900 rounded-lg transition">Zapisz</button>
-        </div>
-      </div>
-    </div>
     <!-- Modal: nowy pokój -->
     <div id="room-modal" class="hidden fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
       <div class="bg-slate-800 border border-slate-600 rounded-2xl shadow-2xl w-full max-w-xs p-5">
@@ -3044,6 +3033,17 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="flex gap-2 p-5 pt-0">
       <button onclick="sendEmailMail()" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium py-2.5 rounded-xl transition">✉️ Otwórz klienta poczty</button>
       <button id="email-copy-btn" onclick="copyEmailMsg()" class="px-4 bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm font-medium py-2.5 rounded-xl transition">📋 Kopiuj wiadomość</button>
+    </div>
+  </div>
+</div>
+<!-- Modal: zmiana nazwy projektu (globalny — dostępny z obu ekranów) -->
+<div id="rename-modal" class="hidden fixed inset-0 z-[999] bg-black/70 flex items-center justify-center p-4" onclick="if(event.target===this)closeRenameModal()">
+  <div class="bg-slate-800 border border-slate-600 rounded-2xl shadow-2xl w-full max-w-sm p-5">
+    <h3 class="font-bold text-base mb-4">Zmień nazwę projektu</h3>
+    <input id="rename-input" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400" placeholder="Nazwa projektu" onkeydown="if(event.key==='Enter')confirmRename();if(event.key==='Escape')closeRenameModal()">
+    <div class="flex gap-2 mt-4 justify-end">
+      <button onclick="closeRenameModal()" class="px-4 py-2 text-sm text-slate-400 hover:text-white rounded-lg transition">Anuluj</button>
+      <button onclick="confirmRename()" class="px-4 py-2 text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-900 rounded-lg transition">Zapisz</button>
     </div>
   </div>
 </div>
