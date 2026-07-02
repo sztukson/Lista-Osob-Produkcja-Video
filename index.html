@@ -928,6 +928,8 @@ function showNoAccess(name) {
 function backToProjects() {
   currentProject = null
   crew = []
+  accommodations = { hotels: [] }
+  _accommodationsLoaded = false
   show('projects')
   loadProjects()
 }
@@ -1609,6 +1611,7 @@ function copyEmailMsg() {
 
 // ── NOCLEGI ──────────────────────────────────────────
 let accommodations = { hotels: [] }
+let _accommodationsLoaded = false
 let selectedPersonId = null
 let draggedPersonId = null
 let draggedGuestSource = null
@@ -2029,12 +2032,14 @@ function showNoclegiToast(msg, type='error') {
 async function loadNoclegi() {
   const { data } = await db.from('projects').select('accommodations').eq('id', currentProject.id).single()
   accommodations = data?.accommodations || { hotels: [] }
+  _accommodationsLoaded = true
   // migrate old check_in/check_out fields to periods array
   accommodations.hotels.forEach(h => h.rooms.forEach(r => migrateRoomPeriods(r)))
   renderNoclegi()
 }
 
 async function saveAccommodations() {
+  if (!_accommodationsLoaded) return  // nie nadpisuj jeśli dane nie były załadowane
   await db.from('projects').update({ accommodations }).eq('id', currentProject.id)
 }
 
@@ -2252,6 +2257,12 @@ function onRoomCardDragEnd(e) {
   document.querySelectorAll('.room-card').forEach(c => c.classList.remove('drag-over'))
 }
 function onRoomCardDragOver(e, hotelId, roomId) {
+  if (draggedPersonId) {
+    e.preventDefault()
+    e.stopPropagation()
+    e.currentTarget.classList.add('drag-over')
+    return
+  }
   if (!draggedRoomId || draggedRoomId === roomId) return
   e.preventDefault()
   e.stopPropagation()
