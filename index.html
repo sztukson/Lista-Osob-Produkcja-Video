@@ -2212,7 +2212,11 @@ function renderNocegiHotels() {
                   ${p.phone ? `<div class="text-slate-500 truncate w-full">${esc(p.phone)}</div>` : ''}
                 </div>`
               }).join('')}
-              ${!isFull ? `<div class="text-xs text-slate-600 border border-dashed border-slate-700 rounded-lg px-2 py-1 text-center">
+              ${!isFull ? `<div class="text-xs text-slate-600 border border-dashed border-slate-700 rounded-lg px-2 py-1 text-center"
+                ondragover="event.preventDefault();event.stopPropagation();this.style.borderColor='#f59e0b';this.style.color='#f59e0b'"
+                ondragleave="this.style.borderColor='';this.style.color=''"
+                ondrop="event.preventDefault();event.stopPropagation();this.style.borderColor='';this.style.color='';onRoomDrop(event,'${hotel.id}','${room.id}')"
+                onclick="onRoomClick('${hotel.id}','${room.id}')">
                 ${selectedPersonId ? '👆 kliknij tu' : 'upuść tu'}
               </div>` : ''}
             </div>
