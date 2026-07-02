@@ -1135,7 +1135,7 @@ function renderTable() {
   // Numery: sekwencyjne dla WSZYSTKICH wg kolejności w tablicy (nie pomijamy ukrytych)
   const globalIdx = {}; crew.forEach((p, i) => { globalIdx[p.id] = i + 1 })
   tbody.innerHTML = rows.map(p => {
-    const displayLp = p.lp || globalIdx[p.id] || '·'
+    const displayLp = globalIdx[p.id] || '·'
     const pct = completion(p)
     return `<tr class="crew-row border-b border-slate-800 ${pct===100?'complete-row':pct<50?'missing-row':''}" style="${p.hidden?'opacity:0.35;filter:grayscale(1);':''}" oncontextmenu="event.preventDefault();event.stopPropagation();_crewCtxMenu(event,'${p.id}')">
       <td class="px-2 py-2 text-xs sticky-col" style="color:${p.hidden?'#334155':'#64748b'}">${displayLp}</td>
