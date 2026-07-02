@@ -37,6 +37,24 @@
     .project-card { background:#1e293b; border:1px solid #334155; border-radius:16px; padding:20px; cursor:pointer; transition:all .15s; }
     .project-card:hover { border-color:#fbbf24; transform:translateY(-1px); }
     .missing-row { background: rgba(248,113,113,.03); }
+    /* Mobile responsive */
+    @media (max-width: 479px) {
+      .hidden.xs\:inline { display: none !important; }
+      #content-ekipa { padding: 8px; }
+      .quick-stats-wrap { gap: 6px; }
+      .stat-card { padding: 10px 12px; }
+    }
+    @media (min-width: 480px) {
+      .hidden.xs\:inline { display: inline !important; }
+    }
+    /* Tabela ekipy zawsze scrolluje poziomo */
+    #crew-scroll-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    /* Noclegi panel - na mobile stack pionowo */
+    @media (max-width: 640px) {
+      #noclegi-panel { flex-direction: column !important; }
+      #noclegi-people-col { width: 100% !important; max-width: 100% !important; border-right: none !important; border-bottom: 1px solid #334155; max-height: 220px; }
+      #noclegi-hotels-col { width: 100% !important; }
+    }
     .complete-row td { background: rgba(74,222,128,.04) !important; }
     .complete-row td.sticky-col, .complete-row td.sticky-col-2, .complete-row td.frozen-td { background: #052e16 !important; }
     .cell-missing { box-shadow: inset 3px 0 0 #7f1d1d, inset 0 0 0 1px rgba(220,38,38,.35); background: #1a0808 !important; }
@@ -144,24 +162,27 @@ const CONFIG = {
 <div id="screen-app" class="hidden">
 
   <!-- Navbar -->
-  <nav class="bg-slate-800 border-b border-slate-700 px-4 py-2.5 flex items-center justify-between sticky top-0 z-30">
-    <div class="flex items-center gap-2">
-      <button onclick="backToProjects()" class="text-slate-400 hover:text-white text-sm transition flex items-center gap-1 mr-1">
-        ← <span class="hidden sm:inline text-xs">Projekty</span>
-      </button>
-      <span class="text-slate-600">|</span>
-      <span class="text-amber-400 text-sm font-bold ml-1 truncate max-w-40 cursor-pointer hover:text-amber-300 transition" id="nav-project-name" onclick="renameProject()" title="Kliknij aby zmienić nazwę"></span>
-    </div>
-    <div class="flex items-center gap-2">
-      <div class="flex gap-0.5 bg-slate-900 rounded-lg p-0.5 mr-1">
-        <button onclick="switchTab('ekipa')"   id="tab-ekipa"   class="tab-btn tab-active px-2.5 py-1.5 rounded-md text-xs font-medium transition">👥 Ekipa</button>
-        <button onclick="switchTab('stats')"   id="tab-stats"   class="tab-btn px-2.5 py-1.5 rounded-md text-xs font-medium transition">📊 Stat</button>
-        <button onclick="switchTab('log')"     id="tab-log"     class="tab-btn px-2.5 py-1.5 rounded-md text-xs font-medium transition">📋 Log</button>
-        <button onclick="switchTab('dostep')"  id="tab-dostep"  class="tab-btn px-2.5 py-1.5 rounded-md text-xs font-medium transition">🔑 Dostęp</button>
-        <button onclick="switchTab('noclegi')" id="tab-noclegi" class="tab-btn px-2.5 py-1.5 rounded-md text-xs font-medium transition">🏨 Noclegi</button>
+  <nav class="bg-slate-800 border-b border-slate-700 px-3 py-2 sticky top-0 z-30">
+    <div class="flex items-center justify-between mb-1.5">
+      <div class="flex items-center gap-2 min-w-0">
+        <button onclick="backToProjects()" class="text-slate-400 hover:text-white text-sm transition flex items-center gap-1 shrink-0">
+          ← <span class="hidden sm:inline text-xs">Projekty</span>
+        </button>
+        <span class="text-slate-600">|</span>
+        <span class="text-amber-400 text-sm font-bold ml-1 truncate cursor-pointer hover:text-amber-300 transition" id="nav-project-name" onclick="renameProject()" title="Kliknij aby zmienić nazwę"></span>
       </div>
-      <img id="nav-avatar" class="w-7 h-7 rounded-full hidden"/>
-      <button onclick="signOut()" class="text-xs text-slate-500 hover:text-slate-300 transition">Wyloguj</button>
+      <div class="flex items-center gap-2 shrink-0">
+        <img id="nav-avatar" class="w-7 h-7 rounded-full hidden"/>
+        <button onclick="signOut()" class="text-xs text-slate-500 hover:text-slate-300 transition">Wyloguj</button>
+      </div>
+    </div>
+    <!-- Zakładki — osobny rząd, scrollowalny na mobile -->
+    <div class="flex gap-0.5 bg-slate-900 rounded-lg p-0.5 overflow-x-auto">
+      <button onclick="switchTab('ekipa')"   id="tab-ekipa"   class="tab-btn tab-active px-2.5 py-1.5 rounded-md text-xs font-medium transition whitespace-nowrap">👥 <span class="hidden xs:inline">Ekipa</span></button>
+      <button onclick="switchTab('stats')"   id="tab-stats"   class="tab-btn px-2.5 py-1.5 rounded-md text-xs font-medium transition whitespace-nowrap">📊 <span class="hidden xs:inline">Stat</span></button>
+      <button onclick="switchTab('log')"     id="tab-log"     class="tab-btn px-2.5 py-1.5 rounded-md text-xs font-medium transition whitespace-nowrap">📋 <span class="hidden xs:inline">Log</span></button>
+      <button onclick="switchTab('dostep')"  id="tab-dostep"  class="tab-btn px-2.5 py-1.5 rounded-md text-xs font-medium transition whitespace-nowrap">🔑 <span class="hidden xs:inline">Dostęp</span></button>
+      <button onclick="switchTab('noclegi')" id="tab-noclegi" class="tab-btn px-2.5 py-1.5 rounded-md text-xs font-medium transition whitespace-nowrap">🏨 <span class="hidden xs:inline">Noclegi</span></button>
     </div>
   </nav>
 
@@ -309,6 +330,17 @@ const CONFIG = {
     </div>
     <!-- WIDOK KALENDARZA (Gantt) -->
     <div id="noclegi-calendar" class="hidden" style="overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 150px)"></div>
+    <!-- Modal: zmiana nazwy projektu -->
+    <div id="rename-modal" class="hidden fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4" onclick="if(event.target===this)closeRenameModal()">
+      <div class="bg-slate-800 border border-slate-600 rounded-2xl shadow-2xl w-full max-w-sm p-5">
+        <h3 class="font-bold text-base mb-4">Zmień nazwę projektu</h3>
+        <input id="rename-input" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400" placeholder="Nazwa projektu" onkeydown="if(event.key==='Enter')confirmRename();if(event.key==='Escape')closeRenameModal()">
+        <div class="flex gap-2 mt-4 justify-end">
+          <button onclick="closeRenameModal()" class="px-4 py-2 text-sm text-slate-400 hover:text-white rounded-lg transition">Anuluj</button>
+          <button onclick="confirmRename()" class="px-4 py-2 text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-900 rounded-lg transition">Zapisz</button>
+        </div>
+      </div>
+    </div>
     <!-- Modal: nowy pokój -->
     <div id="room-modal" class="hidden fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
       <div class="bg-slate-800 border border-slate-600 rounded-2xl shadow-2xl w-full max-w-xs p-5">
@@ -851,7 +883,7 @@ async function renderProjects() {
     const count   = countMap[p.id] || 0
     const isOwner = p.owner_email === currentUser.email || isAdmin
     const hasAccess = isOwner || myProjectIds.has(p.id)
-    return `<div class="project-card ${hasAccess ? '' : 'opacity-50'}" onclick="enterProject('${p.id}')">
+    return `<div class="project-card ${hasAccess ? '' : 'opacity-50'}" onclick="enterProject('${p.id}')" oncontextmenu="event.preventDefault();event.stopPropagation();_projCtxMenu(event,'${p.id}','${isOwner}')">
       <div class="text-2xl mb-3">${hasAccess ? '🎬' : '🔒'}</div>
       <h3 class="font-bold text-base mb-1">${esc(p.name)}</h3>
       ${p.description ? `<p class="text-xs text-slate-400 mb-3">${esc(p.description)}</p>` : '<div class="mb-3"></div>'}
@@ -953,15 +985,56 @@ async function deleteProject() {
   backToProjects()
 }
 
-async function renameProject() {
-  const name = prompt('Nowa nazwa projektu:', currentProject.name)
-  if (!name || name.trim() === currentProject.name) return
-  const trimmed = name.trim()
-  const { error } = await db.from('projects').update({ name: trimmed }).eq('id', currentProject.id)
+let _renameProjectId = null
+
+function openRenameModal(projectId) {
+  const p = projects.find(x => x.id === projectId) || currentProject
+  if (!p) return
+  _renameProjectId = p.id
+  const inp = document.getElementById('rename-input')
+  inp.value = p.name
+  document.getElementById('rename-modal').classList.remove('hidden')
+  setTimeout(() => { inp.focus(); inp.select() }, 50)
+}
+
+function closeRenameModal() {
+  document.getElementById('rename-modal').classList.add('hidden')
+  _renameProjectId = null
+}
+
+async function confirmRename() {
+  const trimmed = document.getElementById('rename-input').value.trim()
+  if (!trimmed || !_renameProjectId) return
+  const { error } = await db.from('projects').update({ name: trimmed }).eq('id', _renameProjectId)
   if (error) { alert('Błąd zapisu: ' + error.message); return }
-  currentProject.name = trimmed
-  document.getElementById('nav-project-name').textContent = trimmed
-  document.getElementById('dostep-project-label').textContent = trimmed
+  const p = projects.find(x => x.id === _renameProjectId)
+  if (p) p.name = trimmed
+  if (currentProject?.id === _renameProjectId) {
+    currentProject.name = trimmed
+    document.getElementById('nav-project-name').textContent = trimmed
+    document.getElementById('dostep-project-label').textContent = trimmed
+  }
+  closeRenameModal()
+  loadProjects()
+}
+
+function renameProject() { openRenameModal(currentProject?.id) }
+
+function _projCtxMenu(e, projectId, isOwnerStr) {
+  document.getElementById('_proj_ctx')?.remove()
+  const isOwner = isOwnerStr === 'true'
+  const p = projects.find(x => x.id === projectId)
+  if (!p) return
+  const el = document.createElement('div')
+  el.id = '_proj_ctx'
+  el.style.cssText = `position:fixed;left:${e.clientX}px;top:${e.clientY}px;z-index:500;background:#1e293b;border:1px solid #334155;border-radius:10px;padding:6px;min-width:185px;box-shadow:0 8px 32px rgba(0,0,0,.7);font-size:12px`
+  el.innerHTML = `
+    <div style="color:#64748b;font-size:10px;padding:2px 8px 6px;border-bottom:1px solid #334155;margin-bottom:4px">${esc(p.name)}</div>
+    <button onclick="document.getElementById('_proj_ctx')?.remove();enterProject('${projectId}')" style="display:block;width:100%;text-align:left;background:none;border:none;color:#e2e8f0;padding:6px 8px;border-radius:6px;cursor:pointer" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='none'">▶ Otwórz projekt</button>
+    ${isOwner ? `<button onclick="document.getElementById('_proj_ctx')?.remove();openRenameModal('${projectId}')" style="display:block;width:100%;text-align:left;background:none;border:none;color:#94a3b8;padding:6px 8px;border-radius:6px;cursor:pointer" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='none'">✏️ Zmień nazwę</button>` : ''}
+  `
+  document.body.appendChild(el)
+  setTimeout(() => document.addEventListener('click', () => el.remove(), { once: true }), 10)
 }
 
 // ── DATA ─────────────────────────────────────────────
