@@ -1121,13 +1121,23 @@ function renderTable() {
 
   const tbody = document.getElementById('crew-tbody')
   if (!rows.length) { tbody.innerHTML=`<tr><td colspan="19" class="text-center py-10 text-slate-500">Brak wyników</td></tr>`; return }
-  document.getElementById('row-count').textContent = `${rows.length} z ${crew.length} osób`
+  const activeCount = crew.filter(p => !p.hidden).length
+  const hiddenCount = crew.length - activeCount
+  const countEl = document.getElementById('row-count')
+  if (hiddenCount > 0) {
+    countEl.innerHTML = `${rows.filter(p=>!p.hidden).length} aktywnych z ${rows.length} widocznych &nbsp;·&nbsp; <span style="color:#64748b">${activeCount} aktywnych / ${crew.length} łącznie (${hiddenCount} wyszarzonych)</span>`
+  } else {
+    countEl.textContent = `${rows.length} z ${crew.length} osób`
+  }
 
   const ordered = getOrderedCols()
+  let autoLp = 0
   tbody.innerHTML = rows.map(p => {
+    if (!p.hidden) autoLp++
+    const displayLp = p.lp || autoLp
     const pct = completion(p)
-    return `<tr class="crew-row border-b border-slate-800 ${pct===100?'complete-row':pct<50?'missing-row':''}" style="${p.hidden?'opacity:0.35;':''}${p.hidden?'filter:grayscale(1);':''}" oncontextmenu="event.preventDefault();event.stopPropagation();_crewCtxMenu(event,'${p.id}')">
-      <td class="px-2 py-2 text-slate-500 text-xs sticky-col">${p.lp||'·'}</td>
+    return `<tr class="crew-row border-b border-slate-800 ${pct===100?'complete-row':pct<50?'missing-row':''}" style="${p.hidden?'opacity:0.35;filter:grayscale(1);':''}" oncontextmenu="event.preventDefault();event.stopPropagation();_crewCtxMenu(event,'${p.id}')">
+      <td class="px-2 py-2 text-slate-500 text-xs sticky-col">${p.hidden ? `<span style="color:#334155">${displayLp}</span>` : displayLp}</td>
       <td class="px-2 py-2 sticky-col-2">
         <div class="font-medium text-xs whitespace-nowrap">
           <span class="cursor-pointer hover:text-amber-300 transition" title="Kliknij, aby edytować" onclick="event.stopPropagation();startInline(this,'${p.id}','name')">${esc(p.name)}</span>
